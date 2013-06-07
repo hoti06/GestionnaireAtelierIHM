@@ -1,0 +1,47 @@
+<?php
+ 
+namespace Atelier\UserBundle\Entity;
+ 
+use Doctrine\ORM\Mapping as ORM;
+ 
+/**
+ * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Atelier\UserBundle\Entity\UserRepository")
+ */
+class User
+{
+  /**
+   * @ORM\Column(name="login", type="string")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  protected $login;
+ 
+  /**
+   * @ORM\Column(name="password", type="string", length=255)
+   */
+  protected $password;
+
+ 
+  // Et bien sûr les getters/setters :
+ 
+  public function setLogin($login)
+  {
+    $this->login = $login;
+  }
+
+  public function getLogin()
+  {
+    return $this->login;
+  }
+ 
+  public function setPassword($password)
+  {
+    $this->password = $password;
+  }
+
+  public function getPassword()
+  {
+    return $this->password;
+  }
+}
