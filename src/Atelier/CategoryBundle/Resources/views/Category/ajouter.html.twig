@@ -1,0 +1,22 @@
+{% extends "AtelierCategoryBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Ajouter une catégorie - {{ parent() }}
+{% endblock %}
+
+{% block category_body %}
+ 
+  <h2>Ajouter une catégorie</h2>
+ 
+  {% include "AtelierCategoryBundle:Category:formulaire.html.twig" %}
+ 
+  <p>
+    Ajouter
+  </p>
+ 
+  <p>
+  <i class="icon-chevron-left"></i>
+      Retour 
+  </p>
+ 
+{% endblock %}

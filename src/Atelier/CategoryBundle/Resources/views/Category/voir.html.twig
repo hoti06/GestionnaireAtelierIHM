@@ -1,0 +1,14 @@
+{% extends "AtelierCategoryBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Lecture d'une Catégorie - {{ parent() }}
+{% endblock %}
+ 
+{% block category_body %}
+
+<h2>Afficher une catégorie</h2>
+
+Id =  {{ category.id }} <br />
+Nom de la catégorie = {{ category.name }}
+ 
+{% endblock %}
