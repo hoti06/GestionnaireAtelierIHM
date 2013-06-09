@@ -5,10 +5,24 @@
 {% endblock %}
  
 {% block category_body %}
+<p>
+<a href="{{ path('atelier_category_new') }}" class="btn">
+      Créer une nouvelle catégorie
+      <i class="icon-chevron-right"></i>
+</a>
+</p>
 
 
 <h3>Liste des Catégories</h3>
  
+<p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+</p>
+
+
+
 <ul>
   {% for category in liste_categories %}
 	<p>

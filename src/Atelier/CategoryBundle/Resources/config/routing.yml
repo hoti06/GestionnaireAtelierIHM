@@ -9,14 +9,24 @@ atelier_category_edit:
     requirements:
         id:  \d+
 
+atelier_category_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: AtelierCategoryBundle:Category:delete }
+    requirements:
+        id:  \d+
+
 atelier_category_disp:
     pattern:  /{id}
     defaults: { _controller: AtelierCategoryBundle:Category:disp }
     requirements:
         id:  \d+
 
+atelier_category_index:
+    pattern:  /
+    defaults: { _controller: AtelierCategoryBundle:Category:dispAll, page: 1 }
+
 atelier_category_dispAll:
-    pattern:  /dispAll/{page}
+    pattern:  /index/{page}
     defaults: { _controller: AtelierCategoryBundle:Category:dispAll, page: 1 }
     requirements:
         page:  \d*

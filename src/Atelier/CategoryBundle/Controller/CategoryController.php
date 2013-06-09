@@ -7,6 +7,11 @@ use Atelier\CategoryBundle\Form\CategoryType;
 
 class CategoryController extends Controller
 { 
+	public function indexAction($page)
+  {
+	  return $this->render('AtelierCategoryBundle:Category:index.html.twig');
+  }
+	
 	public function newAction()
 	{
 		
@@ -63,35 +68,31 @@ class CategoryController extends Controller
 		));
 	}
 	
-	
-	public function modifierAction(Article $article)
+  public function deleteAction(Category $category)
   {
-    // On utiliser le ArticleEditType
-    $form = $this->createForm(new ArticleEditType(), $article);
+    $form = $this->createFormBuilder()->getForm();
  
     $request = $this->getRequest();
- 
     if ($request->getMethod() == 'POST') {
       $form->bind($request);
  
       if ($form->isValid()) {
-        // On enregistre l'article
         $em = $this->getDoctrine()->getManager();
-        $em->persist($article);
+        $em->remove($category);
         $em->flush();
  
-        // On définit un message flash
-        $this->get('session')->getFlashBag()->add('info', 'Article bien modifié');
+        $this->get('session')->getFlashBag()->add('info', 'Catégorie bien supprimée');
  
-        return $this->redirect($this->generateUrl('sdzblog_voir', array('id' => $article->getId())));
+        return $this->redirect($this->generateUrl('atelier_category_dispAll'));
       }
     }
  
-    return $this->render('SdzBlogBundle:Blog:modifier.html.twig', array(
-      'form'    => $form->createView(),
-      'article' => $article
+    return $this->render('AtelierCategoryBundle:Category:supprimer.html.twig', array(
+      'category' => $category,
+      'form'    => $form->createView()
     ));
-  }
+  }	
+
 	
 	
 	public function dispAction($id)
