@@ -1,0 +1,32 @@
+{% extends "AtelierCategoryBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Liste des Catégories - {{ parent() }}
+{% endblock %}
+ 
+{% block category_body %}
+
+
+<h3>Liste des Catégories</h3>
+ 
+<ul>
+  {% for category in liste_categories %}
+	<p>
+		{% include "AtelierCategoryBundle:Category:category.html.twig" %}
+	</p>
+    <hr />
+  {% else %}
+    <p>Pas (encore !) de catégories</p>
+  {% endfor %}
+</ul>
+  <div class="pagination">
+    <ul>
+      {% for p in range(1, nombrePage) %}
+        <li{% if p == page %} class="active"{% endif %}>
+          <a href="{{ path('atelier_category_dispAll', {'page': p}) }}">{{ p }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+{% endblock %}

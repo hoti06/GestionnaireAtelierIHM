@@ -6,7 +6,4 @@ atelier_user:
     resource: "@AtelierUserBundle/Resources/config/routing.yml"
     prefix:   /user
 
-sdz_blog:
-    resource: "@SdzBlogBundle/Resources/config/routing.yml"
-    prefix:   /blog
 

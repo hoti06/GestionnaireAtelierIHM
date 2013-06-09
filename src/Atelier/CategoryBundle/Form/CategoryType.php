@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ArticleType extends AbstractType
+class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -24,6 +24,6 @@ class ArticleType extends AbstractType
 
     public function getName()
     {
-        return 'sdz_categorybundle_articletype';
+        return 'atelier_categorybundle_categorytype';
     }
 }

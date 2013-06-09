@@ -8,7 +8,34 @@
 
 <h2>Afficher une catégorie</h2>
 
-Id =  {{ category.id }} <br />
-Nom de la catégorie = {{ category.name }}
- 
+<p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+</p>
+
+<h3>Catégorie {% include "AtelierCategoryBundle:Category:category.html.twig" %} </h3>
+<p>
+	Id =  {{ category.id }} 
+</p>
+<p>
+    <a href="{{ path('atelier_category_dispAll') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    
+    <a href="{{ path('atelier_category_edit', {'id': category.id}) }}" class="btn">
+      <i class="icon-edit"></i>
+      Modifier la catégorie
+    </a>
+    {# 
+    <a href="{{ path('sdzblog_supprimer', {'id': article.id}) }}" class="btn">
+      <i class="icon-trash"></i>
+      Supprimer l'article
+    </a>
+     #}
+  </p>
+
+
+
 {% endblock %}
