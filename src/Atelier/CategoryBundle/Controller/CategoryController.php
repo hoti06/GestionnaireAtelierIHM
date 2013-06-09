@@ -28,13 +28,13 @@ class CategoryController extends Controller
 				$em->persist($category);
 				$em->flush();
 				
-				$this->get('session')->getFlashBag()->add('info', 'Catégorie bien ajoutée');
+				$this->get('session')->getFlashBag()->add('info', 'The category has been correctly added');
 				
 				return $this->redirect($this->generateUrl('atelier_category_disp', array('id' => $category->getId())));
 			}
 		}
 
-		return $this->render('AtelierCategoryBundle:Category:ajouter.html.twig', array(
+		return $this->render('AtelierCategoryBundle:Category:add.html.twig', array(
 			'form' => $form->createView(),
 			));
 	}
@@ -55,14 +55,14 @@ class CategoryController extends Controller
 			$em->flush();
 	 
 	 
-			$this->get('session')->getFlashBag()->add('info', 'Catégorie bien modifié');
+			$this->get('session')->getFlashBag()->add('info', 'The category has been correctly modified');
 	 
 	
 			return $this->redirect($this->generateUrl('atelier_category_disp', array('id' => $category->getId())));
 		  }
 		}
 	 
-		return $this->render('AtelierCategoryBundle:Category:modifier.html.twig', array(
+		return $this->render('AtelierCategoryBundle:Category:edit.html.twig', array(
 		  'form'    => $form->createView(),
 		  'category' => $category
 		));
@@ -81,13 +81,13 @@ class CategoryController extends Controller
         $em->remove($category);
         $em->flush();
  
-        $this->get('session')->getFlashBag()->add('info', 'Catégorie bien supprimée');
+        $this->get('session')->getFlashBag()->add('info', 'The category has been correctly deleted');
  
         return $this->redirect($this->generateUrl('atelier_category_dispAll'));
       }
     }
  
-    return $this->render('AtelierCategoryBundle:Category:supprimer.html.twig', array(
+    return $this->render('AtelierCategoryBundle:Category:delete.html.twig', array(
       'category' => $category,
       'form'    => $form->createView()
     ));
@@ -102,10 +102,10 @@ class CategoryController extends Controller
                                    ->getRepository('AtelierCategoryBundle:Category')
                                    ->find($id);
 		if ($category == null) {
-			throw $this->createNotFoundException('Category[id='.$id.'] inexistante');
+			throw $this->createNotFoundException('The category [id='.$id.'] doesn\'t exist');
 		}
     
-		return $this->render('AtelierCategoryBundle:Category:voir.html.twig', array(
+		return $this->render('AtelierCategoryBundle:Category:disp.html.twig', array(
 		  'category' => $category
 		));
 	}
@@ -117,12 +117,12 @@ class CategoryController extends Controller
                                    
 		
 		
-		$listeCategories = $repository->getCategories(10, $page);
+		$listCategories = $repository->getCategories(10, $page);
 		
-		return $this->render('AtelierCategoryBundle:Category:listCategories.html.twig', array(
-		  'liste_categories' => $listeCategories,
+		return $this->render('AtelierCategoryBundle:Category:dispAll.html.twig', array(
+		  'list_categories' => $listCategories,
 		  'page'       => $page,
-		  'nombrePage' => ceil(count($listeCategories)/10)
+		  'nbPage' => ceil(count($listCategories)/10)
 		));
 	}
 	

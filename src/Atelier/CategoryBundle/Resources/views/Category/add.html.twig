@@ -1,19 +1,19 @@
 {% extends "AtelierCategoryBundle::layout.html.twig" %}
  
 {% block title %}
-  Ajouter une catégorie - {{ parent() }}
+  Add a category - {{ parent() }}
 {% endblock %}
 
 {% block category_body %}
  
-  <h2>Ajouter une catégorie</h2>
+  <h2>Add a category</h2>
  
-  {% include "AtelierCategoryBundle:Category:formulaire.html.twig" %}
+  {% include "AtelierCategoryBundle:Category:form.html.twig" %}
  
   <p>
    <a href="{{ path('atelier_category_dispAll') }}" class="btn">
       <i class="icon-chevron-left"></i>
-      Retour à la liste des catégories
+      Go back to the list of categories
     </a>
   </p>
  

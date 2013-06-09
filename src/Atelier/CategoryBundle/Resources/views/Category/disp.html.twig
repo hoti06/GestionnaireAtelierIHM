@@ -1,12 +1,12 @@
 {% extends "AtelierCategoryBundle::layout.html.twig" %}
  
 {% block title %}
-  Lecture d'une Catégorie - {{ parent() }}
+  Display a Category - {{ parent() }}
 {% endblock %}
  
 {% block category_body %}
 
-<h2>Afficher une catégorie</h2>
+<h2>Display a Category</h2>
 
 <p>
       {% for message in app.session.flashbag.get('info') %}
@@ -14,23 +14,23 @@
       {% endfor %}
 </p>
 
-<h3>Catégorie {% include "AtelierCategoryBundle:Category:category.html.twig" %} </h3>
+<h3>Category {% include "AtelierCategoryBundle:Category:category.html.twig" %} </h3>
 <p>
 	Id =  {{ category.id }} 
 </p>
 <p>
     <a href="{{ path('atelier_category_dispAll') }}" class="btn">
       <i class="icon-chevron-left"></i>
-      Retour à la liste
+      Go back to the list of categories
     </a>
     
     <a href="{{ path('atelier_category_edit', {'id': category.id}) }}" class="btn">
       <i class="icon-edit"></i>
-      Modifier la catégorie
+      Edit the category
     </a>
     <a href="{{ path('atelier_category_delete', {'id': category.id}) }}" class="btn">
       <i class="icon-trash"></i>
-      Supprimer la catégorie
+      Delete the category
     </a>
   </p>
 

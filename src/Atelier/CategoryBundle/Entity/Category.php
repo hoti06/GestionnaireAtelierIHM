@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Atelier\CategoryBundle\Entity\CategoryRepository")
- * @UniqueEntity(fields="name", message="Une catégorie existe déjà avec ce nom.")
+ * @UniqueEntity(fields="name", message="There is already a category with this name.")
  */
 class Category
 {

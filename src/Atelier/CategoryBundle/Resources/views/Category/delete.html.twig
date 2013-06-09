@@ -1,23 +1,23 @@
 {% extends "AtelierCategoryBundle::layout.html.twig" %} 
 
 {% block title %}
-  Supprimer une Catégorie - {{ parent() }}
+  Delete a category - {{ parent() }}
 {% endblock %}
  
 {% block category_body %}
  
-  <h2>Supprimer une catégorie</h2>
+  <h2>Delete a category</h2>
  
   <p>
-    Etes-vous certain de vouloir supprimer la catégorie "{{ category.name }}" ?
+    Are you sure you want to delete the category "{{ category.name }}" ?
   </p>
  
   <form action="{{ path('atelier_category_delete', {'id': category.id}) }}" method="post">
     <a href="{{ path('atelier_category_disp', {'id': category.id}) }}" class="btn">
       <i class="icon-chevron-left"></i>
-      Retour à la catégorie
+      Go back to the category
     </a>
-    <input type="submit" value="Supprimer" class="btn btn-danger" />
+    <input type="submit" value="Delete" class="btn btn-danger" />
     {{ form_rest(form) }}
   </form>
  
