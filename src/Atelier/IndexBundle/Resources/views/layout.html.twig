@@ -1,0 +1,15 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Index - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+ 
+  <h1>Index</h1>
+  <hr>
+
+  {% block index_body %}
+  {% endblock %}
+ 
+{% endblock %}

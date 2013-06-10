@@ -1,3 +1,7 @@
+atelier_index:
+    resource: "@AtelierIndexBundle/Resources/config/routing.yml"
+    prefix:   /
+
 atelier_material:
     resource: "@AtelierMaterialBundle/Resources/config/routing.yml"
     prefix:   /material

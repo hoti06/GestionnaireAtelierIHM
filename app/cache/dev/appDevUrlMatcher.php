@@ -133,6 +133,15 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
+        // atelier_index_index
+        if (rtrim($pathinfo, '/') === '') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'atelier_index_index');
+            }
+
+            return array (  '_controller' => 'Atelier\\IndexBundle\\Controller\\IndexController::indexAction',  '_route' => 'atelier_index_index',);
+        }
+
         if (0 === strpos($pathinfo, '/material')) {
             // atelier_material_new
             if ($pathinfo === '/material/new') {
