@@ -15,7 +15,7 @@ security:
             anonymous: ~
             form_login: 
                  login_path:  atelier_user_login
-                 check_path:  loginCheck
+                 check_path:  atelier_user_loginCheck
     access_control:
         - { path: ^/user/edit, roles: ROLE_ADMIN }
 
