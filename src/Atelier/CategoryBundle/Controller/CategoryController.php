@@ -7,11 +7,6 @@ use Atelier\CategoryBundle\Form\CategoryType;
 
 class CategoryController extends Controller
 { 
-	public function indexAction($page)
-  {
-	  return $this->render('AtelierCategoryBundle:Category:index.html.twig');
-  }
-	
 	public function newAction()
 	{
 		
@@ -119,10 +114,14 @@ class CategoryController extends Controller
 		
 		$listCategories = $repository->getCategories(10, $page);
 		
+		$nbPage=ceil(count($listCategories)/10);
+		if($nbPage<1)
+			$nbPage=1;
+		
 		return $this->render('AtelierCategoryBundle:Category:dispAll.html.twig', array(
 		  'list_categories' => $listCategories,
 		  'page'       => $page,
-		  'nbPage' => ceil(count($listCategories)/10)
+		  'nbPage' => $nbPage
 		));
 	}
 	

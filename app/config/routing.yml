@@ -1,3 +1,7 @@
+atelier_product:
+    resource: "@AtelierProductBundle/Resources/config/routing.yml"
+    prefix:   /product
+
 atelier_category:
     resource: "@AtelierCategoryBundle/Resources/config/routing.yml"
     prefix:   /category
