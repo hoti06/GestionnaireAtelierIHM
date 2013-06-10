@@ -40,6 +40,27 @@ class Product
      */
     private $description;
 	
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="maximalLoanPeriod", type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = "1"
+     * )
+     */
+    private $maximalLoanPeriod;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="maximumLoanDateModification", type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = "1"
+     * )
+     */
+    private $maximumLoanDateModification;
+	
 	/**
 	* @ORM\ManyToOne(targetEntity="Atelier\CategoryBundle\Entity\Category", inversedBy="products")
 	* @ORM\JoinColumn(nullable=false)
@@ -131,5 +152,91 @@ class Product
     public function getCategory()
     {
         return $this->category;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->materials = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add materials
+     *
+     * @param \Atelier\MaterialBundle\Entity\Material $materials
+     * @return Product
+     */
+    public function addMaterial(\Atelier\MaterialBundle\Entity\Material $materials)
+    {
+        $this->materials[] = $materials;
+    
+        return $this;
+    }
+
+    /**
+     * Remove materials
+     *
+     * @param \Atelier\MaterialBundle\Entity\Material $materials
+     */
+    public function removeMaterial(\Atelier\MaterialBundle\Entity\Material $materials)
+    {
+        $this->materials->removeElement($materials);
+    }
+
+    /**
+     * Get materials
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMaterials()
+    {
+        return $this->materials;
+    }
+
+    /**
+     * Set dureePretMax
+     *
+     * @param integer $dureePretMax
+     * @return Product
+     */
+    public function setDureePretMax($dureePretMax)
+    {
+        $this->dureePretMax = $dureePretMax;
+    
+        return $this;
+    }
+
+    /**
+     * Get dureePretMax
+     *
+     * @return integer 
+     */
+    public function getDureePretMax()
+    {
+        return $this->dureePretMax;
+    }
+
+    /**
+     * Set nbMaxModificationDatePret
+     *
+     * @param integer $nbMaxModificationDatePret
+     * @return Product
+     */
+    public function setNbMaxModificationDatePret($nbMaxModificationDatePret)
+    {
+        $this->nbMaxModificationDatePret = $nbMaxModificationDatePret;
+    
+        return $this;
+    }
+
+    /**
+     * Get nbMaxModificationDatePret
+     *
+     * @return integer 
+     */
+    public function getNbMaxModificationDatePret()
+    {
+        return $this->nbMaxModificationDatePret;
     }
 }

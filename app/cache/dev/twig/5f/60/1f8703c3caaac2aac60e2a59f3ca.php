@@ -84,10 +84,22 @@ class __TwigTemplate_5f601f8703c3caaac2aac60e2a59f3ca extends Twig_Template
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["product"]) ? $context["product"] : $this->getContext($context, "product")), "category"), "name"), "html", null, true);
         echo " </a>
 </p>
+<p>
+\tMaximal loan period =  ";
+        // line 28
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["product"]) ? $context["product"] : $this->getContext($context, "product")), "maximalLoanPeriod"), "html", null, true);
+        echo " 
+</p>
+<p>
+\tMaximum Loan Date Modification =  ";
+        // line 31
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["product"]) ? $context["product"] : $this->getContext($context, "product")), "maximumLoanDateModification"), "html", null, true);
+        echo " 
+</p>
 
 <p>
     <a href=\"";
-        // line 29
+        // line 35
         echo $this->env->getExtension('routing')->getPath("atelier_product_dispAll");
         echo "\" class=\"btn\">
       <i class=\"icon-chevron-left\"></i>
@@ -95,14 +107,14 @@ class __TwigTemplate_5f601f8703c3caaac2aac60e2a59f3ca extends Twig_Template
     </a>
     
     <a href=\"";
-        // line 34
+        // line 40
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_product_edit", array("id" => $this->getAttribute((isset($context["product"]) ? $context["product"] : $this->getContext($context, "product")), "id"))), "html", null, true);
         echo "\" class=\"btn\">
       <i class=\"icon-edit\"></i>
       Edit the product
     </a>
     <a href=\"";
-        // line 38
+        // line 44
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_product_delete", array("id" => $this->getAttribute((isset($context["product"]) ? $context["product"] : $this->getContext($context, "product")), "id"))), "html", null, true);
         echo "\" class=\"btn\">
       <i class=\"icon-trash\"></i>
@@ -127,6 +139,6 @@ class __TwigTemplate_5f601f8703c3caaac2aac60e2a59f3ca extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  106 => 38,  99 => 34,  91 => 29,  82 => 25,  76 => 22,  70 => 19,  65 => 17,  61 => 15,  52 => 13,  48 => 12,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
+        return array (  118 => 44,  111 => 40,  103 => 35,  96 => 31,  90 => 28,  82 => 25,  76 => 22,  70 => 19,  65 => 17,  61 => 15,  52 => 13,  48 => 12,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
     }
 }

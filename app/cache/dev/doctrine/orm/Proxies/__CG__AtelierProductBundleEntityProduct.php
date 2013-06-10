@@ -105,10 +105,34 @@ class Product extends \Atelier\ProductBundle\Entity\Product implements \Doctrine
         return parent::getMaterials();
     }
 
+    public function setMaximalLoanPeriod($maximalLoanPeriod)
+    {
+        $this->__load();
+        return parent::setMaximalLoanPeriod($maximalLoanPeriod);
+    }
+
+    public function getMaximalLoanPeriod()
+    {
+        $this->__load();
+        return parent::getMaximalLoanPeriod();
+    }
+
+    public function setMaximumLoanDateModification($maximumLoanDateModification)
+    {
+        $this->__load();
+        return parent::setMaximumLoanDateModification($maximumLoanDateModification);
+    }
+
+    public function getMaximumLoanDateModification()
+    {
+        $this->__load();
+        return parent::getMaximumLoanDateModification();
+    }
+
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'name', 'description', 'category', 'materials');
+        return array('__isInitialized__', 'id', 'name', 'description', 'maximalLoanPeriod', 'maximumLoanDateModification', 'category', 'materials');
     }
 
     public function __clone()

@@ -24,6 +24,12 @@
 <p>
 	Category =  <a href="{{ path('atelier_category_disp', {'id': product.category.id}) }}">{{ product.category.name }} </a>
 </p>
+<p>
+	Maximal loan period =  {{ product.maximalLoanPeriod }} 
+</p>
+<p>
+	Maximum Loan Date Modification =  {{ product.maximumLoanDateModification }} 
+</p>
 
 <p>
     <a href="{{ path('atelier_product_dispAll') }}" class="btn">

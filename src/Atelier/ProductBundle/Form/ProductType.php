@@ -17,6 +17,8 @@ class ProductType extends AbstractType
 	  'multiple' => false))
 	  ->add('name',       'text')
 	  ->add('description',       'textarea', array('required' => false))
+	  ->add('maximalLoanPeriod',       'integer', array('required' => false))
+	  ->add('maximumLoanDateModification',       'integer', array('required' => false))
     ;
     }
 

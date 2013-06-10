@@ -40,6 +40,27 @@ class Product
      */
     private $description;
 	
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="maximalLoanPeriod", type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = "1"
+     * )
+     */
+    private $maximalLoanPeriod;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="maximumLoanDateModification", type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = "1"
+     * )
+     */
+    private $maximumLoanDateModification;
+	
 	/**
 	* @ORM\ManyToOne(targetEntity="Atelier\CategoryBundle\Entity\Category", inversedBy="products")
 	* @ORM\JoinColumn(nullable=false)
@@ -171,5 +192,53 @@ class Product
     public function getMaterials()
     {
         return $this->materials;
+    }
+
+   
+
+    /**
+     * Set maximalLoanPeriod
+     *
+     * @param integer $maximalLoanPeriod
+     * @return Product
+     */
+    public function setMaximalLoanPeriod($maximalLoanPeriod)
+    {
+        $this->maximalLoanPeriod = $maximalLoanPeriod;
+    
+        return $this;
+    }
+
+    /**
+     * Get maximalLoanPeriod
+     *
+     * @return integer 
+     */
+    public function getMaximalLoanPeriod()
+    {
+        return $this->maximalLoanPeriod;
+    }
+
+    /**
+     * Set maximumLoanDateModification
+     *
+     * @param integer $maximumLoanDateModification
+     * @return Product
+     */
+    public function setMaximumLoanDateModification($maximumLoanDateModification)
+    {
+        $this->maximumLoanDateModification = $maximumLoanDateModification;
+    
+        return $this;
+    }
+
+    /**
+     * Get maximumLoanDateModification
+     *
+     * @return integer 
+     */
+    public function getMaximumLoanDateModification()
+    {
+        return $this->maximumLoanDateModification;
     }
 }
