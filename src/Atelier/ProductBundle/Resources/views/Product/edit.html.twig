@@ -1,0 +1,20 @@
+{% extends "AtelierProductBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Edit a product - {{ parent() }}
+{% endblock %}
+
+{% block product_body %}
+ 
+  <h2>Edit a product</h2>
+ 
+  {% include "AtelierProductBundle:Product:form.html.twig" %}
+ 
+  <p>
+   <a href="{{ path('atelier_product_disp', {'id': product.id}) }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the product
+    </a>
+  </p>
+ 
+{% endblock %}

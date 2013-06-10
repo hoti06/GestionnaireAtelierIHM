@@ -1,0 +1,45 @@
+{% extends "AtelierCategoryBundle::layout.html.twig" %}
+ 
+{% block title %}
+  List of Categories - {{ parent() }}
+{% endblock %}
+ 
+{% block category_body %}
+<p>
+	<a href="{{ path('atelier_category_new') }}" class="btn">
+		  Create a new category
+		  <i class="icon-chevron-right"></i>
+	</a>
+</p>
+
+
+<h3>List of Categories</h3>
+ 
+<p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+</p>
+
+
+<ul>
+  {% for category in list_categories %}
+	<p>
+		{% include "AtelierCategoryBundle:Category:category.html.twig" %}
+	</p>
+    <hr />
+  {% else %}
+    <p>There aren't any categories for the moment</p>
+  {% endfor %}
+</ul>
+  <div class="pagination">
+    <ul>
+      {% for p in range(1, nbPage) %}
+        <li{% if p == page %} class="active"{% endif %}>
+          <a href="{{ path('atelier_category_dispAll', {'page': p}) }}">{{ p }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Category - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+ 
+  <h1>Categories Management</h1>
+  <hr>
+
+  {% block category_body %}
+  {% endblock %}
+ 
+{% endblock %}

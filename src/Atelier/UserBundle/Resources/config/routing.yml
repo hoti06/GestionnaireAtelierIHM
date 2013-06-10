@@ -1,21 +1,21 @@
 atelier_user_login:
-    pattern:  /user/login
+    pattern:  /login
     defaults: { _controller: AtelierUserBundle:User:login }
 
 atelier_user_logout:
-    pattern:  /user/logout
+    pattern:  /logout
     defaults: { _controller: AtelierUserBundle:User:logout }
 
 atelier_user_signup:
-    pattern:  /user/signup
+    pattern:  /signup
     defaults: { _controller: AtelierUserBundle:User:signup }
 
 atelier_user_edit:
-    pattern:  /user/edit
+    pattern:  /edit
     defaults: { _controller: AtelierUserBundle:User:edit }
 
 atelier_user_editAdmin:
-    pattern:  /user/{login}/edit
+    pattern:  /{login}/edit
     defaults: { _controller: AtelierUserBundle:User:editAdmin }
 
 atelier_user_loginCheck:

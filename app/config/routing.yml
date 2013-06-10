@@ -1,8 +1,17 @@
+atelier_material:
+    resource: "@AtelierMaterialBundle/Resources/config/routing.yml"
+    prefix:   /material
+
+atelier_product:
+    resource: "@AtelierProductBundle/Resources/config/routing.yml"
+    prefix:   /product
+
+atelier_category:
+    resource: "@AtelierCategoryBundle/Resources/config/routing.yml"
+    prefix:   /category
+
 atelier_user:
     resource: "@AtelierUserBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /user
 
-sdz_blog:
-    resource: "@SdzBlogBundle/Resources/config/routing.yml"
-    prefix:   /blog
 

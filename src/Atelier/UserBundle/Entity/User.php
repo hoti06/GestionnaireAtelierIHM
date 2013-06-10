@@ -4,7 +4,7 @@ namespace Atelier\UserBundle\Entity;
 use Symfony\Component\Security\Core\User\UserInterface; 
 
 use Doctrine\ORM\Mapping as ORM;
- 
+/*HELLO*/
 /**
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Atelier\UserBundle\Entity\UserRepository")

@@ -1,0 +1,45 @@
+{% extends "AtelierMaterialBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Display a Material - {{ parent() }}
+{% endblock %}
+ 
+{% block material_body %}
+
+<h2>Display a Material</h2>
+
+<p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+</p>
+
+<h3>Material {% include "AtelierMaterialBundle:Material:material.html.twig" %} </h3>
+<p>
+	Description =  {{ material.description }} 
+</p>
+<p>
+	Product =  <a href="{{ path('atelier_product_disp', {'id': material.product.id}) }}">{{ material.product.name }} </a>
+</p>
+
+
+
+<p>
+    <a href="{{ path('atelier_material_dispAll') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the list of materials
+    </a>
+    
+    <a href="{{ path('atelier_material_edit', {'id': material.id}) }}" class="btn">
+      <i class="icon-edit"></i>
+      Edit the material
+    </a>
+    <a href="{{ path('atelier_material_delete', {'id': material.id}) }}" class="btn">
+      <i class="icon-trash"></i>
+      Delete the material
+    </a>
+  </p>
+
+
+
+{% endblock %}

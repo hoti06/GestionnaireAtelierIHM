@@ -1,0 +1,20 @@
+{% extends "AtelierMaterialBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Edit a material - {{ parent() }}
+{% endblock %}
+
+{% block material_body %}
+ 
+  <h2>Edit a material</h2>
+ 
+  {% include "AtelierMaterialBundle:Material:form.html.twig" %}
+ 
+  <p>
+   <a href="{{ path('atelier_material_disp', {'id': material.id}) }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the material
+    </a>
+  </p>
+ 
+{% endblock %}

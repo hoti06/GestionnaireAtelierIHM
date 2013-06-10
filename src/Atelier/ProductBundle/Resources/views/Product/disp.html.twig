@@ -1,0 +1,46 @@
+{% extends "AtelierProductBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Display a Product - {{ parent() }}
+{% endblock %}
+ 
+{% block product_body %}
+
+<h2>Display a Product</h2>
+
+<p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+</p>
+
+<h3>Product {% include "AtelierProductBundle:Product:product.html.twig" %} </h3>
+<p>
+	Id =  {{ product.id }} 
+</p>
+<p>
+	Description =  {{ product.description }} 
+</p>
+<p>
+	Category =  <a href="{{ path('atelier_category_disp', {'id': product.category.id}) }}">{{ product.category.name }} </a>
+</p>
+
+<p>
+    <a href="{{ path('atelier_product_dispAll') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the list of products
+    </a>
+    
+    <a href="{{ path('atelier_product_edit', {'id': product.id}) }}" class="btn">
+      <i class="icon-edit"></i>
+      Edit the product
+    </a>
+    <a href="{{ path('atelier_product_delete', {'id': product.id}) }}" class="btn">
+      <i class="icon-trash"></i>
+      Delete the product
+    </a>
+  </p>
+
+
+
+{% endblock %}

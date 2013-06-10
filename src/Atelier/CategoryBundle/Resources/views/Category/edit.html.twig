@@ -1,0 +1,20 @@
+{% extends "AtelierCategoryBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Edit a category - {{ parent() }}
+{% endblock %}
+
+{% block category_body %}
+ 
+  <h2>Edit a category</h2>
+ 
+  {% include "AtelierCategoryBundle:Category:form.html.twig" %}
+ 
+  <p>
+   <a href="{{ path('atelier_category_disp', {'id': category.id}) }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the category
+    </a>
+  </p>
+ 
+{% endblock %}

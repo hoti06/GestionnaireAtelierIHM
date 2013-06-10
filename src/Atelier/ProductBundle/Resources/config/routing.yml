@@ -1,0 +1,32 @@
+atelier_product_new:
+    pattern:  /new
+    defaults: { _controller: AtelierProductBundle:Product:new }
+
+
+atelier_product_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: AtelierProductBundle:Product:edit }
+    requirements:
+        id:  \d+
+
+atelier_product_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: AtelierProductBundle:Product:delete }
+    requirements:
+        id:  \d+
+
+atelier_product_disp:
+    pattern:  /{id}
+    defaults: { _controller: AtelierProductBundle:Product:disp }
+    requirements:
+        id:  \d+
+
+atelier_product_index:
+    pattern:  /
+    defaults: { _controller: AtelierProductBundle:Product:dispAll, page: 1 }
+
+atelier_product_dispAll:
+    pattern:  /index/{page}
+    defaults: { _controller: AtelierProductBundle:Product:dispAll, page: 1 }
+    requirements:
+        page:  \d*
