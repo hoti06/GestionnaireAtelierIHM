@@ -1,0 +1,15 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Material - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+ 
+  <h1>Materials Management</h1>
+  <hr>
+
+  {% block material_body %}
+  {% endblock %}
+ 
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "AtelierMaterialBundle::layout.html.twig" %} 
+
+{% block title %}
+  Delete a material - {{ parent() }}
+{% endblock %}
+ 
+{% block material_body %}
+ 
+  <h2>Delete a material</h2>
+ 
+  <p>
+    Are you sure you want to delete the material "{{ material.id }}" ?
+  </p>
+ 
+  <form action="{{ path('atelier_material_delete', {'id': material.id}) }}" method="post">
+    <a href="{{ path('atelier_material_disp', {'id': material.id}) }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the material
+    </a>
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    {{ form_rest(form) }}
+  </form>
+ 
+{% endblock %}

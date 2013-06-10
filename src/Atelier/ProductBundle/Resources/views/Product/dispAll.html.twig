@@ -25,7 +25,7 @@
 <ul>
   {% for product in list_products %}
 	<p>
-		{% include "AtelierProductBundle:Product:product.html.twig" %}
+		{% include "AtelierProductBundle:Product:product.html.twig" %} (Category <a href="{{ path('atelier_category_disp', {'id': product.category.id}) }}">{{ product.category.name }} </a>)
 	</p>
     <hr />
   {% else %}

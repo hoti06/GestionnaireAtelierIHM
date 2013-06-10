@@ -46,6 +46,14 @@ class Product
 	*/
 	private $category;
 	
+	
+	
+	
+	/**
+	* @ORM\OneToMany(targetEntity="Atelier\MaterialBundle\Entity\Material", mappedBy="product", cascade={"remove"})
+	*/
+	private $materials; 
+	
     /**
      * Get id
      *

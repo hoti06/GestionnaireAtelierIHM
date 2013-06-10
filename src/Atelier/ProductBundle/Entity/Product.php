@@ -46,6 +46,14 @@ class Product
 	*/
 	private $category;
 	
+	
+	
+	
+	/**
+	* @ORM\OneToMany(targetEntity="Atelier\MaterialBundle\Entity\Material", mappedBy="product", cascade={"remove"})
+	*/
+	private $materials; 
+	
     /**
      * Get id
      *
@@ -123,5 +131,45 @@ class Product
     public function getCategory()
     {
         return $this->category;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->materials = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add materials
+     *
+     * @param \Atelier\MaterialBundle\Entity\Material $materials
+     * @return Product
+     */
+    public function addMaterial(\Atelier\MaterialBundle\Entity\Material $materials)
+    {
+        $this->materials[] = $materials;
+    
+        return $this;
+    }
+
+    /**
+     * Remove materials
+     *
+     * @param \Atelier\MaterialBundle\Entity\Material $materials
+     */
+    public function removeMaterial(\Atelier\MaterialBundle\Entity\Material $materials)
+    {
+        $this->materials->removeElement($materials);
+    }
+
+    /**
+     * Get materials
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMaterials()
+    {
+        return $this->materials;
     }
 }

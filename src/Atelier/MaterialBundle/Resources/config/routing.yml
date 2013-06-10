@@ -1,0 +1,32 @@
+atelier_material_new:
+    pattern:  /new
+    defaults: { _controller: AtelierMaterialBundle:Material:new }
+
+
+atelier_material_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: AtelierMaterialBundle:Material:edit }
+    requirements:
+        id:  \d+
+
+atelier_material_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: AtelierMaterialBundle:Material:delete }
+    requirements:
+        id:  \d+
+
+atelier_material_disp:
+    pattern:  /{id}
+    defaults: { _controller: AtelierMaterialBundle:Material:disp }
+    requirements:
+        id:  \d+
+
+atelier_material_index:
+    pattern:  /
+    defaults: { _controller: AtelierMaterialBundle:Material:dispAll, page: 1 }
+
+atelier_material_dispAll:
+    pattern:  /index/{page}
+    defaults: { _controller: AtelierMaterialBundle:Material:dispAll, page: 1 }
+    requirements:
+        page:  \d*

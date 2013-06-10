@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Atelier\UserBundle\AtelierUserBundle(),
             new Atelier\CategoryBundle\AtelierCategoryBundle(),
             new Atelier\ProductBundle\AtelierProductBundle(),
+            new Atelier\MaterialBundle\AtelierMaterialBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
