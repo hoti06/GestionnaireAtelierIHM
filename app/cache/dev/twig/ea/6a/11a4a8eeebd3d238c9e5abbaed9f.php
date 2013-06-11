@@ -36,7 +36,7 @@ class __TwigTemplate_ea6a11a4a8eeebd3d238c9e5abbaed9f extends Twig_Template
         echo "
     <form action=\"";
         // line 12
-        echo $this->env->getExtension('routing')->getPath("atelier_user_loginCheck");
+        echo $this->env->getExtension('routing')->getPath("login_check");
         echo "\" method=\"post\">
     \t<label for=\"username\">Username:</label>
     \t<input type=\"text\" id=\"username\" name=\"_username\" value=\"";
@@ -47,9 +47,6 @@ class __TwigTemplate_ea6a11a4a8eeebd3d238c9e5abbaed9f extends Twig_Template
     \t<label for=\"password\">Password:</label>
     \t<input type=\"password\" id=\"password\" name=\"_password\" />
 
-    \t";
-        // line 23
-        echo "
     \t<button type=\"submit\">login</button>
 \t</form>
   </body>
@@ -69,6 +66,6 @@ class __TwigTemplate_ea6a11a4a8eeebd3d238c9e5abbaed9f extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  52 => 23,  44 => 14,  39 => 12,  36 => 11,  30 => 9,  28 => 8,  19 => 1,);
+        return array (  44 => 14,  39 => 12,  36 => 11,  30 => 9,  28 => 8,  19 => 1,);
     }
 }

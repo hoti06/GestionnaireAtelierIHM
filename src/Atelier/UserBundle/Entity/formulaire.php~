@@ -9,7 +9,8 @@ class formulaire
 
   protected $email; 
   
- 
+  protected $role;
+
   public function setEmail($email)
   {
     $this->email = $email;
@@ -28,5 +29,15 @@ class formulaire
   public function getPassword()
   {
     return $this->password;
+  }
+
+  public function setRole($role)
+  {
+    $this->role = $role;
+  }
+
+  public function getRole()
+  {
+    return $this->role;
   }
 }

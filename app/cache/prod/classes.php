@@ -2758,7 +2758,7 @@ namespace
 {
 class Twig_Environment
 {
-const VERSION ='1.13.1';
+const VERSION ='1.13.0';
 protected $charset;
 protected $loader;
 protected $debug;
@@ -3555,7 +3555,7 @@ new Twig_SimpleFunction('constant','twig_constant'),
 new Twig_SimpleFunction('cycle','twig_cycle'),
 new Twig_SimpleFunction('random','twig_random', array('needs_environment'=> true)),
 new Twig_SimpleFunction('date','twig_date_converter', array('needs_environment'=> true)),
-new Twig_SimpleFunction('include','twig_include', array('needs_environment'=> true,'needs_context'=> true,'is_safe'=> array('all'))),
+new Twig_SimpleFunction('include','twig_include', array('needs_environment'=> true,'needs_context'=> true)),
 );
 }
 public function getTests()
@@ -4084,7 +4084,7 @@ $sandbox->enableSandbox();
 }
 }
 try {
-return $env->resolveTemplate($template)->render($variables);
+return $env->resolveTemplate($template)->display($variables);
 } catch (Twig_Error_Loader $e) {
 if (!$ignoreMissing) {
 throw $e;

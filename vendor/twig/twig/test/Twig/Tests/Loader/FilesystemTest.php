@@ -80,12 +80,6 @@ class Twig_Tests_Loader_FilesystemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("named path (final)\n", $loader->getSource('@named/index.html'));
     }
 
-    public function testEmptyConstructor()
-    {
-        $loader = new Twig_Loader_Filesystem();
-        $this->assertEquals(array(), $loader->getPaths());
-    }
-
     public function testGetNamespaces()
     {
         $loader = new Twig_Loader_Filesystem(sys_get_temp_dir());

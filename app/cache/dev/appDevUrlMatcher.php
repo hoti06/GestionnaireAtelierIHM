@@ -133,6 +133,205 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
+        if (0 === strpos($pathinfo, '/user')) {
+            // atelier_user_index
+            if (rtrim($pathinfo, '/') === '/user') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'atelier_user_index');
+                }
+
+                return array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::indexAction',  '_route' => 'atelier_user_index',);
+            }
+
+            // atelier_user_editAdmin
+            if (preg_match('#^/user/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_user_editAdmin')), array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::editAdminAction',));
+            }
+
+            // atelier_user_list
+            if ($pathinfo === '/user/list') {
+                return array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::listAction',  '_route' => 'atelier_user_list',);
+            }
+
+            // atelier_user_delete
+            if (preg_match('#^/user/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_user_delete')), array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::deleteAction',));
+            }
+
+            // atelier_user_show
+            if (preg_match('#^/user/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_user_show')), array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::showAction',));
+            }
+
+            // atelier_user_addAdmin
+            if (preg_match('#^/user/(?P<id>[^/]++)/addAdmin$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_user_addAdmin')), array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::addAdminAction',));
+            }
+
+            // atelier_user_removeAdmin
+            if (preg_match('#^/user/(?P<id>[^/]++)/removeAdmin$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_user_removeAdmin')), array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::removeAdminAction',));
+            }
+
+            if (0 === strpos($pathinfo, '/user/login')) {
+                // fos_user_security_login
+                if ($pathinfo === '/user/login') {
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\SecurityController::loginAction',  '_route' => 'fos_user_security_login',);
+                }
+
+                // fos_user_security_check
+                if ($pathinfo === '/user/login_check') {
+                    if ($this->context->getMethod() != 'POST') {
+                        $allow[] = 'POST';
+                        goto not_fos_user_security_check;
+                    }
+
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\SecurityController::checkAction',  '_route' => 'fos_user_security_check',);
+                }
+                not_fos_user_security_check:
+
+            }
+
+        }
+
+        // fos_user_security_logout
+        if ($pathinfo === '/logout') {
+            return array (  '_controller' => 'FOS\\UserBundle\\Controller\\SecurityController::logoutAction',  '_route' => 'fos_user_security_logout',);
+        }
+
+        if (0 === strpos($pathinfo, '/user')) {
+            if (0 === strpos($pathinfo, '/user/profile')) {
+                // fos_user_profile_show
+                if (rtrim($pathinfo, '/') === '/user/profile') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_fos_user_profile_show;
+                    }
+
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'fos_user_profile_show');
+                    }
+
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\ProfileController::showAction',  '_route' => 'fos_user_profile_show',);
+                }
+                not_fos_user_profile_show:
+
+                // fos_user_profile_edit
+                if ($pathinfo === '/user/profile/edit') {
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\ProfileController::editAction',  '_route' => 'fos_user_profile_edit',);
+                }
+
+            }
+
+            if (0 === strpos($pathinfo, '/user/resetting')) {
+                // fos_user_resetting_request
+                if ($pathinfo === '/user/resetting/request') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_fos_user_resetting_request;
+                    }
+
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\ResettingController::requestAction',  '_route' => 'fos_user_resetting_request',);
+                }
+                not_fos_user_resetting_request:
+
+                // fos_user_resetting_send_email
+                if ($pathinfo === '/user/resetting/send-email') {
+                    if ($this->context->getMethod() != 'POST') {
+                        $allow[] = 'POST';
+                        goto not_fos_user_resetting_send_email;
+                    }
+
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\ResettingController::sendEmailAction',  '_route' => 'fos_user_resetting_send_email',);
+                }
+                not_fos_user_resetting_send_email:
+
+                // fos_user_resetting_check_email
+                if ($pathinfo === '/user/resetting/check-email') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_fos_user_resetting_check_email;
+                    }
+
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\ResettingController::checkEmailAction',  '_route' => 'fos_user_resetting_check_email',);
+                }
+                not_fos_user_resetting_check_email:
+
+                // fos_user_resetting_reset
+                if (0 === strpos($pathinfo, '/user/resetting/reset') && preg_match('#^/user/resetting/reset/(?P<token>[^/]++)$#s', $pathinfo, $matches)) {
+                    if (!in_array($this->context->getMethod(), array('GET', 'POST', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'POST', 'HEAD'));
+                        goto not_fos_user_resetting_reset;
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'fos_user_resetting_reset')), array (  '_controller' => 'FOS\\UserBundle\\Controller\\ResettingController::resetAction',));
+                }
+                not_fos_user_resetting_reset:
+
+            }
+
+            // fos_user_change_password
+            if ($pathinfo === '/user/profile/change-password') {
+                if (!in_array($this->context->getMethod(), array('GET', 'POST', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'POST', 'HEAD'));
+                    goto not_fos_user_change_password;
+                }
+
+                return array (  '_controller' => 'FOS\\UserBundle\\Controller\\ChangePasswordController::changePasswordAction',  '_route' => 'fos_user_change_password',);
+            }
+            not_fos_user_change_password:
+
+        }
+
+        if (0 === strpos($pathinfo, '/signup/user')) {
+            // fos_user_registration_register
+            if ($pathinfo === '/signup/user') {
+                return array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::registerAction',  '_route' => 'fos_user_registration_register',);
+            }
+
+            // fos_user_registration_check_email
+            if ($pathinfo === '/signup/user/check-email') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_fos_user_registration_check_email;
+                }
+
+                return array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::checkEmailAction',  '_route' => 'fos_user_registration_check_email',);
+            }
+            not_fos_user_registration_check_email:
+
+            // fos_user_registration_delete
+            if ($pathinfo === '/signup/user/delete') {
+                return array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::deleteAction',  '_route' => 'fos_user_registration_delete',);
+            }
+
+            if (0 === strpos($pathinfo, '/signup/user/confirm')) {
+                // fos_user_registration_confirm
+                if (preg_match('#^/signup/user/confirm/(?P<token>[^/]++)$#s', $pathinfo, $matches)) {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_fos_user_registration_confirm;
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'fos_user_registration_confirm')), array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::confirmAction',));
+                }
+                not_fos_user_registration_confirm:
+
+                // fos_user_registration_confirmed
+                if ($pathinfo === '/signup/user/confirmed') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_fos_user_registration_confirmed;
+                    }
+
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::confirmedAction',  '_route' => 'fos_user_registration_confirmed',);
+                }
+                not_fos_user_registration_confirmed:
+
+            }
+
+        }
+
         // atelier_index_index
         if (rtrim($pathinfo, '/') === '') {
             if (substr($pathinfo, -1) !== '/') {
@@ -249,42 +448,6 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             // atelier_category_dispAll
             if (0 === strpos($pathinfo, '/category/index') && preg_match('#^/category/index(?:/(?P<page>\\d*))?$#s', $pathinfo, $matches)) {
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_category_dispAll')), array (  '_controller' => 'Atelier\\CategoryBundle\\Controller\\CategoryController::dispAllAction',  'page' => 1,));
-            }
-
-        }
-
-        if (0 === strpos($pathinfo, '/user')) {
-            if (0 === strpos($pathinfo, '/user/log')) {
-                // atelier_user_login
-                if ($pathinfo === '/user/login') {
-                    return array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::loginAction',  '_route' => 'atelier_user_login',);
-                }
-
-                // atelier_user_logout
-                if ($pathinfo === '/user/logout') {
-                    return array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::logoutAction',  '_route' => 'atelier_user_logout',);
-                }
-
-            }
-
-            // atelier_user_signup
-            if ($pathinfo === '/user/signup') {
-                return array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::signupAction',  '_route' => 'atelier_user_signup',);
-            }
-
-            // atelier_user_edit
-            if ($pathinfo === '/user/edit') {
-                return array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::editAction',  '_route' => 'atelier_user_edit',);
-            }
-
-            // atelier_user_editAdmin
-            if (preg_match('#^/user/(?P<login>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_user_editAdmin')), array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::editAdminAction',));
-            }
-
-            // atelier_user_loginCheck
-            if ($pathinfo === '/user/loginCheck') {
-                return array('_route' => 'atelier_user_loginCheck');
             }
 
         }

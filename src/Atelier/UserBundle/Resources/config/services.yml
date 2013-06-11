@@ -1,7 +1,7 @@
+
 parameters:
-#    atelier_user.example.class: Atelier\UserBundle\Example
+    user_provider.class: Atelier\UserBundle\Entity\User
 
 services:
-#    atelier_user.example:
-#        class: %atelier_user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    user_provider:
+        class: "%user_provider.class%"

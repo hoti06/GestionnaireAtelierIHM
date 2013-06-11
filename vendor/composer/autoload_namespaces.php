@@ -22,6 +22,7 @@ return array(
     'JMS\\DiExtraBundle' => array($vendorDir . '/jms/di-extra-bundle'),
     'JMS\\AopBundle' => array($vendorDir . '/jms/aop-bundle'),
     'Incenteev\\ParameterHandler' => array($vendorDir . '/incenteev/composer-parameter-handler'),
+    'FOS\\UserBundle' => array($vendorDir . '/friendsofsymfony/user-bundle'),
     'Doctrine\\ORM' => array($vendorDir . '/doctrine/orm/lib'),
     'Doctrine\\DBAL' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\DataFixtures' => array($vendorDir . '/doctrine/data-fixtures/lib'),

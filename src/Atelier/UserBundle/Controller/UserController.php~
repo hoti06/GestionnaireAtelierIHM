@@ -10,116 +10,112 @@ use Atelier\UserBundle\Entity\User;
 use Atelier\UserBundle\Entity\formulaire;
  
 class UserController extends Controller
-{ 
-  public function loginAction()
+{
+  public function indexAction()
   {
-    $request = $this->getRequest();
-    $session = $request->getSession();
+    return $this->render('AtelierUserBundle:User:index.html.twig');
+  }
 
-    // get the login error if there is one
-    if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-        $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-    } else {
-        $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-    }
-    $session->set('name', $session->get(SecurityContext::LAST_USERNAME));
-    return $this->render('AtelierUserBundle:User:login.html.twig', array(
-        // last username entered by the user
-       	'last_username' => $session->get(SecurityContext::LAST_USERNAME),
-        'error'         => $error,
+
+  public function deleteAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $repository = $em
+               ->getRepository('AtelierUserBundle:User');
+    //$email = $this->container->get('session')->get('fos_user_send_confirmation_email/email');
+    //$userManager = $this->container->get('fos_user.user_manager');
+    $user = $repository->find($id);
+         
+    if ($user === null) {
+        return $this->render('AtelierUserBundle:User:delete.html.twig', array('info'=>"user not exists"
     ));
-  }
-  public function logoutAction()
-  {
-    return $this->render('AtelierUserBundle:User:logout.html.twig');
-  }
-
-  public function signupAction()
-  {
-    // Ici le contenu de la méthode
-    $user = new User();
-    $request = $this->getRequest();
-    $session = $request->getSession();
-    $form = $this->createFormBuilder($user)
-                 ->add('username',        'text')
-     		 ->add('password',     'password')
-		 ->add('email',        'text')
-                 ->getForm();
-    $request = $this->get('request');
- 
-    if ($request->getMethod() == 'POST') {
-      $form->bind($request);
-      if ($form->isValid()) {
-        $em = $this->getDoctrine()->getManager();
-	$repository = $em
-                   ->getRepository('AtelierUserBundle:User');
-	if ($repository->find($user->getUsername()) === null){ 
-        	$em->persist($user);
-        	$em->flush();
-		return $this->redirect($this->generateUrl('atelier_user_login'));
-	}
-        return $this->redirect($this->generateUrl('atelier_user_logout'));
-      }
     }
-    return $this->render('AtelierUserBundle:User:signup.html.twig', array('form' => $form->createView(),
+    else {
+        $em->remove($user);
+	$em->flush();
+    }
+    
+    return $this->render('AtelierUserBundle:User:delete.html.twig', array('info'=>"success"
     ));
+  }  
+
+
+  public function removeAdminAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $repository = $em
+                ->getRepository('AtelierUserBundle:User');
+    $user = $repository->find($id);
+    $user->removeRole('ROLE_ADMIN');
+    $em->flush();
+    return $this->render('AtelierUserBundle:User:removeAdmin.html.twig', array('info'=>"success"));
   }
 
-  public function editAction()
+  public function addAdminAction($id)
   {
+    $em = $this->getDoctrine()->getManager();
+    $repository = $em
+                ->getRepository('AtelierUserBundle:User');
+    $user = $repository->find($id);
+    $user->addRole('ROLE_ADMIN');
+    $em->flush();
+    return $this->render('AtelierUserBundle:User:addAdmin.html.twig', array('info'=>"success"));
+  }
+
+  public function editAdminAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $repository = $em
+                ->getRepository('AtelierUserBundle:User');
+    $user = $repository->find($id);
     $formulaire = new formulaire();
-    $tmp = new User();
+    $factory = $this->get('security.encoder_factory');
     $form = $this->createFormBuilder($formulaire)
-                 ->add('password',        'text')
+                 ->add('password',  'text')
      		 ->add('email',     'text')
                  ->getForm();
-    $request = $this->get('request');
- 
-    if ($request->getMethod() == 'POST') {
-      $form->bind($request);
-      if ($form->isValid()) {
-        $em = $this->getDoctrine()->getManager();
-	$repository = $em
-                   ->getRepository('AtelierUserBundle:User');
-	$name = $session->get('name');
-	
-      }
-    }
-    return $this->render('AtelierUserBundle:User:edit.html.twig', array('form' => $form->createView(),
-    ));
-  }
+    $form->get('password')->setData($user->getPassword());
+    $form->get('email')->setData($user->getEmail());
 
-  public function editAdminAction($login)
-  {
-    $formulaire = new formulaire();
- 
-    $form = $this->createFormBuilder($formulaire)
-                 ->add('password',        'text')
-     		 ->add('passwordDouble',     'text')
-                 ->getForm();
     $request = $this->get('request');
- 
+    
     if ($request->getMethod() == 'POST') {
       $form->bind($request);
       if ($form->isValid()) {
-        $em = $this->getDoctrine()->getManager();
-	$repository = $em
-                   ->getRepository('AtelierUserBundle:User');
-	$tmp = $repository->find($login);
-	if ($tmp === null){ 
-        	
-		return $this->redirect($this->generateUrl('atelier_user_Login'));
-	}
-	$tmp->setPassword($formulaire->getPassword());
+        
+	$users = $this->getDoctrine()->getManager()->getRepository('AtelierUserBundle:User')->findAllOrderedByID();
+    
+	$password=$formulaire->getPassword();
+        $encoder = $factory->getEncoder($user);
+        $newpassword = $encoder->encodePassword($password, $user->getSalt());
+	$user->setPassword($newpassword);
+	$user->setEmail($formulaire->getEmail());
         $em->flush();
-        return $this->redirect($this->generateUrl('atelier_user_Logout'));
+        return $this->render('AtelierUserBundle:User:list.html.twig', array('list' => $users,
+    ));
       }
     }
-    return $this->render('AtelierUserBundle:User:editAdmin.html.twig', array('form' => $form->createView(),
+    return $this->render('AtelierUserBundle:User:editAdmin.html.twig', array('form' => $form->createView(), 
     ));
   }
 
-  public function loginCheck(){
-    return $this->render('AtelierUserBundle:User:loginCheck.html.twig' );
+  public function showAction($id){
+    $em = $this->getDoctrine()->getManager();
+    $repository = $em
+                ->getRepository('AtelierUserBundle:User');
+    $user = $repository->find($id);
+    if ($user === null){ 
+        return $this->render('AtelierUserBundle:User:show.html.twig', array('user' => null
+    ));	
+    }
+    return $this->render('AtelierUserBundle:User:show.html.twig', array('user' => $user
+    ));
+  }
+
+  public function listAction(){
+    $users = $this->getDoctrine()->getManager()->getRepository('AtelierUserBundle:User')->findAllOrderedByID();
+    
+    return $this->render('AtelierUserBundle:User:list.html.twig', array('list' => $users,
+    ));
   }
 }

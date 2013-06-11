@@ -1,22 +1,27 @@
-atelier_user_login:
-    pattern:  /user/login
-    defaults: { _controller: AtelierUserBundle:User:login }
-
-atelier_user_logout:
-    pattern:  /user/logout
-    defaults: { _controller: AtelierUserBundle:User:logout }
-
-atelier_user_signup:
-    pattern:  /user/signup
-    defaults: { _controller: AtelierUserBundle:User:signup }
-
-atelier_user_edit:
-    pattern:  /user/edit
-    defaults: { _controller: AtelierUserBundle:User:edit }
+atelier_user_index:
+    pattern:  /
+    defaults: { _controller: AtelierUserBundle:User:index }
 
 atelier_user_editAdmin:
-    pattern:  /user/{login}/edit
+    pattern:  /{id}/edit
     defaults: { _controller: AtelierUserBundle:User:editAdmin }
 
-atelier_user_loginCheck:
-    pattern:  /user/loginCheck
+atelier_user_list:
+    pattern:  /list
+    defaults: { _controller: AtelierUserBundle:User:list }
+
+atelier_user_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: AtelierUserBundle:User:delete }
+
+atelier_user_show:
+    pattern:  /{id}/show
+    defaults: { _controller: AtelierUserBundle:User:show }
+
+atelier_user_addAdmin:
+    pattern:  /{id}/addAdmin
+    defaults: { _controller: AtelierUserBundle:User:addAdmin }
+
+atelier_user_deleteAdmin:
+    pattern:  /{id}/deleteAdmin
+    defaults: { _controller: AtelierUserBundle:User:deleteAdmin }
