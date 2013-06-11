@@ -9,7 +9,7 @@
   <h2>Delete a category</h2>
  
   <p>
-    Are you sure you want to delete the category "{{ category.name }}" ?
+    Are you sure you want to delete the category "{{ category.name }}", the {{ category.nbProducts() }} related products and their {{ category.nbMaterials() }} materials ?
   </p>
  
   <form action="{{ path('atelier_category_delete', {'id': category.id}) }}" method="post">

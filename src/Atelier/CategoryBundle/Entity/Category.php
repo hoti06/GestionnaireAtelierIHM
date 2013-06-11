@@ -110,4 +110,18 @@ class Category
     {
         return $this->products;
     }
+    
+    public function nbProducts()
+	{
+		return count($this->getProducts());
+	}
+	public function nbMaterials()
+	{
+		$allProducts=$this->getProducts();
+		$somme=0;
+		foreach ($allProducts as $product) {
+			$somme+=$product->nbMaterials();
+		}
+		return $somme;
+	}
 }

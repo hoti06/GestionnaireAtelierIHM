@@ -17,7 +17,11 @@ class MaterialController extends Controller
 	public function newAction()
 	{
 		$form = $this->createForm(new MaterialAddType);
-
+		
+		
+		//$form->bind(array('description' => "HELLO"));
+		//$form->updateObject();
+		
 		$request = $this->get('request');
 
 		if ($request->getMethod() == 'POST') {
@@ -28,11 +32,13 @@ class MaterialController extends Controller
 			if ($form->isValid()) {
 				for($i=0;$i<$nbArticles;$i++)
 				{
-				
 					$material = new Material;
 					$material->setDescription($form->get('description')->getData());
-					$material->setProduct($form->get('product')->getData());
 					
+					if($form->get('product')->getData() != null)
+						$material->setProduct($form->get('product')->getData());
+					else if($form->get('productAdd')->getData() != null)
+						$material->setProduct($form->get('productAdd')->getData());
 					
 					$em = $this->getDoctrine()->getManager();
 					$em->persist($material);
@@ -42,7 +48,7 @@ class MaterialController extends Controller
 				
 				$this->get('session')->getFlashBag()->add('info', 'The material has been correctly added');
 				
-				return $this->redirect($this->generateUrl('atelier_product_disp', array('id' => $material->getId())));
+				return $this->redirect($this->generateUrl('atelier_material_dispAll'/*, array('id' => $material->getId())*/));
 			}
 		}
 

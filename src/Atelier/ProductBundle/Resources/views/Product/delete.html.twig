@@ -9,7 +9,7 @@
   <h2>Delete a product</h2>
  
   <p>
-    Are you sure you want to delete the product "{{ product.name }}" ?
+    Are you sure you want to delete the product "{{ product.name }}" and the {{ product.nbMaterials() }} related materials ? 
   </p>
  
   <form action="{{ path('atelier_product_delete', {'id': product.id}) }}" method="post">

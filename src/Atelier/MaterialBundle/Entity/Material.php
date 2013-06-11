@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Atelier\MaterialBundle\Entity\MaterialRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Material
 {
@@ -32,7 +33,7 @@ class Material
     private $description;
 	
 	/**
-	* @ORM\ManyToOne(targetEntity="Atelier\ProductBundle\Entity\Product", inversedBy="materials")
+	* @ORM\ManyToOne(targetEntity="Atelier\ProductBundle\Entity\Product", inversedBy="materials", cascade={"persist"})
 	* @ORM\JoinColumn(nullable=false)
 	*/
 	private $product;
@@ -92,4 +93,28 @@ class Material
     {
         return $this->product;
     }
+    /**
+	* @ORM\PostRemove
+	*/
+    public function removeProductAfterMaterial()
+	{
+		//Use service
+		/*$repository = $this->getDoctrine()
+                   ->getManager();
+		
+		if($this->getProduct()->nbMaterials()<=0)
+		{
+			$repository->remove($this->getProduct());
+			$repository->flush();
+		}
+		*/
+		
+		
+		
+     /*              
+        $productRepository=$repository->getRepository('AtelierProductBundle:Product');
+ 
+		$gotProduct = $productRepository->findOneBy(array('id' => $this->getProduct()));
+		*/
+	}
 }

@@ -9,7 +9,20 @@
   <h2>Delete a material</h2>
  
   <p>
-    Are you sure you want to delete the material "{{ material.id }}" ?
+    Are you sure you want to delete the material "{{ material.id }}" {% 
+    
+    if material.product.nbMaterials() <= 0 
+    %}(This will also delete the related product {{ material.product.name }} as this material is its last){% 
+    
+    else 
+    %}({{ material.product.nbMaterials() }} materials remaining from the product {{ material.product.name }}){% 
+    
+    endif 
+    %} ?
+	
+    
+    
+    
   </p>
  
   <form action="{{ path('atelier_material_delete', {'id': material.id}) }}" method="post">

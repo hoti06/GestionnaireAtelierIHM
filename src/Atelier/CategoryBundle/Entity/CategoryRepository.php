@@ -30,4 +30,5 @@ class CategoryRepository extends EntityRepository
  
     return new Paginator($query);
   }
+  	
 }

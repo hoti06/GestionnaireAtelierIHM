@@ -241,4 +241,9 @@ class Product
     {
         return $this->maximumLoanDateModification;
     }
+    
+    public function nbMaterials()
+	{
+		return count($this->getMaterials());
+	}
 }

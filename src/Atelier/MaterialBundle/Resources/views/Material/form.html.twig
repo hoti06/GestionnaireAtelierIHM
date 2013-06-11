@@ -4,3 +4,55 @@
     <input type="submit" class="btn btn-primary" />
   </form>
 </div>
+ 
+<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var content = $('div#atelier_materialbundle_materialaddtype');
+  
+  var container = $('div#atelier_materialbundle_materialaddtype_productAdd');
+  var container2 = $('select#atelier_materialbundle_materialaddtype_product').parent();
+ 
+  var lienAjout = $('<a href="#" id="product" class="btn">Use an existing product</a><br/><br/>');
+  container.append(lienAjout);
+  
+   var lienAjout2 = $('<br/><a href="#" id="add_product" class="btn">Add a new product</a><br/><br/>');
+  container2.append(lienAjout2);
+ 
+ 
+ var p=container.detach();
+ var p2=container2.detach();
+ 
+  p2.prependTo(content);
+  p2 = null;
+ 
+  lienAjout2.click(function(e) {
+	if ( p ) {
+		 p.prependTo(content);
+		 p = null;
+	}
+	if(!p2) {
+		p2 = container2.detach();
+	}
+    
+    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+    return false;
+  });
+  
+    lienAjout.click(function(f) {
+    if ( p2 ) {
+		p2.prependTo(content);
+		p2 = null;
+	}
+	if(!p) {
+		p = container.detach();
+	}
+    
+    f.preventDefault(); // évite qu'un # apparaisse dans l'URL
+    return false;
+  });
+  
+  });
+
+</script>
