@@ -1,7 +1,3 @@
-atelier_rerservation:
-    resource: "@AtelierRerservationBundle/Resources/config/routing.yml"
-    prefix:   /
-
 atelier_user:
     resource: "@AtelierUserBundle/Resources/config/routing.yml"
     prefix:   /user

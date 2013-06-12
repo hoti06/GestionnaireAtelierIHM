@@ -22,7 +22,7 @@ class AppKernel extends Kernel
             new Atelier\ProductBundle\AtelierProductBundle(),
             new Atelier\MaterialBundle\AtelierMaterialBundle(),
             new Atelier\IndexBundle\AtelierIndexBundle(),
-            new Atelier\RerservationBundle\AtelierRerservationBundle(),
+            //new Atelier\ReservationBundle\AtelierReservationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

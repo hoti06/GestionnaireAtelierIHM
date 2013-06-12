@@ -397,12 +397,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "f0a72766b56c3e19ff288d598e4714c36b039cca"
+                "reference": "ab580c138577b0d4abae04547a17a01c85cd09f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/f0a72766b56c3e19ff288d598e4714c36b039cca",
-                "reference": "f0a72766b56c3e19ff288d598e4714c36b039cca",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/ab580c138577b0d4abae04547a17a01c85cd09f9",
+                "reference": "ab580c138577b0d4abae04547a17a01c85cd09f9",
                 "shasum": ""
             },
             "require": {
@@ -457,7 +457,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2013-06-06 23:48:22"
+            "time": "2013-06-10 13:18:52"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1504,16 +1504,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.13.0",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "v1.13.0"
+                "reference": "v1.13.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/v1.13.0",
-                "reference": "v1.13.0",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/v1.13.1",
+                "reference": "v1.13.1",
                 "shasum": ""
             },
             "require": {
@@ -1549,7 +1549,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-05-10 15:12:43"
+            "time": "2013-06-06 06:06:01"
         }
     ],
     "packages-dev": [
