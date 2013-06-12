@@ -14,9 +14,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class MaterialRepository extends EntityRepository
 {
 	
-	public function getMaterials($nbByPage, $page)
-  {
-    if ($page < 1) {
+    public function getMaterials($nbByPage, $page)
+    {
+      if ($page < 1) {
       throw new \InvalidArgumentException('The $page argument cannot be less than 1 (value : "'.$page.'").');
     }
  
