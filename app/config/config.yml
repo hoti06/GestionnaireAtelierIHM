@@ -70,3 +70,8 @@ swiftmailer:
     spool:     { type: memory }
 
 
+services:
+  atelier_material.remove_product:
+        class: Atelier\MaterialBundle\EventListener\RemoveProduct
+        tags:
+            - { name: doctrine.event_listener, event: preRemove, method: preRemove }

@@ -5,13 +5,15 @@ namespace Atelier\MaterialBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Atelier\MaterialBundle\EventListener\RemoveProduct;
+
+/*@ORM\HasLifecycleCallbacks()*/
 
 /**
  * Material
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Atelier\MaterialBundle\Entity\MaterialRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="Atelier\MaterialBundle\Entity\MaterialRepository") EntityListeners({"RemoveProduct"})
  */
 class Material
 {
@@ -93,28 +95,5 @@ class Material
     {
         return $this->product;
     }
-    /**
-	* @ORM\PostRemove
-	*/
-    public function removeProductAfterMaterial()
-	{
-		//Use service
-		/*$repository = $this->getDoctrine()
-                   ->getManager();
-		
-		if($this->getProduct()->nbMaterials()<=0)
-		{
-			$repository->remove($this->getProduct());
-			$repository->flush();
-		}
-		*/
-		
-		
-		
-     /*              
-        $productRepository=$repository->getRepository('AtelierProductBundle:Product');
- 
-		$gotProduct = $productRepository->findOneBy(array('id' => $this->getProduct()));
-		*/
-	}
+    
 }
