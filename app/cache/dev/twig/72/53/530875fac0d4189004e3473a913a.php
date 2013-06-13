@@ -48,7 +48,7 @@ class __TwigTemplate_7253530875fac0d4189004e3473a913a extends Twig_Template
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "id"), "html", null, true);
         echo "\" ";
         // line 14
-        if (($this->getAttribute($this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "product"), "nbMaterials", array(), "method") <= 0)) {
+        if (($this->getAttribute($this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "product"), "nbMaterials", array(), "method") <= 1)) {
             // line 15
             echo "(This will also delete the related product ";
             echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "product"), "name"), "html", null, true);

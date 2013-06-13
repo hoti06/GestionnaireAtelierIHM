@@ -11,11 +11,10 @@ class BookingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-      ->add('product', 'entity', array(
-	  'class'    => 'AtelierProductBundle:Product',
-	  'property' => 'name',
+      ->add('material', 'entity', array(
+	  'class'    => 'AtelierMaterialBundle:Material',
+	  'property' => 'id',
 	  'multiple' => false))
-          ->add('nomber',      'text')
 	  ->add('dateBegin',      'date')
           ->add('dateEnd',      'date')
           ->add('description',       'textarea', array('required' => false))

@@ -6,7 +6,7 @@ use Atelier\ProductBundle\Entity\Product;
 use Atelier\ProductBundle\Form\ProductType;
 
 class ProductController extends Controller
-{ 
+{ /*
 	public function newAction()
 	{
 		
@@ -33,7 +33,7 @@ class ProductController extends Controller
 			'form' => $form->createView(),
 			));
 	}
-	
+	*/
 	public function editAction(Product $product)
 	{
 		$form = $this->createForm(new ProductType(), $product);

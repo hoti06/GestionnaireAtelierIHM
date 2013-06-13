@@ -78,12 +78,9 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
               
           <h3>Products Admnistration</h3>
           <ul class=\"nav nav-pills nav-stacked\">
-            <li><a href=\"";
-        // line 40
-        echo $this->env->getExtension('routing')->getPath("atelier_product_new");
-        echo "\">Create a new product</a></li>
-            <li><a href=\"";
+            ";
         // line 41
+        echo "            <li><a href=\"";
         echo $this->env->getExtension('routing')->getPath("atelier_product_index");
         echo "\">List all products</a></li>
           </ul>      
@@ -173,6 +170,6 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  159 => 66,  156 => 65,  153 => 64,  149 => 53,  146 => 52,  139 => 9,  136 => 8,  130 => 6,  123 => 68,  121 => 64,  109 => 54,  107 => 52,  99 => 47,  95 => 46,  87 => 41,  83 => 40,  75 => 35,  71 => 34,  63 => 29,  59 => 28,  51 => 23,  37 => 11,  35 => 8,  30 => 6,  23 => 1,);
+        return array (  156 => 66,  153 => 65,  150 => 64,  146 => 53,  143 => 52,  136 => 9,  133 => 8,  127 => 6,  120 => 68,  118 => 64,  106 => 54,  104 => 52,  96 => 47,  92 => 46,  83 => 41,  75 => 35,  71 => 34,  63 => 29,  59 => 28,  51 => 23,  37 => 11,  35 => 8,  30 => 6,  23 => 1,);
     }
 }

@@ -39,26 +39,16 @@ class __TwigTemplate_79e8092036fd0ca1f91f3ea23d096170 extends Twig_Template
     public function block_product_body($context, array $blocks = array())
     {
         // line 8
-        echo "<p>
-\t<a href=\"";
-        // line 9
-        echo $this->env->getExtension('routing')->getPath("atelier_product_new");
-        echo "\" class=\"btn\">
-\t\t  Create a new product
-\t\t  <i class=\"icon-chevron-right\"></i>
-\t</a>
-</p>
-
-
+        echo "
 <h3>List of Products</h3>
  
 <p>
       ";
-        // line 19
+        // line 12
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute($this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "session"), "flashbag"), "get", array(0 => "info"), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 20
+            // line 13
             echo "        <i>";
             echo twig_escape_filter($this->env, (isset($context["message"]) ? $context["message"] : $this->getContext($context, "message")), "html", null, true);
             echo "</i>
@@ -67,13 +57,13 @@ class __TwigTemplate_79e8092036fd0ca1f91f3ea23d096170 extends Twig_Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 22
+        // line 15
         echo "</p>
 
 
 <ul>
   ";
-        // line 26
+        // line 19
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["list_products"]) ? $context["list_products"] : $this->getContext($context, "list_products")));
         $context['_iterated'] = false;
@@ -91,10 +81,10 @@ class __TwigTemplate_79e8092036fd0ca1f91f3ea23d096170 extends Twig_Template
             $context['loop']['last'] = 1 === $length;
         }
         foreach ($context['_seq'] as $context["_key"] => $context["product"]) {
-            // line 27
+            // line 20
             echo "\t<p>
 \t\t";
-            // line 28
+            // line 21
             $this->env->loadTemplate("AtelierProductBundle:Product:product.html.twig")->display($context);
             echo " (Category <a href=\"";
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_category_disp", array("id" => $this->getAttribute($this->getAttribute((isset($context["product"]) ? $context["product"] : $this->getContext($context, "product")), "category"), "id"))), "html", null, true);
@@ -115,30 +105,30 @@ class __TwigTemplate_79e8092036fd0ca1f91f3ea23d096170 extends Twig_Template
             }
         }
         if (!$context['_iterated']) {
-            // line 32
+            // line 25
             echo "    <p>There aren't any products for the moment</p>
   ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['product'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 34
+        // line 27
         echo "</ul>
   <div class=\"pagination\">
     <ul>
       ";
-        // line 37
+        // line 30
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable(range(1, (isset($context["nbPage"]) ? $context["nbPage"] : $this->getContext($context, "nbPage"))));
         foreach ($context['_seq'] as $context["_key"] => $context["p"]) {
-            // line 38
+            // line 31
             echo "        <li";
             if (((isset($context["p"]) ? $context["p"] : $this->getContext($context, "p")) == (isset($context["page"]) ? $context["page"] : $this->getContext($context, "page")))) {
                 echo " class=\"active\"";
             }
             echo ">
           <a href=\"";
-            // line 39
+            // line 32
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_product_dispAll", array("page" => (isset($context["p"]) ? $context["p"] : $this->getContext($context, "p")))), "html", null, true);
             echo "\">";
             echo twig_escape_filter($this->env, (isset($context["p"]) ? $context["p"] : $this->getContext($context, "p")), "html", null, true);
@@ -149,7 +139,7 @@ class __TwigTemplate_79e8092036fd0ca1f91f3ea23d096170 extends Twig_Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['p'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 42
+        // line 35
         echo "    </ul>
   </div>
 
@@ -168,6 +158,6 @@ class __TwigTemplate_79e8092036fd0ca1f91f3ea23d096170 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  153 => 42,  142 => 39,  135 => 38,  131 => 37,  126 => 34,  119 => 32,  98 => 28,  95 => 27,  77 => 26,  71 => 22,  62 => 20,  58 => 19,  45 => 9,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
+        return array (  143 => 35,  132 => 32,  125 => 31,  121 => 30,  116 => 27,  109 => 25,  88 => 21,  85 => 20,  67 => 19,  61 => 15,  52 => 13,  48 => 12,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
     }
 }

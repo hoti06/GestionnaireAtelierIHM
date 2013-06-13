@@ -7,13 +7,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Atelier\MaterialBundle\EventListener\RemoveProduct;
 
-/*@ORM\HasLifecycleCallbacks()*/
-
 /**
  * Material
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Atelier\MaterialBundle\Entity\MaterialRepository") EntityListeners({"RemoveProduct"})
+ * @ORM\Entity(repositoryClass="Atelier\MaterialBundle\Entity\MaterialRepository")
  */
 class Material
 {

@@ -22,28 +22,26 @@ class ReservationController extends Controller
         	$reservation->setUser($user);
 		$form->bind($request);
 		if ($form->isValid()) {
-        		$repositoryMaterial = $this->getDoctrine()->getManager()->getRepository('AtelierMaterialBundle:Material');
-			$listMaterial = $repositoryMaterial->getProductMateirals($reservation->getProduct());
 			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
-			$listReservation = $repositoryReservation->getProductReservation(10, 1, $reservation->getProduct());
-			$nomber=$reservation->getNomber();
-			$nomberMax=count($listMaterial);
+			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterial());
+			$bool = true;
 			foreach ($listReservation as $re)
 			{
 				$datebegin = $re->getDateBegin();
 				$dateend = $re->getDateEnd();
-				if ($reservation->getDateBegin()>$dateend || $reservation->getDateEnd()<$datebegin) {
-					$nomber -= $re->getNomber();
-				} else {
-					$nomberMax -= $re->getNomber();
+				if (($reservation->getDateBegin()<$dateend && $reservation->getDateEnd()>$dateend)
+					|| ($reservation->getDateEnd()>$datebegin && $reservation->getDateBegin()<$datebegin))
+				{
+					$bool = false;
+					break;
 				}
 			}
-			if ($nomber<=0 || $nomberMax>=$nomber)
+			if ($bool)
 			{
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($reservation);
 				$em->flush();
-				return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=> "Your appointement is saved"));
+				return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=> "Your booking is saved"));
 			}
 			return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=>"not possible"));
 		}
@@ -99,7 +97,32 @@ class ReservationController extends Controller
         $form = $this->createForm(new BookingType, $reservation);
         $request = $this->get('request');
 	$user = $this->get('security.context')->getToken()->getUser();
-        
+        if ($request->getMethod() == 'POST') {
+		$form->bind($request);
+		if ($form->isValid()) {
+			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
+			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterial());
+			$bool = true;
+			foreach ($listReservation as $re)
+			{
+				$datebegin = $re->getDateBegin();
+				$dateend = $re->getDateEnd();
+				if (($reservation->getDateBegin()<$dateend && $reservation->getDateEnd()>$dateend)
+					|| ($reservation->getDateEnd()>$datebegin && $reservation->getDateBegin()<$datebegin))
+				{
+					$bool = false;
+					break;
+				}
+			}
+			if ($bool)
+			{
+				$em = $this->getDoctrine()->getManager();
+				$em->flush();
+				return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=> "Your booking is saved"));
+			}
+			return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=>"not possible"));
+		}
+	}  
         return $this->render('AtelierReservationBundle:Reservation:booking.html.twig', array(
 			'form' => $form->createView(),
 			));

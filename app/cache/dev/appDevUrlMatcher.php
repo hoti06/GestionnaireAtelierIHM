@@ -143,14 +143,14 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::bookingAction',  '_route' => 'atelier_reservation_booking',);
             }
 
-            if (0 === strpos($pathinfo, '/booking/user/profile/listAppointement')) {
+            if (0 === strpos($pathinfo, '/booking/listAppointement')) {
                 // atelier_reservation_list
-                if (preg_match('#^/booking/user/profile/listAppointement(?:/(?P<page>[^/]++))?$#s', $pathinfo, $matches)) {
+                if (preg_match('#^/booking/listAppointement(?:/(?P<page>[^/]++))?$#s', $pathinfo, $matches)) {
                     return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_reservation_list')), array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::listAction',  'page' => 1,));
                 }
 
                 // atelier_reservation_alllist
-                if ($pathinfo === '/booking/user/profile/listAppointement') {
+                if ($pathinfo === '/booking/listAppointement') {
                     return array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::alllistAction',  'page' => 1,  '_route' => 'atelier_reservation_alllist',);
                 }
 
@@ -418,11 +418,6 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         if (0 === strpos($pathinfo, '/product')) {
-            // atelier_product_new
-            if ($pathinfo === '/product/new') {
-                return array (  '_controller' => 'Atelier\\ProductBundle\\Controller\\ProductController::newAction',  '_route' => 'atelier_product_new',);
-            }
-
             // atelier_product_edit
             if (preg_match('#^/product/(?P<id>\\d+)/edit$#s', $pathinfo, $matches)) {
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_product_edit')), array (  '_controller' => 'Atelier\\ProductBundle\\Controller\\ProductController::editAction',));

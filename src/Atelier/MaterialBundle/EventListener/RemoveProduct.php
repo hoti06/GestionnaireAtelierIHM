@@ -8,36 +8,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RemoveProduct
 {
-    public function preRemove(LifecycleEventArgs $args)
+    public function postRemove(LifecycleEventArgs $args)
     {
-		 $entity = $args->getEntity();
+		$entity = $args->getEntity();
 		$repository = $args
                    ->getEntityManager();
 		
-		
-		 //$productRepository=$repository->getRepository('AtelierProductBundle:Product');
-		//$gotProduct = $productRepository->findOneBy(array('id' => $entity->getProduct()));
-		
-		
-		if($entity->getProduct()->nbMaterials()<=1)
-		{
-
-			if($entity->getProduct() !=null)
+		if ($entity instanceof Material) {
+			if($entity->getProduct()->nbMaterials()==0)
 			{
-				//$repository->persist($entity->getProduct());
 				$repository->remove($entity->getProduct());
-				$repository->flush();
 			}
-			else
-			{
-				throw new NotFoundHttpException("null");
-			}
-			
 		}
-		else
-		{
-			throw new NotFoundHttpException($entity->getProduct()->nbMaterials());
-		}
-
     }
 }

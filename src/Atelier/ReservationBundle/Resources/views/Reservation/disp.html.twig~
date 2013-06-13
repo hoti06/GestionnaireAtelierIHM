@@ -11,9 +11,8 @@
 <ul>
   {% for res in list_reservations %}
 	<p>
-		<h4>Product name : {{ res.getProduct().getName() }}</h4>
+		<h4>Material id : {{ res.getProduct().getName() }}</h4>
                 <ul>
-		<li>Nomber : {{ res.getNomber() }}</li>
                 <li>Begin : {{ res.getDateBegin()|date('Y-m-d') }}</li>
                 <li>End : {{ res.getDateEnd()|date('Y-m-d') }}</li>
 		<a href="{{ path('atelier_reservation_delete', {'id': res.getId()}) }}">delete</a>

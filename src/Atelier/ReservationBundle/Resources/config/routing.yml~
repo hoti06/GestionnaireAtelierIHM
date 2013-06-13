@@ -12,7 +12,7 @@ atelier_reservation_alllist:
 
 atelier_reservation_change:
     pattern:  /booking/{id}/change
-    defaults: { _controller: AtelierReservationBundle:Reservation:delete }
+    defaults: { _controller: AtelierReservationBundle:Reservation:change }
 
 atelier_reservation_delete:
     pattern:  /booking/{id}/delete

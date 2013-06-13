@@ -11,7 +11,7 @@
   <p>
     Are you sure you want to delete the material "{{ material.id }}" {% 
     
-    if material.product.nbMaterials() <= 0 
+    if material.product.nbMaterials() <= 1
     %}(This will also delete the related product {{ material.product.name }} as this material is its last){% 
     
     else 

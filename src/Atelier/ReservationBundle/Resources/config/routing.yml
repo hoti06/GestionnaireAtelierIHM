@@ -3,11 +3,11 @@ atelier_reservation_booking:
     defaults: { _controller: AtelierReservationBundle:Reservation:booking }
 
 atelier_reservation_list:
-    pattern:  /user/profile/listAppointement/{page}
+    pattern:  /listAppointement/{page}
     defaults: { _controller: AtelierReservationBundle:Reservation:list , page : 1}
 
 atelier_reservation_alllist:
-    pattern:  /user/profile/listAppointement
+    pattern:  /listAppointement
     defaults: { _controller: AtelierReservationBundle:Reservation:alllist , page : 1}
 
 atelier_reservation_change:

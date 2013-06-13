@@ -44,22 +44,16 @@ class Reservation
      */
     private $dateend;
 	/**
-	* @ORM\ManyToOne(targetEntity="Atelier\ProductBundle\Entity\Product")
+	* @ORM\ManyToOne(targetEntity="Atelier\MaterialBundle\Entity\Material")
         * @ORM\JoinColumn(nullable=false)
 	*/
-    private $product; 
+    private $material; 
     /**
 	* @ORM\ManyToOne(targetEntity="Atelier\UserBundle\Entity\User")
         * @ORM\JoinColumn(nullable=false)
 	*/
     private $user; 
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="nomber", type="integer")
-     */
-    private $nomber; 
 
 	
     /**
@@ -116,14 +110,14 @@ class Reservation
         return $this->description;
     }
 
-    public function getProduct()
+    public function getMaterial()
     {
-        return $this->product;
+        return $this->material;
     }
 
-    public function setProduct(\Atelier\ProductBundle\Entity\Product $product)
+    public function setMaterial(\Atelier\MaterialBundle\Entity\Material $material)
     {
-        $this->product=$product;
+        $this->material=$material;
     }
 
     public function getUser()
@@ -134,15 +128,5 @@ class Reservation
     public function setUser(\Atelier\UserBundle\Entity\User $user)
     {
         $this->user=$user;
-    }
-
-     public function getNomber()
-    {
-        return $this->nomber;
-    }
-
-    public function setNomber($nomber)
-    {
-        $this->nomber=$nomber;
     }
 }

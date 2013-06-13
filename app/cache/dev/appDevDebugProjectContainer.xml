@@ -575,7 +575,7 @@
   </parameters>
   <services>
     <service id="atelier_material.remove_product" class="Atelier\MaterialBundle\EventListener\RemoveProduct">
-      <tag name="doctrine.event_listener" event="preRemove" method="preRemove"/>
+      <tag name="doctrine.event_listener" event="postRemove" method="postRemove"/>
     </service>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
@@ -1615,7 +1615,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>51b995f29822e</argument>
+            <argument>51b9c65ba5020</argument>
           </service>
         </argument>
       </argument>
@@ -1860,7 +1860,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>51b995f29822e</argument>
+            <argument>51b9c65ba5020</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>
@@ -2245,7 +2245,7 @@
           </call>
           <call method="addEventListener">
             <argument type="collection">
-              <argument>preRemove</argument>
+              <argument>postRemove</argument>
             </argument>
             <argument type="service" id="atelier_material.remove_product"/>
           </call>
