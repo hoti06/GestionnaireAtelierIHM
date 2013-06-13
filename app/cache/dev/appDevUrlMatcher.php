@@ -133,6 +133,41 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
+        if (0 === strpos($pathinfo, '/booking')) {
+            // atelier_reservation_booking
+            if (rtrim($pathinfo, '/') === '/booking') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'atelier_reservation_booking');
+                }
+
+                return array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::bookingAction',  '_route' => 'atelier_reservation_booking',);
+            }
+
+            if (0 === strpos($pathinfo, '/booking/user/profile/listAppointement')) {
+                // atelier_reservation_list
+                if (preg_match('#^/booking/user/profile/listAppointement(?:/(?P<page>[^/]++))?$#s', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_reservation_list')), array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::listAction',  'page' => 1,));
+                }
+
+                // atelier_reservation_alllist
+                if ($pathinfo === '/booking/user/profile/listAppointement') {
+                    return array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::alllistAction',  'page' => 1,  '_route' => 'atelier_reservation_alllist',);
+                }
+
+            }
+
+            // atelier_reservation_change
+            if (preg_match('#^/booking/(?P<id>[^/]++)/change$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_reservation_change')), array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::changeAction',));
+            }
+
+            // atelier_reservation_delete
+            if (preg_match('#^/booking/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_reservation_delete')), array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::deleteAction',));
+            }
+
+        }
+
         if (0 === strpos($pathinfo, '/user')) {
             // atelier_user_index
             if (rtrim($pathinfo, '/') === '/user') {
@@ -173,17 +208,14 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_user_removeAdmin')), array (  '_controller' => 'Atelier\\UserBundle\\Controller\\UserController::removeAdminAction',));
             }
 
-        }
-
-        if (0 === strpos($pathinfo, '/log')) {
-            if (0 === strpos($pathinfo, '/login')) {
+            if (0 === strpos($pathinfo, '/user/login')) {
                 // fos_user_security_login
-                if ($pathinfo === '/login') {
+                if ($pathinfo === '/user/login') {
                     return array (  '_controller' => 'FOS\\UserBundle\\Controller\\SecurityController::loginAction',  '_route' => 'fos_user_security_login',);
                 }
 
                 // fos_user_security_check
-                if ($pathinfo === '/login_check') {
+                if ($pathinfo === '/user/login_check') {
                     if ($this->context->getMethod() != 'POST') {
                         $allow[] = 'POST';
                         goto not_fos_user_security_check;
@@ -195,11 +227,11 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             }
 
-            // fos_user_security_logout
-            if ($pathinfo === '/logout') {
-                return array (  '_controller' => 'FOS\\UserBundle\\Controller\\SecurityController::logoutAction',  '_route' => 'fos_user_security_logout',);
-            }
+        }
 
+        // fos_user_security_logout
+        if ($pathinfo === '/logout') {
+            return array (  '_controller' => 'FOS\\UserBundle\\Controller\\SecurityController::logoutAction',  '_route' => 'fos_user_security_logout',);
         }
 
         if (0 === strpos($pathinfo, '/user')) {
@@ -284,21 +316,18 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             }
             not_fos_user_change_password:
 
-        }
+            if (0 === strpos($pathinfo, '/user/signup')) {
+                // fos_user_registration_register
+                if (rtrim($pathinfo, '/') === '/user/signup') {
+                    if (substr($pathinfo, -1) !== '/') {
+                        return $this->redirect($pathinfo.'/', 'fos_user_registration_register');
+                    }
 
-        if (0 === strpos($pathinfo, '/signup')) {
-            // fos_user_registration_register
-            if (rtrim($pathinfo, '/') === '/signup') {
-                if (substr($pathinfo, -1) !== '/') {
-                    return $this->redirect($pathinfo.'/', 'fos_user_registration_register');
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::registerAction',  '_route' => 'fos_user_registration_register',);
                 }
 
-                return array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::registerAction',  '_route' => 'fos_user_registration_register',);
-            }
-
-            if (0 === strpos($pathinfo, '/signup/c')) {
                 // fos_user_registration_check_email
-                if ($pathinfo === '/signup/check-email') {
+                if ($pathinfo === '/user/signup/check-email') {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
                         goto not_fos_user_registration_check_email;
@@ -308,9 +337,14 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 }
                 not_fos_user_registration_check_email:
 
-                if (0 === strpos($pathinfo, '/signup/confirm')) {
+                // fos_user_registration_delete
+                if ($pathinfo === '/user/signup/delete') {
+                    return array (  '_controller' => 'FOS\\UserBundle\\Controller\\RegistrationController::deleteAction',  '_route' => 'fos_user_registration_delete',);
+                }
+
+                if (0 === strpos($pathinfo, '/user/signup/confirm')) {
                     // fos_user_registration_confirm
-                    if (preg_match('#^/signup/confirm/(?P<token>[^/]++)$#s', $pathinfo, $matches)) {
+                    if (preg_match('#^/user/signup/confirm/(?P<token>[^/]++)$#s', $pathinfo, $matches)) {
                         if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                             $allow = array_merge($allow, array('GET', 'HEAD'));
                             goto not_fos_user_registration_confirm;
@@ -321,7 +355,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     not_fos_user_registration_confirm:
 
                     // fos_user_registration_confirmed
-                    if ($pathinfo === '/signup/confirmed') {
+                    if ($pathinfo === '/user/signup/confirmed') {
                         if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                             $allow = array_merge($allow, array('GET', 'HEAD'));
                             goto not_fos_user_registration_confirmed;

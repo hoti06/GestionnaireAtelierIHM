@@ -52,15 +52,26 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
         echo "\">Index</a></li>
           </ul>
           
+          <h3>Booking Admnistration</h3>
+          <ul class=\"nav nav-pills nav-stacked\">
+            <li><a href=\"";
+        // line 28
+        echo $this->env->getExtension('routing')->getPath("atelier_reservation_booking");
+        echo "\">Add a booking</a></li>
+            <li><a href=\"";
+        // line 29
+        echo $this->env->getExtension('routing')->getPath("atelier_reservation_alllist");
+        echo "\">List all bookings</a></li>
+          </ul>
           
           <h3>Categories Admnistration</h3>
           <ul class=\"nav nav-pills nav-stacked\">
             <li><a href=\"";
-        // line 29
+        // line 34
         echo $this->env->getExtension('routing')->getPath("atelier_category_new");
         echo "\">Create a new category</a></li>
             <li><a href=\"";
-        // line 30
+        // line 35
         echo $this->env->getExtension('routing')->getPath("atelier_category_index");
         echo "\">List all categories</a></li>
           </ul>
@@ -68,11 +79,11 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
           <h3>Products Admnistration</h3>
           <ul class=\"nav nav-pills nav-stacked\">
             <li><a href=\"";
-        // line 35
+        // line 40
         echo $this->env->getExtension('routing')->getPath("atelier_product_new");
         echo "\">Create a new product</a></li>
             <li><a href=\"";
-        // line 36
+        // line 41
         echo $this->env->getExtension('routing')->getPath("atelier_product_index");
         echo "\">List all products</a></li>
           </ul>      
@@ -80,11 +91,11 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
           <h3>Materials Admnistration</h3>
           <ul class=\"nav nav-pills nav-stacked\">
             <li><a href=\"";
-        // line 41
+        // line 46
         echo $this->env->getExtension('routing')->getPath("atelier_material_new");
         echo "\">Create a new material</a></li>
             <li><a href=\"";
-        // line 42
+        // line 47
         echo $this->env->getExtension('routing')->getPath("atelier_material_index");
         echo "\">List all materials</a></li>
           </ul>           
@@ -92,9 +103,9 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
         
         <div id=\"content\" class=\"span9\">
           ";
-        // line 47
+        // line 52
         $this->displayBlock('body', $context, $blocks);
-        // line 49
+        // line 54
         echo "        </div>
       </div>
  
@@ -106,9 +117,9 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
     </div>
  
   ";
-        // line 59
+        // line 64
         $this->displayBlock('javascripts', $context, $blocks);
-        // line 63
+        // line 68
         echo " 
   </body>
 </html>
@@ -131,20 +142,20 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
     ";
     }
 
-    // line 47
+    // line 52
     public function block_body($context, array $blocks = array())
     {
-        // line 48
+        // line 53
         echo "          ";
     }
 
-    // line 59
+    // line 64
     public function block_javascripts($context, array $blocks = array())
     {
-        // line 60
+        // line 65
         echo "    <script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"></script>
     <script type=\"text/javascript\" src=\"";
-        // line 61
+        // line 66
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("js/bootstrap.js"), "html", null, true);
         echo "\"></script>
   ";
@@ -162,6 +173,6 @@ class __TwigTemplate_eb70b60ae1a35f21df78ade825b78f14 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  148 => 61,  145 => 60,  142 => 59,  138 => 48,  135 => 47,  128 => 9,  125 => 8,  119 => 6,  112 => 63,  110 => 59,  98 => 49,  96 => 47,  88 => 42,  84 => 41,  76 => 36,  72 => 35,  64 => 30,  60 => 29,  51 => 23,  37 => 11,  35 => 8,  30 => 6,  23 => 1,);
+        return array (  159 => 66,  156 => 65,  153 => 64,  149 => 53,  146 => 52,  139 => 9,  136 => 8,  130 => 6,  123 => 68,  121 => 64,  109 => 54,  107 => 52,  99 => 47,  95 => 46,  87 => 41,  83 => 40,  75 => 35,  71 => 34,  63 => 29,  59 => 28,  51 => 23,  37 => 11,  35 => 8,  30 => 6,  23 => 1,);
     }
 }

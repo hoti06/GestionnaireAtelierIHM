@@ -1,0 +1,9 @@
+<?php
+
+namespace Atelier\RerservationBundle;
+
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
+class AtelierRerservationBundle extends Bundle
+{
+}

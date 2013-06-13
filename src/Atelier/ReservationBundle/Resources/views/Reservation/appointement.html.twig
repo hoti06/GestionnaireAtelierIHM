@@ -1,0 +1,12 @@
+{% extends "AtelierReservationBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Booking - {{ parent() }}
+{% endblock %}
+
+{% block booking_body %}
+ 
+  <h2>{{ info }}</h2>
+  
+  <a href="{{ path('atelier_reservation_list') }}" class="btn">return</a>
+{% endblock %}

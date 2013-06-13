@@ -1,0 +1,7 @@
+
+parameters:
+    user_provider.class: Atelier\UserBundle\Entity\User
+
+services:
+    user_provider:
+        class: "%user_provider.class%"

@@ -1,0 +1,19 @@
+atelier_reservation_booking:
+    pattern:  /
+    defaults: { _controller: AtelierReservationBundle:Reservation:booking }
+
+atelier_reservation_list:
+    pattern:  /user/profile/listAppointement/{page}
+    defaults: { _controller: AtelierReservationBundle:Reservation:list , page : 1}
+
+atelier_reservation_alllist:
+    pattern:  /user/profile/listAppointement
+    defaults: { _controller: AtelierReservationBundle:Reservation:alllist , page : 1}
+
+atelier_reservation_change:
+    pattern:  /{id}/change
+    defaults: { _controller: AtelierReservationBundle:Reservation:change }
+
+atelier_reservation_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: AtelierReservationBundle:Reservation:delete }

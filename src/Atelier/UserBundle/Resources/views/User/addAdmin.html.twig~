@@ -1,0 +1,7 @@
+{% extends "AtelierUserBundle::layout.html.twig" %}
+
+{% block user_body %}
+    {{ info }}
+    <a href="{{ path('atelier_user_list') }}", class="btn">return</a>
+    <br/>
+{% endblock %}

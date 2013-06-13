@@ -1,0 +1,18 @@
+{% extends "AtelierUserBundle::layout.html.twig" %}
+ 
+{% block title %}
+  Index- {{ parent() }}
+{% endblock %}
+
+{% block user_body %}
+  <div>
+      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+           <a href="{{ path('fos_user_security_logout') }}",class="btn">logout</a>
+      {% endif %}
+  </div>
+<p>
+  <h2>Index</h2>
+  <a href="{{ path('fos_user_security_login') }}" class="btn">login</a><br/>
+  <a href="{{ path('fos_user_registration_register') }}" class="btn">sign up</a><br/>
+</p>
+{% endblock %}

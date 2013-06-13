@@ -1,0 +1,17 @@
+{% extends "AtelierReservationBundle::layout.html.twig" %}
+ 
+{% block title %}
+  booking - {{ parent() }}
+{% endblock %}
+
+{% block booking_body %}
+ 
+  
+  {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+  {% include "AtelierReservationBundle:Reservation:form.html.twig" %}
+  {% else %}
+      <h2>please login</h2>
+      <a href="{{ path('fos_user_security_login') }}" class="btn">login</a>
+  {% endif %}
+ 
+{% endblock %}

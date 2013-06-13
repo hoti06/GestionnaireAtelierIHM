@@ -1,3 +1,7 @@
+atelier_reservation:
+    resource: "@AtelierReservationBundle/Resources/config/routing.yml"
+    prefix:   /booking
+
 atelier_user:
     resource: "@AtelierUserBundle/Resources/config/routing.yml"
     prefix:   /user
@@ -19,7 +23,7 @@ fos_user_change_password:
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /signup
+    prefix: /user/signup
 
 atelier_index:
     resource: "@AtelierIndexBundle/Resources/config/routing.yml"

@@ -30,4 +30,13 @@ class MaterialRepository extends EntityRepository
  
     return new Paginator($query);
   }
+   public function getProductMateirals($product)
+    {
+		 $query = $this->createQueryBuilder('a')
+			  ->where('a.product = '.$product->getId())
+			  ->getQuery();
+	  return new Paginator($query);
+	}
+  
+  
 }

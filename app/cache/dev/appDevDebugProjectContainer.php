@@ -544,7 +544,7 @@ class appDevDebugProjectContainer extends Container
         $b->setSQLLogger($a);
 
         $c = new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this);
-        $c->addEventSubscriber(new \FOS\UserBundle\Doctrine\Orm\UserListener($this));
+        $c->addEventSubscriber(new \FOS\UserBundle\Entity\UserListener($this));
         $c->addEventListener(array(0 => 'preRemove'), $this->get('atelier_material.remove_product'));
 
         return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('dbname' => 'user', 'host' => '127.0.0.1', 'port' => NULL, 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driver' => 'pdo_mysql', 'driverOptions' => array()), $b, $c, array());
@@ -571,7 +571,7 @@ class appDevDebugProjectContainer extends Container
         $d = new \Doctrine\Common\Cache\ArrayCache();
         $d->setNamespace('sf2orm_default_d1bac9e8d46fc077c0a4232c0a8ea9de');
 
-        $e = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($a, array(0 => '/opt/lampp/htdocs/Symfony/src/Atelier/UserBundle/Entity', 1 => '/opt/lampp/htdocs/Symfony/src/Atelier/CategoryBundle/Entity', 2 => '/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Entity', 3 => '/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Entity'));
+        $e = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($a, array(0 => '/opt/lampp/htdocs/Symfony/src/Atelier/UserBundle/Entity', 1 => '/opt/lampp/htdocs/Symfony/src/Atelier/CategoryBundle/Entity', 2 => '/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Entity', 3 => '/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Entity', 4 => '/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Entity'));
 
         $f = new \Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver(array('/opt/lampp/htdocs/Symfony/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine' => 'FOS\\UserBundle\\Entity'));
         $f->setGlobalBasename('mapping');
@@ -581,11 +581,12 @@ class appDevDebugProjectContainer extends Container
         $g->addDriver($e, 'Atelier\\CategoryBundle\\Entity');
         $g->addDriver($e, 'Atelier\\ProductBundle\\Entity');
         $g->addDriver($e, 'Atelier\\MaterialBundle\\Entity');
+        $g->addDriver($e, 'Atelier\\ReservationBundle\\Entity');
         $g->addDriver($f, 'FOS\\UserBundle\\Entity');
         $g->addDriver(new \Doctrine\ORM\Mapping\Driver\XmlDriver(new \Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator(array('/opt/lampp/htdocs/Symfony/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine/model' => 'FOS\\UserBundle\\Model'), '.orm.xml')), 'FOS\\UserBundle\\Model');
 
         $h = new \Doctrine\ORM\Configuration();
-        $h->setEntityNamespaces(array('AtelierUserBundle' => 'Atelier\\UserBundle\\Entity', 'FOSUserBundle' => 'FOS\\UserBundle\\Entity', 'AtelierCategoryBundle' => 'Atelier\\CategoryBundle\\Entity', 'AtelierProductBundle' => 'Atelier\\ProductBundle\\Entity', 'AtelierMaterialBundle' => 'Atelier\\MaterialBundle\\Entity'));
+        $h->setEntityNamespaces(array('AtelierUserBundle' => 'Atelier\\UserBundle\\Entity', 'FOSUserBundle' => 'FOS\\UserBundle\\Entity', 'AtelierCategoryBundle' => 'Atelier\\CategoryBundle\\Entity', 'AtelierProductBundle' => 'Atelier\\ProductBundle\\Entity', 'AtelierMaterialBundle' => 'Atelier\\MaterialBundle\\Entity', 'AtelierReservationBundle' => 'Atelier\\ReservationBundle\\Entity'));
         $h->setMetadataCacheImpl($b);
         $h->setQueryCacheImpl($c);
         $h->setResultCacheImpl($d);
@@ -2105,7 +2106,7 @@ class appDevDebugProjectContainer extends Container
         $l = new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler($j, array('default_target_path' => '/user/profile', 'login_path' => 'fos_user_security_login', 'always_use_default_target_path' => false, 'target_path_parameter' => '_target_path', 'use_referer' => false));
         $l->setProviderKey('secured_area');
 
-        return $this->services['security.firewall.map.context.secured_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username')), 'secured_area', $a, $c), 2 => $k, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $j, 'secured_area', $l, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($e, $j, array('login_path' => 'fos_user_security_login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('check_path' => 'fos_user_security_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '51b87750d2b00', $a), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $f, $a)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'secured_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $j, 'fos_user_security_login', false), NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.secured_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username')), 'secured_area', $a, $c), 2 => $k, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $j, 'secured_area', $l, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($e, $j, array('login_path' => 'fos_user_security_login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('check_path' => 'fos_user_security_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '51b995f29822e', $a), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $f, $a)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'secured_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $j, 'fos_user_security_login', false), NULL, NULL, $a));
     }
 
     /**
@@ -3125,6 +3126,7 @@ class appDevDebugProjectContainer extends Container
         $instance->addPath('/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Resources/views', 'AtelierProduct');
         $instance->addPath('/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Resources/views', 'AtelierMaterial');
         $instance->addPath('/opt/lampp/htdocs/Symfony/src/Atelier/IndexBundle/Resources/views', 'AtelierIndex');
+        $instance->addPath('/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Resources/views', 'AtelierReservation');
         $instance->addPath('/opt/lampp/htdocs/Symfony/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views', 'WebProfiler');
         $instance->addPath('/opt/lampp/htdocs/Symfony/vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/views', 'SensioDistribution');
         $instance->addPath('/opt/lampp/htdocs/Symfony/app/Resources/views');
@@ -3457,7 +3459,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username'), $this->get('security.user_checker'), 'secured_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('51b87750d2b00')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username'), $this->get('security.user_checker'), 'secured_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('51b995f29822e')), true);
 
         $instance->setEventDispatcher($this->get('event_dispatcher'));
 
@@ -3655,6 +3657,7 @@ class appDevDebugProjectContainer extends Container
                 'AtelierProductBundle' => 'Atelier\\ProductBundle\\AtelierProductBundle',
                 'AtelierMaterialBundle' => 'Atelier\\MaterialBundle\\AtelierMaterialBundle',
                 'AtelierIndexBundle' => 'Atelier\\IndexBundle\\AtelierIndexBundle',
+                'AtelierReservationBundle' => 'Atelier\\ReservationBundle\\AtelierReservationBundle',
                 'WebProfilerBundle' => 'Symfony\\Bundle\\WebProfilerBundle\\WebProfilerBundle',
                 'SensioDistributionBundle' => 'Sensio\\Bundle\\DistributionBundle\\SensioDistributionBundle',
                 'SensioGeneratorBundle' => 'Sensio\\Bundle\\GeneratorBundle\\SensioGeneratorBundle',

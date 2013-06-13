@@ -22,6 +22,7 @@
       <parameter key="AtelierProductBundle">Atelier\ProductBundle\AtelierProductBundle</parameter>
       <parameter key="AtelierMaterialBundle">Atelier\MaterialBundle\AtelierMaterialBundle</parameter>
       <parameter key="AtelierIndexBundle">Atelier\IndexBundle\AtelierIndexBundle</parameter>
+      <parameter key="AtelierReservationBundle">Atelier\ReservationBundle\AtelierReservationBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
       <parameter key="SensioGeneratorBundle">Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle</parameter>
@@ -1614,7 +1615,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>51b87750d2b00</argument>
+            <argument>51b995f29822e</argument>
           </service>
         </argument>
       </argument>
@@ -1859,7 +1860,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>51b87750d2b00</argument>
+            <argument>51b995f29822e</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>
@@ -2236,7 +2237,7 @@
           <argument type="service" id="service_container"/>
           <call method="addEventSubscriber">
             <argument type="service">
-              <service class="FOS\UserBundle\Doctrine\Orm\UserListener" public="false">
+              <service class="FOS\UserBundle\Entity\UserListener" public="false">
                 <tag name="doctrine.event_subscriber"/>
                 <argument type="service" id="service_container"/>
               </service>
@@ -2283,6 +2284,7 @@
               <argument key="AtelierCategoryBundle">Atelier\CategoryBundle\Entity</argument>
               <argument key="AtelierProductBundle">Atelier\ProductBundle\Entity</argument>
               <argument key="AtelierMaterialBundle">Atelier\MaterialBundle\Entity</argument>
+              <argument key="AtelierReservationBundle">Atelier\ReservationBundle\Entity</argument>
             </argument>
           </call>
           <call method="setMetadataCacheImpl">
@@ -2324,6 +2326,7 @@
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/CategoryBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Entity</argument>
                       </argument>
                     </service>
                   </argument>
@@ -2338,6 +2341,7 @@
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/CategoryBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Entity</argument>
                       </argument>
                     </service>
                   </argument>
@@ -2352,6 +2356,7 @@
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/CategoryBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Entity</argument>
                       </argument>
                     </service>
                   </argument>
@@ -2366,10 +2371,26 @@
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/CategoryBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Entity</argument>
                         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Entity</argument>
                       </argument>
                     </service>
                   </argument>
                   <argument>Atelier\MaterialBundle\Entity</argument>
+                </call>
+                <call method="addDriver">
+                  <argument type="service">
+                    <service class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
+                      <argument type="service" id="annotation_reader"/>
+                      <argument type="collection">
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/UserBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/CategoryBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ProductBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Entity</argument>
+                        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Entity</argument>
+                      </argument>
+                    </service>
+                  </argument>
+                  <argument>Atelier\ReservationBundle\Entity</argument>
                 </call>
                 <call method="addDriver">
                   <argument type="service">
@@ -2903,6 +2924,10 @@
       <call method="addPath">
         <argument>/opt/lampp/htdocs/Symfony/src/Atelier/IndexBundle/Resources/views</argument>
         <argument>AtelierIndex</argument>
+      </call>
+      <call method="addPath">
+        <argument>/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Resources/views</argument>
+        <argument>AtelierReservation</argument>
       </call>
       <call method="addPath">
         <argument>/opt/lampp/htdocs/Symfony/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views</argument>

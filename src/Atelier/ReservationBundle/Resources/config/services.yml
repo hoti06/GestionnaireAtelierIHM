@@ -1,0 +1,7 @@
+parameters:
+#    atelier_rerservation.example.class: Atelier\RerservationBundle\Example
+
+services:
+#    atelier_rerservation.example:
+#        class: %atelier_rerservation.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
