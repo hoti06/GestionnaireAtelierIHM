@@ -22,6 +22,8 @@ class Reservation
      */
     private $id;
 
+	
+
     /**
      * @var text
      *
@@ -43,11 +45,15 @@ class Reservation
      * @ORM\Column(name="dateend",  type="datetime")
      */
     private $dateend;
+	
+	
 	/**
-	* @ORM\ManyToOne(targetEntity="Atelier\MaterialBundle\Entity\Material")
+	* @ORM\ManyToMany(targetEntity="Atelier\MaterialBundle\Entity\Material", inversedBy="bookings")
         * @ORM\JoinColumn(nullable=false)
+        * 
 	*/
-    private $material; 
+    private $materials; 
+    
     /**
 	* @ORM\ManyToOne(targetEntity="Atelier\UserBundle\Entity\User")
         * @ORM\JoinColumn(nullable=false)
@@ -66,34 +72,11 @@ class Reservation
         return $this->id;
     }
 
-   
-    public function setDateBegin(\Datetime $date)
-    {
-      $this->datebegin = $date;
-    }
- 
-    /**
-     * @return datetime
-     */
-    public function getDateBegin()
-    {
-      return $this->datebegin;
-    }
-    /**
-     * @return datetime
-     */
-    public function getDateEnd()
-    {
-      return $this->dateend;
-    }
 
-    public function setDateEnd(\Datetime $date)
-    {
-      $this->dateend = $date;
-    }
- 
-   
+
     
+    
+   
     public function setDescription($description)
     {
         $this->description = $description;
@@ -110,16 +93,8 @@ class Reservation
         return $this->description;
     }
 
-    public function getMaterial()
-    {
-        return $this->material;
-    }
 
-    public function setMaterial(\Atelier\MaterialBundle\Entity\Material $material)
-    {
-        $this->material=$material;
-    }
-
+	
     public function getUser()
     {
         return $this->user;
@@ -129,4 +104,91 @@ class Reservation
     {
         $this->user=$user;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->materials = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Set datebegin
+     *
+     * @param \DateTime $datebegin
+     * @return Reservation
+     */
+    public function setDatebegin($datebegin)
+    {
+        $this->datebegin = $datebegin;
+    
+        return $this;
+    }
+
+    /**
+     * Get datebegin
+     *
+     * @return \DateTime 
+     */
+    public function getDatebegin()
+    {
+        return $this->datebegin;
+    }
+
+    /**
+     * Set dateend
+     *
+     * @param \DateTime $dateend
+     * @return Reservation
+     */
+    public function setDateend($dateend)
+    {
+        $this->dateend = $dateend;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateend
+     *
+     * @return \DateTime 
+     */
+    public function getDateend()
+    {
+        return $this->dateend;
+    }
+
+    /**
+     * Add materials
+     *
+     * @param \Atelier\MaterialBundle\Entity\Material $materials
+     * @return Reservation
+     */
+    public function addMaterial(\Atelier\MaterialBundle\Entity\Material $materials)
+    {
+        $this->materials[] = $materials;
+    
+        return $this;
+    }
+
+    /**
+     * Remove materials
+     *
+     * @param \Atelier\MaterialBundle\Entity\Material $materials
+     */
+    public function removeMaterial(\Atelier\MaterialBundle\Entity\Material $materials)
+    {
+        $this->materials->removeElement($materials);
+    }
+
+    /**
+     * Get materials
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMaterials()
+    {
+        return $this->materials;
+    }
+    
 }

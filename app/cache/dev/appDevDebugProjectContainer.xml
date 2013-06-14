@@ -23,6 +23,8 @@
       <parameter key="AtelierMaterialBundle">Atelier\MaterialBundle\AtelierMaterialBundle</parameter>
       <parameter key="AtelierIndexBundle">Atelier\IndexBundle\AtelierIndexBundle</parameter>
       <parameter key="AtelierReservationBundle">Atelier\ReservationBundle\AtelierReservationBundle</parameter>
+      <parameter key="ShtumiUsefulBundle">Shtumi\UsefulBundle\ShtumiUsefulBundle</parameter>
+      <parameter key="SpraedPDFGeneratorBundle">Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
       <parameter key="SensioGeneratorBundle">Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle</parameter>
@@ -146,6 +148,7 @@
     <parameter key="templating.loader.cache.path">null</parameter>
     <parameter key="templating.engines" type="collection">
       <parameter>twig</parameter>
+      <parameter>php</parameter>
     </parameter>
     <parameter key="validator.class">Symfony\Component\Validator\Validator</parameter>
     <parameter key="validator.mapping.class_metadata_factory.class">Symfony\Component\Validator\Mapping\ClassMetadataFactory</parameter>
@@ -518,6 +521,13 @@
       <parameter>ResetPassword</parameter>
       <parameter>Default</parameter>
     </parameter>
+    <parameter key="shtumi.autocomplete_entities" type="collection"/>
+    <parameter key="shtumi.dependent_filtered_entities" type="collection"/>
+    <parameter key="shtumi.date_range" type="collection">
+      <parameter key="date_format">d/m/Y</parameter>
+      <parameter key="default_interval">P30D</parameter>
+    </parameter>
+    <parameter key="shtumi_dependent_filtered_entity_controller_route">ShtumiUsefulBundle:DependentFilteredEntity:getOptions</parameter>
     <parameter key="web_profiler.controller.profiler.class">Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController</parameter>
     <parameter key="web_profiler.controller.router.class">Symfony\Bundle\WebProfilerBundle\Controller\RouterController</parameter>
     <parameter key="web_profiler.controller.exception.class">Symfony\Bundle\WebProfilerBundle\Controller\ExceptionController</parameter>
@@ -574,9 +584,14 @@
     </parameter>
   </parameters>
   <services>
-    <service id="atelier_material.remove_product" class="Atelier\MaterialBundle\EventListener\RemoveProduct">
+    <service id="atelier_material.remove_product" class="Atelier\MaterialBundle\EventListener\PostRemove">
       <tag name="doctrine.event_listener" event="postRemove" method="postRemove"/>
     </service>
+    <service id="atelier_material.prepersist" class="Atelier\MaterialBundle\EventListener\PrePersist">
+      <tag name="doctrine.event_listener" event="prePersist" method="prePersist"/>
+      <argument type="service" id="atelier_material.uuid"/>
+    </service>
+    <service id="atelier_material.uuid" class="Atelier\MaterialBundle\UUID\Uuid"/>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -1115,6 +1130,9 @@
               <argument key="fos_user_registration">fos_user.registration.form.type</argument>
               <argument key="fos_user_change_password">fos_user.change_password.form.type</argument>
               <argument key="fos_user_resetting">fos_user.resetting.form.type</argument>
+              <argument key="shtumi_ajax_autocomplete">shtumi.useful.type.ajax_autocomplete</argument>
+              <argument key="shtumi_dependent_filtered_entity">shtumi.useful.type.dependent_filtered_entity</argument>
+              <argument key="shtumi_daterange">shtumi.useful.type.daterange</argument>
             </argument>
             <argument type="collection">
               <argument key="form" type="collection">
@@ -1615,7 +1633,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>51b9c65ba5020</argument>
+            <argument>51bb99773d0a1</argument>
           </service>
         </argument>
       </argument>
@@ -1860,7 +1878,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>51b9c65ba5020</argument>
+            <argument>51bb99773d0a1</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
           </service>
         </argument>
@@ -2131,6 +2149,24 @@
             <argument>true</argument>
           </service>
         </argument>
+        <argument key="php" type="service">
+          <service class="Assetic\Factory\Loader\CachedFormulaLoader" public="false">
+            <tag name="assetic.formula_loader" alias="php"/>
+            <tag name="assetic.templating.php"/>
+            <argument type="service">
+              <service class="Symfony\Bundle\AsseticBundle\Factory\Loader\AsseticHelperFormulaLoader" public="false">
+                <tag name="assetic.templating.php"/>
+                <argument type="service" id="assetic.asset_factory"/>
+              </service>
+            </argument>
+            <argument type="service">
+              <service class="Assetic\Cache\ConfigCache" public="false">
+                <argument>/opt/lampp/htdocs/Symfony/app/cache/dev/assetic/config</argument>
+              </service>
+            </argument>
+            <argument>true</argument>
+          </service>
+        </argument>
       </argument>
       <call method="addResource">
         <argument type="service">
@@ -2144,6 +2180,19 @@
           </service>
         </argument>
         <argument>twig</argument>
+      </call>
+      <call method="addResource">
+        <argument type="service">
+          <service class="Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource" public="false">
+            <tag name="assetic.templating.php"/>
+            <tag name="assetic.formula_resource" loader="php"/>
+            <argument type="service" id="templating.loader"/>
+            <argument></argument>
+            <argument>/opt/lampp/htdocs/Symfony/app/Resources/views</argument>
+            <argument>/\.[^.]+\.php$/</argument>
+          </service>
+        </argument>
+        <argument>php</argument>
       </call>
     </service>
     <service id="assetic.asset_factory" class="Symfony\Bundle\AsseticBundle\Factory\AssetFactory" public="false">
@@ -2164,6 +2213,12 @@
     </service>
     <service id="assetic.value_supplier.default" class="Symfony\Bundle\AsseticBundle\DefaultValueSupplier" public="false">
       <argument type="service" id="service_container"/>
+    </service>
+    <service id="assetic.helper.dynamic" class="Symfony\Bundle\AsseticBundle\Templating\DynamicAsseticHelper">
+      <tag name="assetic.templating.php"/>
+      <tag name="templating.helper" alias="assetic"/>
+      <argument type="service" id="templating.helper.router"/>
+      <argument type="service" id="assetic.asset_factory"/>
     </service>
     <service id="assetic.filter.cssrewrite" class="Assetic\Filter\CssRewriteFilter">
       <tag name="assetic.filter" alias="cssrewrite"/>
@@ -2248,6 +2303,12 @@
               <argument>postRemove</argument>
             </argument>
             <argument type="service" id="atelier_material.remove_product"/>
+          </call>
+          <call method="addEventListener">
+            <argument type="collection">
+              <argument>prePersist</argument>
+            </argument>
+            <argument type="service" id="atelier_material.prepersist"/>
           </call>
         </service>
       </argument>
@@ -2576,6 +2637,33 @@
       <argument type="service" id="router"/>
       <argument>86400</argument>
     </service>
+    <service id="shtumi.useful.type.ajax_autocomplete" class="Shtumi\UsefulBundle\Form\Type\AjaxAutocompleteType">
+      <tag name="form.type" alias="shtumi_ajax_autocomplete"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="shtumi.useful.type.dependent_filtered_entity" class="Shtumi\UsefulBundle\Form\Type\DependentFilteredEntityType">
+      <tag name="form.type" alias="shtumi_dependent_filtered_entity"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="shtumi.useful.type.daterange" class="Shtumi\UsefulBundle\Form\Type\DateRangeType">
+      <tag name="form.type" alias="shtumi_daterange"/>
+      <argument type="service" id="service_container"/>
+      <argument type="collection">
+        <argument key="date_format">d/m/Y</argument>
+        <argument key="default_interval">P30D</argument>
+      </argument>
+    </service>
+    <service id="shtumi.useful.orm.filter.type.ajax_autocomplete" class="Shtumi\UsefulBundle\Filter\AjaxAutocompleteFilter">
+      <tag name="sonata.admin.filter.type" alias="shtumi_ajax_autocomplete"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="shtumi_daterange" class="Shtumi\UsefulBundle\Service\DateRangeManager">
+      <argument type="collection">
+        <argument key="date_format">d/m/Y</argument>
+        <argument key="default_interval">P30D</argument>
+      </argument>
+    </service>
+    <service id="spraed.pdf.generator" class="Spraed\PDFGeneratorBundle\PDFGenerator\PDFGenerator"/>
     <service id="web_profiler.controller.profiler" class="Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController">
       <argument type="service" id="router" on-invalid="null"/>
       <argument type="service" id="profiler" on-invalid="null"/>
@@ -2819,17 +2907,14 @@
         </argument>
       </call>
     </service>
-    <service id="templating" class="Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine">
-      <argument type="service" id="twig"/>
-      <argument type="service" id="templating.name_parser"/>
-      <argument type="service" id="templating.locator"/>
-      <argument type="service" id="debug.stopwatch"/>
-      <argument type="service" id="templating.globals"/>
-      <call method="setDefaultEscapingStrategy">
-        <argument type="collection">
-          <argument type="service" id="templating"/>
-          <argument>guessDefaultEscapingStrategy</argument>
-        </argument>
+    <service id="templating" class="Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine">
+      <argument type="service" id="service_container"/>
+      <argument type="collection"/>
+      <call method="addEngine">
+        <argument type="service" id="debug.templating.engine.twig"/>
+      </call>
+      <call method="addEngine">
+        <argument type="service" id="debug.templating.engine.php"/>
       </call>
     </service>
     <service id="router" class="Symfony\Bundle\FrameworkBundle\Routing\Router">
@@ -2930,6 +3015,10 @@
         <argument>AtelierReservation</argument>
       </call>
       <call method="addPath">
+        <argument>/opt/lampp/htdocs/Symfony/vendor/shtumi/useful-bundle/Shtumi/UsefulBundle/Resources/views</argument>
+        <argument>ShtumiUseful</argument>
+      </call>
+      <call method="addPath">
         <argument>/opt/lampp/htdocs/Symfony/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views</argument>
         <argument>WebProfiler</argument>
       </call>
@@ -2942,6 +3031,19 @@
       </call>
       <call method="addPath">
         <argument>/opt/lampp/htdocs/Symfony/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form</argument>
+      </call>
+    </service>
+    <service id="debug.templating.engine.twig" class="Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine">
+      <argument type="service" id="twig"/>
+      <argument type="service" id="templating.name_parser"/>
+      <argument type="service" id="templating.locator"/>
+      <argument type="service" id="debug.stopwatch"/>
+      <argument type="service" id="templating.globals"/>
+      <call method="setDefaultEscapingStrategy">
+        <argument type="collection">
+          <argument type="service" id="debug.templating.engine.twig"/>
+          <argument>guessDefaultEscapingStrategy</argument>
+        </argument>
       </call>
     </service>
     <service id="logger" class="Symfony\Bridge\Monolog\Logger">
@@ -3054,7 +3156,6 @@
       <argument>Atelier\UserBundle\Entity\User</argument>
     </service>
     <service id="session.storage" alias="session.storage.native"/>
-    <service id="debug.templating.engine.twig" alias="templating"/>
     <service id="database_connection" alias="doctrine.dbal.default_connection"/>
     <service id="doctrine.orm.entity_manager" alias="doctrine.orm.default_entity_manager"/>
     <service id="fos_user.util.username_canonicalizer" alias="fos_user.util.email_canonicalizer"/>

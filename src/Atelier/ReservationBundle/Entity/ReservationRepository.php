@@ -30,12 +30,12 @@ class ReservationRepository extends EntityRepository
     return new Paginator($query);
   }
 
-  public function getMaterialReservation($nbByPage, $page, $material)
+  public function getMaterialReservation($nbByPage, $page, $materials)
   {
     if ($page < 1) {
       throw new \InvalidArgumentException('The $page argument cannot be less than 1 (value : "'.$page.'").');
     }
- 
+ /*
     $query = $this->createQueryBuilder('a')
                   ->where('a.material = '.$material->getId()) 
                   ->getQuery();
@@ -45,6 +45,7 @@ class ReservationRepository extends EntityRepository
           ->setMaxResults($nbByPage);
  
     return new Paginator($query);
+    */
   }
 
   public function getAllReservation($nbByPage, $page)

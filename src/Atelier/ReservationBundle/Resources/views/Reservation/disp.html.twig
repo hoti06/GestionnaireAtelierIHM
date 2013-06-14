@@ -11,7 +11,12 @@
 <ul>
   {% for res in list_reservations %}
 	<p>
-		<h4>Material id : {{ res.getMaterial().getId() }}</h4>
+	
+		<h4>Materials id : {% for material in res.getMaterials() %} {{ material.getId() }}, {% endfor %}</h4>
+                 
+                 
+                 <a href="{{ path('atelier_reservation_disp_barcode', {'id': res.getId()}) }}">Afficher les codes barres asssociées</a>
+	 
                 <ul>
                 <li>Begin : {{ res.getDateBegin()|date('Y-m-d') }}</li>
                 <li>End : {{ res.getDateEnd()|date('Y-m-d') }}</li>

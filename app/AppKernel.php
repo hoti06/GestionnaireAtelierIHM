@@ -23,6 +23,8 @@ class AppKernel extends Kernel
             new Atelier\MaterialBundle\AtelierMaterialBundle(),
             new Atelier\IndexBundle\AtelierIndexBundle(),
             new Atelier\ReservationBundle\AtelierReservationBundle(),
+            new Shtumi\UsefulBundle\ShtumiUsefulBundle(),
+            new Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

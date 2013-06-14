@@ -771,6 +771,377 @@ throw new \InvalidArgumentException(sprintf('Unable to find template "%s" : "%s"
 }
 }
 }
+namespace Symfony\Component\Templating\Storage
+{
+abstract class Storage
+{
+protected $template;
+public function __construct($template)
+{
+$this->template = $template;
+}
+public function __toString()
+{
+return (string) $this->template;
+}
+abstract public function getContent();
+}
+}
+namespace Symfony\Component\Templating\Storage
+{
+class FileStorage extends Storage
+{
+public function getContent()
+{
+return file_get_contents($this->template);
+}
+}
+}
+namespace Symfony\Component\Templating
+{
+interface EngineInterface
+{
+public function render($name, array $parameters = array());
+public function exists($name);
+public function supports($name);
+}
+}
+namespace Symfony\Bundle\FrameworkBundle\Templating
+{
+use Symfony\Component\Templating\EngineInterface as BaseEngineInterface;
+use Symfony\Component\HttpFoundation\Response;
+interface EngineInterface extends BaseEngineInterface
+{
+public function renderResponse($view, array $parameters = array(), Response $response = null);
+}
+}
+namespace Symfony\Component\Templating
+{
+use Symfony\Component\Templating\Storage\Storage;
+use Symfony\Component\Templating\Storage\FileStorage;
+use Symfony\Component\Templating\Storage\StringStorage;
+use Symfony\Component\Templating\Helper\HelperInterface;
+use Symfony\Component\Templating\Loader\LoaderInterface;
+if (!defined('ENT_SUBSTITUTE')) {
+define('ENT_SUBSTITUTE', 8);
+}
+class PhpEngine implements EngineInterface, \ArrayAccess
+{
+protected $loader;
+protected $current;
+protected $helpers;
+protected $parents;
+protected $stack;
+protected $charset;
+protected $cache;
+protected $escapers;
+protected static $escaperCache;
+protected $globals;
+protected $parser;
+public function __construct(TemplateNameParserInterface $parser, LoaderInterface $loader, array $helpers = array())
+{
+$this->parser = $parser;
+$this->loader = $loader;
+$this->parents = array();
+$this->stack = array();
+$this->charset ='UTF-8';
+$this->cache = array();
+$this->globals = array();
+$this->setHelpers($helpers);
+$this->initializeEscapers();
+foreach ($this->escapers as $context => $escaper) {
+$this->setEscaper($context, $escaper);
+}
+}
+public function render($name, array $parameters = array())
+{
+$storage = $this->load($name);
+$key = md5(serialize($storage));
+$this->current = $key;
+$this->parents[$key] = null;
+$parameters = array_replace($this->getGlobals(), $parameters);
+if (false === $content = $this->evaluate($storage, $parameters)) {
+throw new \RuntimeException(sprintf('The template "%s" cannot be rendered.', $this->parser->parse($name)));
+}
+if ($this->parents[$key]) {
+$slots = $this->get('slots');
+$this->stack[] = $slots->get('_content');
+$slots->set('_content', $content);
+$content = $this->render($this->parents[$key], $parameters);
+$slots->set('_content', array_pop($this->stack));
+}
+return $content;
+}
+public function exists($name)
+{
+try {
+$this->load($name);
+} catch (\InvalidArgumentException $e) {
+return false;
+}
+return true;
+}
+public function supports($name)
+{
+$template = $this->parser->parse($name);
+return'php'=== $template->get('engine');
+}
+protected function evaluate(Storage $template, array $parameters = array())
+{
+$__template__ = $template;
+if (isset($parameters['__template__'])) {
+throw new \InvalidArgumentException('Invalid parameter (__template__)');
+}
+if ($__template__ instanceof FileStorage) {
+extract($parameters, EXTR_SKIP);
+$view = $this;
+ob_start();
+require $__template__;
+return ob_get_clean();
+} elseif ($__template__ instanceof StringStorage) {
+extract($parameters, EXTR_SKIP);
+$view = $this;
+ob_start();
+eval('; ?>'.$__template__.'<?php ;');
+return ob_get_clean();
+}
+return false;
+}
+public function offsetGet($name)
+{
+return $this->get($name);
+}
+public function offsetExists($name)
+{
+return isset($this->helpers[$name]);
+}
+public function offsetSet($name, $value)
+{
+$this->set($name, $value);
+}
+public function offsetUnset($name)
+{
+throw new \LogicException(sprintf('You can\'t unset a helper (%s).', $name));
+}
+public function addHelpers(array $helpers)
+{
+foreach ($helpers as $alias => $helper) {
+$this->set($helper, is_int($alias) ? null : $alias);
+}
+}
+public function setHelpers(array $helpers)
+{
+$this->helpers = array();
+$this->addHelpers($helpers);
+}
+public function set(HelperInterface $helper, $alias = null)
+{
+$this->helpers[$helper->getName()] = $helper;
+if (null !== $alias) {
+$this->helpers[$alias] = $helper;
+}
+$helper->setCharset($this->charset);
+}
+public function has($name)
+{
+return isset($this->helpers[$name]);
+}
+public function get($name)
+{
+if (!isset($this->helpers[$name])) {
+throw new \InvalidArgumentException(sprintf('The helper "%s" is not defined.', $name));
+}
+return $this->helpers[$name];
+}
+public function extend($template)
+{
+$this->parents[$this->current] = $template;
+}
+public function escape($value, $context ='html')
+{
+if (is_numeric($value)) {
+return $value;
+}
+if (is_scalar($value)) {
+if (!isset(self::$escaperCache[$context][$value])) {
+self::$escaperCache[$context][$value] = call_user_func($this->getEscaper($context), $value);
+}
+return self::$escaperCache[$context][$value];
+}
+return call_user_func($this->getEscaper($context), $value);
+}
+public function setCharset($charset)
+{
+$this->charset = $charset;
+}
+public function getCharset()
+{
+return $this->charset;
+}
+public function setEscaper($context, $escaper)
+{
+$this->escapers[$context] = $escaper;
+self::$escaperCache[$context] = array();
+}
+public function getEscaper($context)
+{
+if (!isset($this->escapers[$context])) {
+throw new \InvalidArgumentException(sprintf('No registered escaper for context "%s".', $context));
+}
+return $this->escapers[$context];
+}
+public function addGlobal($name, $value)
+{
+$this->globals[$name] = $value;
+}
+public function getGlobals()
+{
+return $this->globals;
+}
+protected function initializeEscapers()
+{
+$that = $this;
+$this->escapers = array('html'=>
+function ($value) use ($that) {
+return is_string($value) ? htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $that->getCharset(), false) : $value;
+},'js'=>
+function ($value) use ($that) {
+if ('UTF-8'!= $that->getCharset()) {
+$value = $that->convertEncoding($value,'UTF-8', $that->getCharset());
+}
+$callback = function ($matches) use ($that) {
+$char = $matches[0];
+if (!isset($char[1])) {
+return'\\x'.substr('00'.bin2hex($char), -2);
+}
+$char = $that->convertEncoding($char,'UTF-16BE','UTF-8');
+return'\\u'.substr('0000'.bin2hex($char), -4);
+};
+if (null === $value = preg_replace_callback('#[^\p{L}\p{N} ]#u', $callback, $value)) {
+throw new \InvalidArgumentException('The string to escape is not a valid UTF-8 string.');
+}
+if ('UTF-8'!= $that->getCharset()) {
+$value = $that->convertEncoding($value, $that->getCharset(),'UTF-8');
+}
+return $value;
+},
+);
+self::$escaperCache = array();
+}
+public function convertEncoding($string, $to, $from)
+{
+if (function_exists('mb_convert_encoding')) {
+return mb_convert_encoding($string, $to, $from);
+} elseif (function_exists('iconv')) {
+return iconv($from, $to, $string);
+}
+throw new \RuntimeException('No suitable convert encoding function (use UTF-8 as your encoding or install the iconv or mbstring extension).');
+}
+public function getLoader()
+{
+return $this->loader;
+}
+protected function load($name)
+{
+$template = $this->parser->parse($name);
+$key = $template->getLogicalName();
+if (isset($this->cache[$key])) {
+return $this->cache[$key];
+}
+$storage = $this->loader->load($template);
+if (false === $storage) {
+throw new \InvalidArgumentException(sprintf('The template "%s" does not exist.', $template));
+}
+return $this->cache[$key] = $storage;
+}
+}
+}
+namespace Symfony\Bundle\FrameworkBundle\Templating
+{
+use Symfony\Component\Templating\PhpEngine as BasePhpEngine;
+use Symfony\Component\Templating\Loader\LoaderInterface;
+use Symfony\Component\Templating\TemplateNameParserInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
+class PhpEngine extends BasePhpEngine implements EngineInterface
+{
+protected $container;
+public function __construct(TemplateNameParserInterface $parser, ContainerInterface $container, LoaderInterface $loader, GlobalVariables $globals = null)
+{
+$this->container = $container;
+parent::__construct($parser, $loader);
+if (null !== $globals) {
+$this->addGlobal('app', $globals);
+}
+}
+public function get($name)
+{
+if (!isset($this->helpers[$name])) {
+throw new \InvalidArgumentException(sprintf('The helper "%s" is not defined.', $name));
+}
+if (is_string($this->helpers[$name])) {
+$this->helpers[$name] = $this->container->get($this->helpers[$name]);
+$this->helpers[$name]->setCharset($this->charset);
+}
+return $this->helpers[$name];
+}
+public function setHelpers(array $helpers)
+{
+$this->helpers = $helpers;
+}
+public function renderResponse($view, array $parameters = array(), Response $response = null)
+{
+if (null === $response) {
+$response = new Response();
+}
+$response->setContent($this->render($view, $parameters));
+return $response;
+}
+}
+}
+namespace Symfony\Component\Templating\Loader
+{
+use Symfony\Component\Templating\TemplateReferenceInterface;
+interface LoaderInterface
+{
+public function load(TemplateReferenceInterface $template);
+public function isFresh(TemplateReferenceInterface $template, $time);
+}
+}
+namespace Symfony\Bundle\FrameworkBundle\Templating\Loader
+{
+use Symfony\Component\Templating\Storage\FileStorage;
+use Symfony\Component\Templating\Loader\LoaderInterface;
+use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Templating\TemplateReferenceInterface;
+class FilesystemLoader implements LoaderInterface
+{
+protected $locator;
+public function __construct(FileLocatorInterface $locator)
+{
+$this->locator = $locator;
+}
+public function load(TemplateReferenceInterface $template)
+{
+try {
+$file = $this->locator->locate($template);
+} catch (\InvalidArgumentException $e) {
+return false;
+}
+return new FileStorage($file);
+}
+public function isFresh(TemplateReferenceInterface $template, $time)
+{
+if (false === $storage = $this->load($template)) {
+return false;
+}
+if (!is_readable((string) $storage)) {
+return false;
+}
+return filemtime((string) $storage) < $time;
+}
+}
+}
 namespace Symfony\Component\Routing
 {
 interface RequestContextAwareInterface
@@ -2758,7 +3129,7 @@ namespace
 {
 class Twig_Environment
 {
-const VERSION ='1.13.1';
+const VERSION ='1.13.2-DEV';
 protected $charset;
 protected $loader;
 protected $debug;
@@ -4466,6 +4837,7 @@ public function formatBatch(array $records);
 }
 namespace Monolog\Formatter
 {
+use Exception;
 class NormalizerFormatter implements FormatterInterface
 {
 const SIMPLE_DATE ="Y-m-d H:i:s";
@@ -4492,7 +4864,12 @@ return $data;
 }
 if (is_array($data) || $data instanceof \Traversable) {
 $normalized = array();
+$count = 1;
 foreach ($data as $key => $value) {
+if ($count++ >= 1000) {
+$normalized['...'] ='Over 1000 items, aborting normalization';
+break;
+}
 $normalized[$key] = $this->normalize($value);
 }
 return $normalized;
@@ -4501,12 +4878,33 @@ if ($data instanceof \DateTime) {
 return $data->format($this->dateFormat);
 }
 if (is_object($data)) {
+if ($data instanceof Exception) {
+return $this->normalizeException($data);
+}
 return sprintf("[object] (%s: %s)", get_class($data), $this->toJson($data, true));
 }
 if (is_resource($data)) {
 return'[resource]';
 }
 return'[unknown('.gettype($data).')]';
+}
+protected function normalizeException(Exception $e)
+{
+$data = array('class'=> get_class($e),'message'=> $e->getMessage(),'file'=> $e->getFile().':'.$e->getLine(),
+);
+$trace = $e->getTrace();
+array_shift($trace);
+foreach ($trace as $frame) {
+if (isset($frame['file'])) {
+$data['trace'][] = $frame['file'].':'.$frame['line'];
+} else {
+$data['trace'][] = json_encode($frame);
+}
+}
+if ($previous = $e->getPrevious()) {
+$data['previous'] = $this->normalizeException($previous);
+}
+return $data;
 }
 protected function toJson($data, $ignoreErrors = false)
 {
@@ -4951,6 +5349,7 @@ const ERROR = 400;
 const CRITICAL = 500;
 const ALERT = 550;
 const EMERGENCY = 600;
+const API = 1;
 protected static $levels = array(
 100 =>'DEBUG',
 200 =>'INFO',

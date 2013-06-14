@@ -18,7 +18,7 @@ framework:
     csrf_protection: ~
     validation:      { enable_annotations: true }
     templating:
-        engines: ['twig']
+        engines: ['twig', 'php']
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
@@ -71,7 +71,18 @@ swiftmailer:
 
 
 services:
-  atelier_material.remove_product:
-        class: Atelier\MaterialBundle\EventListener\RemoveProduct
+    atelier_material.remove_product:
+        class: Atelier\MaterialBundle\EventListener\PostRemove
         tags:
             - { name: doctrine.event_listener, event: postRemove, method: postRemove }
+    
+    atelier_material.prepersist:
+        class: Atelier\MaterialBundle\EventListener\PrePersist
+        arguments: [@atelier_material.uuid] 
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, method: prePersist }
+
+    atelier_material.uuid:
+        class: Atelier\MaterialBundle\UUID\Uuid
+        
+        

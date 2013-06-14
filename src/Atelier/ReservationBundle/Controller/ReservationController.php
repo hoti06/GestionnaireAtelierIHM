@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Atelier\ReservationBundle\Entity\Reservation;
 use Atelier\ReservationBundle\Form\BookingType;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class ReservationController extends Controller
 {
@@ -22,8 +24,10 @@ class ReservationController extends Controller
         	$reservation->setUser($user);
 		$form->bind($request);
 		if ($form->isValid()) {
+			$bool = true;
+			/*
 			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
-			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterial());
+			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterials());
 			$bool = true;
 			foreach ($listReservation as $re)
 			{
@@ -35,7 +39,7 @@ class ReservationController extends Controller
 					$bool = false;
 					break;
 				}
-			}
+			}*/
 			if ($bool)
 			{
 				$em = $this->getDoctrine()->getManager();
@@ -100,8 +104,10 @@ class ReservationController extends Controller
         if ($request->getMethod() == 'POST') {
 		$form->bind($request);
 		if ($form->isValid()) {
+			$bool = true;
+			/*
 			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
-			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterial());
+			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterials());
 			$bool = true;
 			foreach ($listReservation as $re)
 			{
@@ -114,6 +120,7 @@ class ReservationController extends Controller
 					break;
 				}
 			}
+			*/
 			if ($bool)
 			{
 				$em = $this->getDoctrine()->getManager();
@@ -127,4 +134,27 @@ class ReservationController extends Controller
 			'form' => $form->createView(),
 			));
     }
+    
+
+    public function dispBarcodeAction($id)
+    {
+		$em = $this->getDoctrine()->getManager();
+		$repository = $em->getRepository('AtelierReservationBundle:Reservation');
+        $reservation=$repository->find($id);
+        
+		
+		 $html = $this->renderView('AtelierReservationBundle:Reservation:barcode.html.php', array(
+			'reservation' => $reservation,
+			));
+			
+		$pdfGenerator = $this->get('spraed.pdf.generator');
+
+		return new Response($pdfGenerator->generatePDF($html, 'UTF-8'),
+                    200,
+                    array(
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'inline; filename="out.pdf"'
+                    ));
+        
+	}
 }

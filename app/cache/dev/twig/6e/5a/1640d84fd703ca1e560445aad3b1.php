@@ -51,25 +51,42 @@ class __TwigTemplate_6e5a1640d84fd703ca1e560445aad3b1 extends Twig_Template
         foreach ($context['_seq'] as $context["_key"] => $context["res"]) {
             // line 13
             echo "\t<p>
-\t\t<h4>Material id : ";
-            // line 14
-            echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["res"]) ? $context["res"] : $this->getContext($context, "res")), "getMaterial", array(), "method"), "getId", array(), "method"), "html", null, true);
+\t
+\t\t<h4>Materials id : ";
+            // line 15
+            $context['_parent'] = (array) $context;
+            $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["res"]) ? $context["res"] : $this->getContext($context, "res")), "getMaterials", array(), "method"));
+            foreach ($context['_seq'] as $context["_key"] => $context["material"]) {
+                echo " ";
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "getId", array(), "method"), "html", null, true);
+                echo ", ";
+            }
+            $_parent = $context['_parent'];
+            unset($context['_seq'], $context['_iterated'], $context['_key'], $context['material'], $context['_parent'], $context['loop']);
+            $context = array_intersect_key($context, $_parent) + $_parent;
             echo "</h4>
+                 
+                 
+                 <a href=\"";
+            // line 18
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_reservation_disp_barcode", array("id" => $this->getAttribute((isset($context["res"]) ? $context["res"] : $this->getContext($context, "res")), "getId", array(), "method"))), "html", null, true);
+            echo "\">Afficher les codes barres asssociées</a>
+\t 
                 <ul>
                 <li>Begin : ";
-            // line 16
+            // line 21
             echo twig_escape_filter($this->env, twig_date_format_filter($this->env, $this->getAttribute((isset($context["res"]) ? $context["res"] : $this->getContext($context, "res")), "getDateBegin", array(), "method"), "Y-m-d"), "html", null, true);
             echo "</li>
                 <li>End : ";
-            // line 17
+            // line 22
             echo twig_escape_filter($this->env, twig_date_format_filter($this->env, $this->getAttribute((isset($context["res"]) ? $context["res"] : $this->getContext($context, "res")), "getDateEnd", array(), "method"), "Y-m-d"), "html", null, true);
             echo "</li>
 \t\t<a href=\"";
-            // line 18
+            // line 23
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_reservation_delete", array("id" => $this->getAttribute((isset($context["res"]) ? $context["res"] : $this->getContext($context, "res")), "getId", array(), "method"))), "html", null, true);
             echo "\">delete</a>
 \t\t<a href=\"";
-            // line 19
+            // line 24
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_reservation_change", array("id" => $this->getAttribute((isset($context["res"]) ? $context["res"] : $this->getContext($context, "res")), "getId", array(), "method"))), "html", null, true);
             echo "\">change</a>
                 </ul>
@@ -79,30 +96,30 @@ class __TwigTemplate_6e5a1640d84fd703ca1e560445aad3b1 extends Twig_Template
             $context['_iterated'] = true;
         }
         if (!$context['_iterated']) {
-            // line 24
+            // line 29
             echo "    <p>There aren't any reservation for the moment</p>
   ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['res'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 26
+        // line 31
         echo "</ul>
   <div class=\"pagination\">
     <ul>
       ";
-        // line 29
+        // line 34
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable(range(1, (isset($context["nbPage"]) ? $context["nbPage"] : $this->getContext($context, "nbPage"))));
         foreach ($context['_seq'] as $context["_key"] => $context["p"]) {
-            // line 30
+            // line 35
             echo "        <li";
             if (((isset($context["p"]) ? $context["p"] : $this->getContext($context, "p")) == (isset($context["page"]) ? $context["page"] : $this->getContext($context, "page")))) {
                 echo " class=\"active\"";
             }
             echo ">
           <a href=\"";
-            // line 31
+            // line 36
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_reservation_list", array("page" => (isset($context["p"]) ? $context["p"] : $this->getContext($context, "p")))), "html", null, true);
             echo "\">";
             echo twig_escape_filter($this->env, (isset($context["p"]) ? $context["p"] : $this->getContext($context, "p")), "html", null, true);
@@ -113,7 +130,7 @@ class __TwigTemplate_6e5a1640d84fd703ca1e560445aad3b1 extends Twig_Template
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['p'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 34
+        // line 39
         echo "    </ul>
   </div>
 
@@ -132,6 +149,6 @@ class __TwigTemplate_6e5a1640d84fd703ca1e560445aad3b1 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  117 => 34,  106 => 31,  99 => 30,  95 => 29,  90 => 26,  83 => 24,  73 => 19,  69 => 18,  65 => 17,  61 => 16,  56 => 14,  53 => 13,  48 => 12,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
+        return array (  134 => 39,  123 => 36,  116 => 35,  112 => 34,  107 => 31,  100 => 29,  90 => 24,  86 => 23,  82 => 22,  78 => 21,  72 => 18,  57 => 15,  53 => 13,  48 => 12,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
     }
 }

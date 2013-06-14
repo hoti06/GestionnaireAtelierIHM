@@ -166,6 +166,11 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_reservation_delete')), array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::deleteAction',));
             }
 
+            // atelier_reservation_disp_barcode
+            if (preg_match('#^/booking/(?P<id>[^/]++)/dispBarcode$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'atelier_reservation_disp_barcode')), array (  '_controller' => 'Atelier\\ReservationBundle\\Controller\\ReservationController::dispBarcodeAction',));
+            }
+
         }
 
         if (0 === strpos($pathinfo, '/user')) {

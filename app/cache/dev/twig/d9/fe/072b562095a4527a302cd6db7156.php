@@ -65,14 +65,20 @@ class __TwigTemplate_d9fe072b562095a4527a302cd6db7156 extends Twig_Template
         $this->env->loadTemplate("AtelierMaterialBundle:Material:material.html.twig")->display($context);
         echo " </h3>
 <p>
-\tDescription =  ";
+\tUUID =  ";
         // line 19
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "uuid"), "html", null, true);
+        echo " 
+</p>
+<p>
+\tDescription =  ";
+        // line 22
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "description"), "html", null, true);
         echo " 
 </p>
 <p>
 \tProduct =  <a href=\"";
-        // line 22
+        // line 25
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_product_disp", array("id" => $this->getAttribute($this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "product"), "id"))), "html", null, true);
         echo "\">";
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "product"), "name"), "html", null, true);
@@ -83,7 +89,7 @@ class __TwigTemplate_d9fe072b562095a4527a302cd6db7156 extends Twig_Template
 
 <p>
     <a href=\"";
-        // line 28
+        // line 31
         echo $this->env->getExtension('routing')->getPath("atelier_material_dispAll");
         echo "\" class=\"btn\">
       <i class=\"icon-chevron-left\"></i>
@@ -91,14 +97,14 @@ class __TwigTemplate_d9fe072b562095a4527a302cd6db7156 extends Twig_Template
     </a>
     
     <a href=\"";
-        // line 33
+        // line 36
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_material_edit", array("id" => $this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "id"))), "html", null, true);
         echo "\" class=\"btn\">
       <i class=\"icon-edit\"></i>
       Edit the material
     </a>
     <a href=\"";
-        // line 37
+        // line 40
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("atelier_material_delete", array("id" => $this->getAttribute((isset($context["material"]) ? $context["material"] : $this->getContext($context, "material")), "id"))), "html", null, true);
         echo "\" class=\"btn\">
       <i class=\"icon-trash\"></i>
@@ -123,6 +129,6 @@ class __TwigTemplate_d9fe072b562095a4527a302cd6db7156 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  102 => 37,  95 => 33,  87 => 28,  76 => 22,  70 => 19,  65 => 17,  61 => 15,  52 => 13,  48 => 12,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
+        return array (  108 => 40,  101 => 36,  93 => 31,  82 => 25,  76 => 22,  70 => 19,  65 => 17,  61 => 15,  52 => 13,  48 => 12,  42 => 8,  39 => 7,  32 => 4,  29 => 3,);
     }
 }

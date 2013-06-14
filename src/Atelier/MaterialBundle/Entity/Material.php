@@ -25,6 +25,16 @@ class Material
     private $id;
 
 
+	protected $container = NULL;
+
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="uuid", type="string", nullable=false)
+     */
+	private $uuid;
+
+
 	/**
      * @var text
      *
@@ -38,6 +48,13 @@ class Material
 	*/
 	private $product;
 	
+
+/**
+   * @ORM\ManyToMany(targetEntity="Atelier\ReservationBundle\Entity\Reservation", mappedBy="materials")
+   */
+  private $bookings; 
+ 	
+	
     /**
      * Get id
      *
@@ -48,6 +65,16 @@ class Material
         return $this->id;
     }
 
+
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+    
+    public function getContainer()
+    {
+        return $this->container;
+    }
     /**
      * Set description
      *
@@ -70,6 +97,8 @@ class Material
     {
         return $this->description;
     }
+
+
 
     /**
      * Set product
@@ -94,4 +123,55 @@ class Material
         return $this->product;
     }
     
+    /**
+     * Constructor
+     */
+    public function __construct(/*$container*/)
+    {
+        $this->bookings = new \Doctrine\Common\Collections\ArrayCollection();
+		//$this->container = $container;
+		
+    //    $this->uuid = $this->get('atelier_material.uuid')->genererUUID();
+    }
+    
+    /**
+     * Add bookings
+     *
+     * @param \Atelier\ReservationBundle\Entity\Reservation $bookings
+     * @return Material
+     */
+    public function addBooking(\Atelier\ReservationBundle\Entity\Reservation $bookings)
+    {
+        $this->bookings[] = $bookings;
+    
+        return $this;
+    }
+
+    /**
+     * Remove bookings
+     *
+     * @param \Atelier\ReservationBundle\Entity\Reservation $bookings
+     */
+    public function removeBooking(\Atelier\ReservationBundle\Entity\Reservation $bookings)
+    {
+        $this->bookings->removeElement($bookings);
+    }
+
+    /**
+     * Get bookings
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBookings()
+    {
+        return $this->bookings;
+    }
+    
+
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+    
+        return $this;
+    }
 }

@@ -17,3 +17,7 @@ atelier_reservation_change:
 atelier_reservation_delete:
     pattern:  /{id}/delete
     defaults: { _controller: AtelierReservationBundle:Reservation:delete }
+
+atelier_reservation_disp_barcode:
+    pattern:  /{id}/dispBarcode
+    defaults: { _controller: AtelierReservationBundle:Reservation:dispBarcode }

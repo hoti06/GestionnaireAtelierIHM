@@ -8,12 +8,10 @@
     <parameters>
         <parameter key="atelier_material.example.class">Atelier\MaterialBundle\Example</parameter>
     </parameters>
-
+	-->
+	<!--
     <services>
-        <service id="atelier_material.example" class="%atelier_material.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="atelier_material.uuid" class="Atelier\MaterialBundle\UUID\Uuid">
         </service>
     </services>
     -->

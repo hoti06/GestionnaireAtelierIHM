@@ -41,9 +41,12 @@ class appDevDebugProjectContainer extends Container
             'assetic.controller' => 'getAssetic_ControllerService',
             'assetic.filter.cssrewrite' => 'getAssetic_Filter_CssrewriteService',
             'assetic.filter_manager' => 'getAssetic_FilterManagerService',
+            'assetic.helper.dynamic' => 'getAssetic_Helper_DynamicService',
             'assetic.request_listener' => 'getAssetic_RequestListenerService',
             'assetic.value_supplier.default' => 'getAssetic_ValueSupplier_DefaultService',
+            'atelier_material.prepersist' => 'getAtelierMaterial_PrepersistService',
             'atelier_material.remove_product' => 'getAtelierMaterial_RemoveProductService',
+            'atelier_material.uuid' => 'getAtelierMaterial_UuidService',
             'cache_clearer' => 'getCacheClearerService',
             'cache_warmer' => 'getCacheWarmerService',
             'controller_name_converter' => 'getControllerNameConverterService',
@@ -55,6 +58,7 @@ class appDevDebugProjectContainer extends Container
             'debug.event_dispatcher' => 'getDebug_EventDispatcherService',
             'debug.stopwatch' => 'getDebug_StopwatchService',
             'debug.templating.engine.php' => 'getDebug_Templating_Engine_PhpService',
+            'debug.templating.engine.twig' => 'getDebug_Templating_Engine_TwigService',
             'doctrine' => 'getDoctrineService',
             'doctrine.dbal.connection_factory' => 'getDoctrine_Dbal_ConnectionFactoryService',
             'doctrine.dbal.default_connection' => 'getDoctrine_Dbal_DefaultConnectionService',
@@ -187,6 +191,12 @@ class appDevDebugProjectContainer extends Container
             'session.storage.native' => 'getSession_Storage_NativeService',
             'session.storage.php_bridge' => 'getSession_Storage_PhpBridgeService',
             'session_listener' => 'getSessionListenerService',
+            'shtumi.useful.orm.filter.type.ajax_autocomplete' => 'getShtumi_Useful_Orm_Filter_Type_AjaxAutocompleteService',
+            'shtumi.useful.type.ajax_autocomplete' => 'getShtumi_Useful_Type_AjaxAutocompleteService',
+            'shtumi.useful.type.daterange' => 'getShtumi_Useful_Type_DaterangeService',
+            'shtumi.useful.type.dependent_filtered_entity' => 'getShtumi_Useful_Type_DependentFilteredEntityService',
+            'shtumi_daterange' => 'getShtumiDaterangeService',
+            'spraed.pdf.generator' => 'getSpraed_Pdf_GeneratorService',
             'streamed_response_listener' => 'getStreamedResponseListenerService',
             'swiftmailer.email_sender.listener' => 'getSwiftmailer_EmailSender_ListenerService',
             'swiftmailer.plugin.messagelogger' => 'getSwiftmailer_Plugin_MessageloggerService',
@@ -251,11 +261,12 @@ class appDevDebugProjectContainer extends Container
             'web_profiler.controller.profiler' => 'getWebProfiler_Controller_ProfilerService',
             'web_profiler.controller.router' => 'getWebProfiler_Controller_RouterService',
             'web_profiler.debug_toolbar' => 'getWebProfiler_DebugToolbarService',
-            'database_connection' => 'getDoctrine_Dbal_DefaultConnectionService',
-            'debug.templating.engine.twig' => 'getTemplatingService',
-            'doctrine.orm.entity_manager' => 'getDoctrine_Orm_DefaultEntityManagerService',
-            'fos_user.util.username_canonicalizer' => 'getFosUser_Util_EmailCanonicalizerService',
-            'session.storage' => 'getSession_Storage_NativeService',
+        );
+        $this->aliases = array(
+            'database_connection' => 'doctrine.dbal.default_connection',
+            'doctrine.orm.entity_manager' => 'doctrine.orm.default_entity_manager',
+            'fos_user.util.username_canonicalizer' => 'fos_user.util.email_canonicalizer',
+            'session.storage' => 'session.storage.native',
         );
     }
 
@@ -282,9 +293,15 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getAssetic_AssetManagerService()
     {
-        $this->services['assetic.asset_manager'] = $instance = new \Assetic\Factory\LazyAssetManager($this->get('assetic.asset_factory'), array('twig' => new \Assetic\Factory\Loader\CachedFormulaLoader(new \Assetic\Extension\Twig\TwigFormulaLoader($this->get('twig')), new \Assetic\Cache\ConfigCache('/opt/lampp/htdocs/Symfony/app/cache/dev/assetic/config'), true)));
+        $a = $this->get('assetic.asset_factory');
+        $b = $this->get('templating.loader');
 
-        $instance->addResource(new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($this->get('templating.loader'), '', '/opt/lampp/htdocs/Symfony/app/Resources/views', '/\\.[^.]+\\.twig$/'), 'twig');
+        $c = new \Assetic\Cache\ConfigCache('/opt/lampp/htdocs/Symfony/app/cache/dev/assetic/config');
+
+        $this->services['assetic.asset_manager'] = $instance = new \Assetic\Factory\LazyAssetManager($a, array('twig' => new \Assetic\Factory\Loader\CachedFormulaLoader(new \Assetic\Extension\Twig\TwigFormulaLoader($this->get('twig')), $c, true), 'php' => new \Assetic\Factory\Loader\CachedFormulaLoader(new \Symfony\Bundle\AsseticBundle\Factory\Loader\AsseticHelperFormulaLoader($a), $c, true)));
+
+        $instance->addResource(new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($b, '', '/opt/lampp/htdocs/Symfony/app/Resources/views', '/\\.[^.]+\\.twig$/'), 'twig');
+        $instance->addResource(new \Symfony\Bundle\AsseticBundle\Factory\Resource\DirectoryResource($b, '', '/opt/lampp/htdocs/Symfony/app/Resources/views', '/\\.[^.]+\\.php$/'), 'php');
 
         return $instance;
     }
@@ -332,6 +349,19 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'assetic.helper.dynamic' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Symfony\Bundle\AsseticBundle\Templating\DynamicAsseticHelper A Symfony\Bundle\AsseticBundle\Templating\DynamicAsseticHelper instance.
+     */
+    protected function getAssetic_Helper_DynamicService()
+    {
+        return $this->services['assetic.helper.dynamic'] = new \Symfony\Bundle\AsseticBundle\Templating\DynamicAsseticHelper($this->get('templating.helper.router'), $this->get('assetic.asset_factory'));
+    }
+
+    /**
      * Gets the 'assetic.request_listener' service.
      *
      * This service is shared.
@@ -345,16 +375,42 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'atelier_material.prepersist' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Atelier\MaterialBundle\EventListener\PrePersist A Atelier\MaterialBundle\EventListener\PrePersist instance.
+     */
+    protected function getAtelierMaterial_PrepersistService()
+    {
+        return $this->services['atelier_material.prepersist'] = new \Atelier\MaterialBundle\EventListener\PrePersist($this->get('atelier_material.uuid'));
+    }
+
+    /**
      * Gets the 'atelier_material.remove_product' service.
      *
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return Atelier\MaterialBundle\EventListener\RemoveProduct A Atelier\MaterialBundle\EventListener\RemoveProduct instance.
+     * @return Atelier\MaterialBundle\EventListener\PostRemove A Atelier\MaterialBundle\EventListener\PostRemove instance.
      */
     protected function getAtelierMaterial_RemoveProductService()
     {
-        return $this->services['atelier_material.remove_product'] = new \Atelier\MaterialBundle\EventListener\RemoveProduct();
+        return $this->services['atelier_material.remove_product'] = new \Atelier\MaterialBundle\EventListener\PostRemove();
+    }
+
+    /**
+     * Gets the 'atelier_material.uuid' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Atelier\MaterialBundle\UUID\Uuid A Atelier\MaterialBundle\UUID\Uuid instance.
+     */
+    protected function getAtelierMaterial_UuidService()
+    {
+        return $this->services['atelier_material.uuid'] = new \Atelier\MaterialBundle\UUID\Uuid();
     }
 
     /**
@@ -501,6 +557,23 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'debug.templating.engine.twig' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine A Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine instance.
+     */
+    protected function getDebug_Templating_Engine_TwigService()
+    {
+        $this->services['debug.templating.engine.twig'] = $instance = new \Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine($this->get('twig'), $this->get('templating.name_parser'), $this->get('templating.locator'), $this->get('debug.stopwatch'), $this->get('templating.globals'));
+
+        $instance->setDefaultEscapingStrategy(array(0 => $instance, 1 => 'guessDefaultEscapingStrategy'));
+
+        return $instance;
+    }
+
+    /**
      * Gets the 'doctrine' service.
      *
      * This service is shared.
@@ -546,6 +619,7 @@ class appDevDebugProjectContainer extends Container
         $c = new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this);
         $c->addEventSubscriber(new \FOS\UserBundle\Entity\UserListener($this));
         $c->addEventListener(array(0 => 'postRemove'), $this->get('atelier_material.remove_product'));
+        $c->addEventListener(array(0 => 'prePersist'), $this->get('atelier_material.prepersist'));
 
         return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('dbname' => 'user', 'host' => '127.0.0.1', 'port' => NULL, 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driver' => 'pdo_mysql', 'driverOptions' => array()), $b, $c, array());
     }
@@ -749,7 +823,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getForm_RegistryService()
     {
-        return $this->services['form.registry'] = new \Symfony\Component\Form\FormRegistry(array(0 => new \Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension($this, array('form' => 'form.type.form', 'birthday' => 'form.type.birthday', 'checkbox' => 'form.type.checkbox', 'choice' => 'form.type.choice', 'collection' => 'form.type.collection', 'country' => 'form.type.country', 'date' => 'form.type.date', 'datetime' => 'form.type.datetime', 'email' => 'form.type.email', 'file' => 'form.type.file', 'hidden' => 'form.type.hidden', 'integer' => 'form.type.integer', 'language' => 'form.type.language', 'locale' => 'form.type.locale', 'money' => 'form.type.money', 'number' => 'form.type.number', 'password' => 'form.type.password', 'percent' => 'form.type.percent', 'radio' => 'form.type.radio', 'repeated' => 'form.type.repeated', 'search' => 'form.type.search', 'textarea' => 'form.type.textarea', 'text' => 'form.type.text', 'time' => 'form.type.time', 'timezone' => 'form.type.timezone', 'url' => 'form.type.url', 'button' => 'form.type.button', 'submit' => 'form.type.submit', 'reset' => 'form.type.reset', 'currency' => 'form.type.currency', 'entity' => 'form.type.entity', 'fos_user_username' => 'fos_user.username_form_type', 'fos_user_profile' => 'fos_user.profile.form.type', 'fos_user_registration' => 'fos_user.registration.form.type', 'fos_user_change_password' => 'fos_user.change_password.form.type', 'fos_user_resetting' => 'fos_user.resetting.form.type'), array('form' => array(0 => 'form.type_extension.form.http_foundation', 1 => 'form.type_extension.form.validator', 2 => 'form.type_extension.csrf'), 'repeated' => array(0 => 'form.type_extension.repeated.validator'), 'submit' => array(0 => 'form.type_extension.submit.validator')), array(0 => 'form.type_guesser.validator', 1 => 'form.type_guesser.doctrine'))), $this->get('form.resolved_type_factory'));
+        return $this->services['form.registry'] = new \Symfony\Component\Form\FormRegistry(array(0 => new \Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension($this, array('form' => 'form.type.form', 'birthday' => 'form.type.birthday', 'checkbox' => 'form.type.checkbox', 'choice' => 'form.type.choice', 'collection' => 'form.type.collection', 'country' => 'form.type.country', 'date' => 'form.type.date', 'datetime' => 'form.type.datetime', 'email' => 'form.type.email', 'file' => 'form.type.file', 'hidden' => 'form.type.hidden', 'integer' => 'form.type.integer', 'language' => 'form.type.language', 'locale' => 'form.type.locale', 'money' => 'form.type.money', 'number' => 'form.type.number', 'password' => 'form.type.password', 'percent' => 'form.type.percent', 'radio' => 'form.type.radio', 'repeated' => 'form.type.repeated', 'search' => 'form.type.search', 'textarea' => 'form.type.textarea', 'text' => 'form.type.text', 'time' => 'form.type.time', 'timezone' => 'form.type.timezone', 'url' => 'form.type.url', 'button' => 'form.type.button', 'submit' => 'form.type.submit', 'reset' => 'form.type.reset', 'currency' => 'form.type.currency', 'entity' => 'form.type.entity', 'fos_user_username' => 'fos_user.username_form_type', 'fos_user_profile' => 'fos_user.profile.form.type', 'fos_user_registration' => 'fos_user.registration.form.type', 'fos_user_change_password' => 'fos_user.change_password.form.type', 'fos_user_resetting' => 'fos_user.resetting.form.type', 'shtumi_ajax_autocomplete' => 'shtumi.useful.type.ajax_autocomplete', 'shtumi_dependent_filtered_entity' => 'shtumi.useful.type.dependent_filtered_entity', 'shtumi_daterange' => 'shtumi.useful.type.daterange'), array('form' => array(0 => 'form.type_extension.form.http_foundation', 1 => 'form.type_extension.form.validator', 2 => 'form.type_extension.csrf'), 'repeated' => array(0 => 'form.type_extension.repeated.validator'), 'submit' => array(0 => 'form.type_extension.submit.validator')), array(0 => 'form.type_guesser.validator', 1 => 'form.type_guesser.doctrine'))), $this->get('form.resolved_type_factory'));
     }
 
     /**
@@ -2106,7 +2180,7 @@ class appDevDebugProjectContainer extends Container
         $l = new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler($j, array('default_target_path' => '/user/profile', 'login_path' => 'fos_user_security_login', 'always_use_default_target_path' => false, 'target_path_parameter' => '_target_path', 'use_referer' => false));
         $l->setProviderKey('secured_area');
 
-        return $this->services['security.firewall.map.context.secured_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username')), 'secured_area', $a, $c), 2 => $k, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $j, 'secured_area', $l, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($e, $j, array('login_path' => 'fos_user_security_login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('check_path' => 'fos_user_security_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '51b9c65ba5020', $a), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $f, $a)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'secured_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $j, 'fos_user_security_login', false), NULL, NULL, $a));
+        return $this->services['security.firewall.map.context.secured_area'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($i, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => $this->get('fos_user.user_provider.username')), 'secured_area', $a, $c), 2 => $k, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $f, $this->get('security.authentication.session_strategy'), $j, 'secured_area', $l, new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($e, $j, array('login_path' => 'fos_user_security_login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'), $a), array('check_path' => 'fos_user_security_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $a, $c), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '51bb99773d0a1', $a), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, $this->get('security.access.decision_manager'), $i, $f, $a)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $this->get('security.authentication.trust_resolver'), $j, 'secured_area', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($e, $j, 'fos_user_security_login', false), NULL, NULL, $a));
     }
 
     /**
@@ -2362,6 +2436,84 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'shtumi.useful.orm.filter.type.ajax_autocomplete' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Shtumi\UsefulBundle\Filter\AjaxAutocompleteFilter A Shtumi\UsefulBundle\Filter\AjaxAutocompleteFilter instance.
+     */
+    protected function getShtumi_Useful_Orm_Filter_Type_AjaxAutocompleteService()
+    {
+        return $this->services['shtumi.useful.orm.filter.type.ajax_autocomplete'] = new \Shtumi\UsefulBundle\Filter\AjaxAutocompleteFilter($this);
+    }
+
+    /**
+     * Gets the 'shtumi.useful.type.ajax_autocomplete' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Shtumi\UsefulBundle\Form\Type\AjaxAutocompleteType A Shtumi\UsefulBundle\Form\Type\AjaxAutocompleteType instance.
+     */
+    protected function getShtumi_Useful_Type_AjaxAutocompleteService()
+    {
+        return $this->services['shtumi.useful.type.ajax_autocomplete'] = new \Shtumi\UsefulBundle\Form\Type\AjaxAutocompleteType($this);
+    }
+
+    /**
+     * Gets the 'shtumi.useful.type.daterange' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Shtumi\UsefulBundle\Form\Type\DateRangeType A Shtumi\UsefulBundle\Form\Type\DateRangeType instance.
+     */
+    protected function getShtumi_Useful_Type_DaterangeService()
+    {
+        return $this->services['shtumi.useful.type.daterange'] = new \Shtumi\UsefulBundle\Form\Type\DateRangeType($this, array('date_format' => 'd/m/Y', 'default_interval' => 'P30D'));
+    }
+
+    /**
+     * Gets the 'shtumi.useful.type.dependent_filtered_entity' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Shtumi\UsefulBundle\Form\Type\DependentFilteredEntityType A Shtumi\UsefulBundle\Form\Type\DependentFilteredEntityType instance.
+     */
+    protected function getShtumi_Useful_Type_DependentFilteredEntityService()
+    {
+        return $this->services['shtumi.useful.type.dependent_filtered_entity'] = new \Shtumi\UsefulBundle\Form\Type\DependentFilteredEntityType($this);
+    }
+
+    /**
+     * Gets the 'shtumi_daterange' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Shtumi\UsefulBundle\Service\DateRangeManager A Shtumi\UsefulBundle\Service\DateRangeManager instance.
+     */
+    protected function getShtumiDaterangeService()
+    {
+        return $this->services['shtumi_daterange'] = new \Shtumi\UsefulBundle\Service\DateRangeManager(array('date_format' => 'd/m/Y', 'default_interval' => 'P30D'));
+    }
+
+    /**
+     * Gets the 'spraed.pdf.generator' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return Spraed\PDFGeneratorBundle\PDFGenerator\PDFGenerator A Spraed\PDFGeneratorBundle\PDFGenerator\PDFGenerator instance.
+     */
+    protected function getSpraed_Pdf_GeneratorService()
+    {
+        return $this->services['spraed.pdf.generator'] = new \Spraed\PDFGeneratorBundle\PDFGenerator\PDFGenerator();
+    }
+
+    /**
      * Gets the 'streamed_response_listener' service.
      *
      * This service is shared.
@@ -2460,13 +2612,14 @@ class appDevDebugProjectContainer extends Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine A Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine instance.
+     * @return Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine A Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine instance.
      */
     protected function getTemplatingService()
     {
-        $this->services['templating'] = $instance = new \Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine($this->get('twig'), $this->get('templating.name_parser'), $this->get('templating.locator'), $this->get('debug.stopwatch'), $this->get('templating.globals'));
+        $this->services['templating'] = $instance = new \Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine($this, array());
 
-        $instance->setDefaultEscapingStrategy(array(0 => $instance, 1 => 'guessDefaultEscapingStrategy'));
+        $instance->addEngine($this->get('debug.templating.engine.twig'));
+        $instance->addEngine($this->get('debug.templating.engine.php'));
 
         return $instance;
     }
@@ -3127,6 +3280,7 @@ class appDevDebugProjectContainer extends Container
         $instance->addPath('/opt/lampp/htdocs/Symfony/src/Atelier/MaterialBundle/Resources/views', 'AtelierMaterial');
         $instance->addPath('/opt/lampp/htdocs/Symfony/src/Atelier/IndexBundle/Resources/views', 'AtelierIndex');
         $instance->addPath('/opt/lampp/htdocs/Symfony/src/Atelier/ReservationBundle/Resources/views', 'AtelierReservation');
+        $instance->addPath('/opt/lampp/htdocs/Symfony/vendor/shtumi/useful-bundle/Shtumi/UsefulBundle/Resources/views', 'ShtumiUseful');
         $instance->addPath('/opt/lampp/htdocs/Symfony/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views', 'WebProfiler');
         $instance->addPath('/opt/lampp/htdocs/Symfony/vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/views', 'SensioDistribution');
         $instance->addPath('/opt/lampp/htdocs/Symfony/app/Resources/views');
@@ -3237,56 +3391,6 @@ class appDevDebugProjectContainer extends Container
     protected function getWebProfiler_DebugToolbarService()
     {
         return $this->services['web_profiler.debug_toolbar'] = new \Symfony\Bundle\WebProfilerBundle\EventListener\WebDebugToolbarListener($this->get('twig'), false, 2, 'bottom');
-    }
-
-    /**
-     * Gets the database_connection service alias.
-     *
-     * @return stdClass An instance of the doctrine.dbal.default_connection service
-     */
-    protected function getDatabaseConnectionService()
-    {
-        return $this->get('doctrine.dbal.default_connection');
-    }
-
-    /**
-     * Gets the debug.templating.engine.twig service alias.
-     *
-     * @return Symfony\Bundle\TwigBundle\Debug\TimedTwigEngine An instance of the templating service
-     */
-    protected function getDebug_Templating_Engine_TwigService()
-    {
-        return $this->get('templating');
-    }
-
-    /**
-     * Gets the doctrine.orm.entity_manager service alias.
-     *
-     * @return Doctrine\ORM\EntityManager An instance of the doctrine.orm.default_entity_manager service
-     */
-    protected function getDoctrine_Orm_EntityManagerService()
-    {
-        return $this->get('doctrine.orm.default_entity_manager');
-    }
-
-    /**
-     * Gets the fos_user.util.username_canonicalizer service alias.
-     *
-     * @return FOS\UserBundle\Util\Canonicalizer An instance of the fos_user.util.email_canonicalizer service
-     */
-    protected function getFosUser_Util_UsernameCanonicalizerService()
-    {
-        return $this->get('fos_user.util.email_canonicalizer');
-    }
-
-    /**
-     * Gets the session.storage service alias.
-     *
-     * @return Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage An instance of the session.storage.native service
-     */
-    protected function getSession_StorageService()
-    {
-        return $this->get('session.storage.native');
     }
 
     /**
@@ -3459,7 +3563,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username'), $this->get('security.user_checker'), 'secured_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('51b9c65ba5020')), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('fos_user.user_provider.username'), $this->get('security.user_checker'), 'secured_area', $this->get('security.encoder_factory'), true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('51bb99773d0a1')), true);
 
         $instance->setEventDispatcher($this->get('event_dispatcher'));
 
@@ -3658,6 +3762,8 @@ class appDevDebugProjectContainer extends Container
                 'AtelierMaterialBundle' => 'Atelier\\MaterialBundle\\AtelierMaterialBundle',
                 'AtelierIndexBundle' => 'Atelier\\IndexBundle\\AtelierIndexBundle',
                 'AtelierReservationBundle' => 'Atelier\\ReservationBundle\\AtelierReservationBundle',
+                'ShtumiUsefulBundle' => 'Shtumi\\UsefulBundle\\ShtumiUsefulBundle',
+                'SpraedPDFGeneratorBundle' => 'Spraed\\PDFGeneratorBundle\\SpraedPDFGeneratorBundle',
                 'WebProfilerBundle' => 'Symfony\\Bundle\\WebProfilerBundle\\WebProfilerBundle',
                 'SensioDistributionBundle' => 'Sensio\\Bundle\\DistributionBundle\\SensioDistributionBundle',
                 'SensioGeneratorBundle' => 'Sensio\\Bundle\\GeneratorBundle\\SensioGeneratorBundle',
@@ -3785,6 +3891,7 @@ class appDevDebugProjectContainer extends Container
             'templating.loader.cache.path' => NULL,
             'templating.engines' => array(
                 0 => 'twig',
+                1 => 'php',
             ),
             'validator.class' => 'Symfony\\Component\\Validator\\Validator',
             'validator.mapping.class_metadata_factory.class' => 'Symfony\\Component\\Validator\\Mapping\\ClassMetadataFactory',
@@ -4173,6 +4280,17 @@ class appDevDebugProjectContainer extends Container
                 0 => 'ResetPassword',
                 1 => 'Default',
             ),
+            'shtumi.autocomplete_entities' => array(
+
+            ),
+            'shtumi.dependent_filtered_entities' => array(
+
+            ),
+            'shtumi.date_range' => array(
+                'date_format' => 'd/m/Y',
+                'default_interval' => 'P30D',
+            ),
+            'shtumi_dependent_filtered_entity_controller_route' => 'ShtumiUsefulBundle:DependentFilteredEntity:getOptions',
             'web_profiler.controller.profiler.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ProfilerController',
             'web_profiler.controller.router.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\RouterController',
             'web_profiler.controller.exception.class' => 'Symfony\\Bundle\\WebProfilerBundle\\Controller\\ExceptionController',

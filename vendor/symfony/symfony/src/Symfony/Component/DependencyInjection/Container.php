@@ -69,6 +69,7 @@ class Container implements IntrospectableContainerInterface
 
     protected $services;
     protected $methodMap;
+    protected $aliases;
     protected $scopes;
     protected $scopeChildren;
     protected $scopedServices;
@@ -87,6 +88,7 @@ class Container implements IntrospectableContainerInterface
         $this->parameterBag = null === $parameterBag ? new ParameterBag() : $parameterBag;
 
         $this->services       = array();
+        $this->aliases        = array();
         $this->scopes         = array();
         $this->scopeChildren  = array();
         $this->scopedServices = array();
@@ -227,7 +229,10 @@ class Container implements IntrospectableContainerInterface
     {
         $id = strtolower($id);
 
-        return array_key_exists($id, $this->services) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
+        return array_key_exists($id, $this->services)
+            || array_key_exists($id, $this->aliases)
+            || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service')
+        ;
     }
 
     /**
@@ -253,6 +258,12 @@ class Container implements IntrospectableContainerInterface
     {
         $id = strtolower($id);
 
+        // resolve aliases
+        if (isset($this->aliases[$id])) {
+            $id = $this->aliases[$id];
+        }
+
+        // re-use shared service instance if it exists
         if (array_key_exists($id, $this->services)) {
             return $this->services[$id];
         }
@@ -264,6 +275,7 @@ class Container implements IntrospectableContainerInterface
         if (isset($this->methodMap[$id])) {
             $method = $this->methodMap[$id];
         } elseif (method_exists($this, $method = 'get'.strtr($id, array('_' => '', '.' => '_')).'Service')) {
+            // $method is set to the right value, proceed
         } else {
             if (self::EXCEPTION_ON_INVALID_REFERENCE === $invalidBehavior) {
                 if (!$id) {
