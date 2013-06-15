@@ -48,7 +48,7 @@ class UserController extends Controller
     $user = $repository->find($id);
     $user->removeRole('ROLE_ADMIN');
     $em->flush();
-    return $this->render('AtelierUserBundle:User:removeAdmin.html.twig', array('info'=>"success"));
+    return $this->redirect($this->generateUrl('fos_user_profile_show'));
   }
 
   public function addAdminAction($id)
@@ -59,7 +59,7 @@ class UserController extends Controller
     $user = $repository->find($id);
     $user->addRole('ROLE_ADMIN');
     $em->flush();
-    return $this->render('AtelierUserBundle:User:addAdmin.html.twig', array('info'=>"success"));
+    return $this->redirect($this->generateUrl('fos_user_profile_show'));
   }
 
   public function editAdminAction($id)

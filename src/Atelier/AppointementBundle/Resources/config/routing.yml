@@ -1,0 +1,23 @@
+atelier_appointement_add:
+    pattern:  /{id}
+    defaults: { _controller: AtelierAppointementBundle:Appointement:appointement }
+    requirements:
+        id:  \d+
+        
+atelier_appointement_list:
+    pattern:  /list/{page}
+    defaults: { _controller: AtelierAppointementBundle:Appointement:list, page:1 }
+    requirements:
+        page:  \d*
+        
+atelier_appointement_change:
+    pattern:  /change/{id}/
+    defaults: { _controller: AtelierAppointementBundle:Appointement:change }
+    requirements:
+        id:  \d+
+        
+atelier_appointement_delete:
+    pattern:  /delete/{id}/
+    defaults: { _controller: AtelierAppointementBundle:Appointement:delete }
+    requirements:
+        id:  \d+

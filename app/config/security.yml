@@ -28,6 +28,13 @@ security:
                  
 
     access_control:
-        - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/.*/edit, role: ROLE_ADMIN }
+        - { path: ^/user/logout, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/list, role: ROLE_ADMIN }
+        - { path: ^/user/.*/show, role: ROLE_ADMIN }
 
+        - { path: ^/booking/$, role: ROLE_USER }
+        - { path: ^/booking/allBooking, role: ROLE_ADMIN }
+        - { path: ^/appointement, role: ROLE_ADMIN }
+        - { path: ^/category, role: ROLE_ADMIN}
+        - { path: ^/product, role: ROLE_ADMIN}
+        - { path: ^/material, role: ROLE_ADMIN}

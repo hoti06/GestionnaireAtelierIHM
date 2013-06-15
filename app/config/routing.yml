@@ -1,3 +1,7 @@
+atelier_appointement:
+    resource: "@AtelierAppointementBundle/Resources/config/routing.yml"
+    prefix:   /appointement
+    
 atelier_reservation:
     resource: "@AtelierReservationBundle/Resources/config/routing.yml"
     prefix:   /booking

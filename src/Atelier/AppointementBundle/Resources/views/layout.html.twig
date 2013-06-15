@@ -1,0 +1,15 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Product - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+ 
+  <h1>booking Management</h1>
+  <hr>
+
+  {% block booking_body %}
+  {% endblock %}
+ 
+{% endblock %}

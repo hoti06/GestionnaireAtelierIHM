@@ -18,28 +18,36 @@ class ReservationController extends Controller
         $form = $this->createForm(new BookingType, $reservation);
         $request = $this->get('request');
 	$user = $this->get('security.context')->getToken()->getUser();
-        
-            
+	$date = new \DateTime('now'); 
         if ($request->getMethod() == 'POST') {
         	$reservation->setUser($user);
 		$form->bind($request);
 		if ($form->isValid()) {
-			$bool = true;
-			/*
 			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
-			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterials());
-			$bool = true;
+			$listReservation = $repositoryReservation->getAllReservation(10, 1);
+			$bool = true;	
+			$mat=$reservation->getMaterials();
 			foreach ($listReservation as $re)
 			{
+				$materials = $re->getMaterials();
 				$datebegin = $re->getDateBegin();
 				$dateend = $re->getDateEnd();
-				if (($reservation->getDateBegin()<$dateend && $reservation->getDateEnd()>$dateend)
-					|| ($reservation->getDateEnd()>$datebegin && $reservation->getDateBegin()<$datebegin))
+				if (($reservation->getDateBegin()<=$dateend && $reservation->getDateEnd()>=$dateend)
+					|| ($reservation->getDateEnd()>=$datebegin && $reservation->getDateBegin()<=$datebegin)
+					|| ($reservation->getDateEnd()<=$dateend && $reservation->getDateBegin()>=$datebegin))
 				{
-					$bool = false;
-					break;
+					foreach ($materials as $a)
+					{
+						foreach ($mat as $b)
+						{
+							if ($a->getId() == $b->getId()){
+								$bool = false;
+								break;
+							}
+						}
+					}	
 				}
-			}*/
+			}
 			if ($bool)
 			{
 				$em = $this->getDoctrine()->getManager();
@@ -100,27 +108,37 @@ class ReservationController extends Controller
         $reservation=$repository->find($id);
         $form = $this->createForm(new BookingType, $reservation);
         $request = $this->get('request');
-	$user = $this->get('security.context')->getToken()->getUser();
         if ($request->getMethod() == 'POST') {
 		$form->bind($request);
 		if ($form->isValid()) {
-			$bool = true;
-			/*
 			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
-			$listReservation = $repositoryReservation->getMaterialReservation(10, 1, $reservation->getMaterials());
-			$bool = true;
+			$listReservation = $repositoryReservation->getAllReservation(10, 1);
+			$bool = true;	
+			$mat=$reservation->getMaterials();
 			foreach ($listReservation as $re)
 			{
+				if ($re->getId() != $reservation->getId())
+				{
+				$materials = $re->getMaterials();
 				$datebegin = $re->getDateBegin();
 				$dateend = $re->getDateEnd();
-				if (($reservation->getDateBegin()<$dateend && $reservation->getDateEnd()>$dateend)
-					|| ($reservation->getDateEnd()>$datebegin && $reservation->getDateBegin()<$datebegin))
+				if (($reservation->getDateBegin()<=$dateend && $reservation->getDateEnd()>=$dateend)
+					|| ($reservation->getDateEnd()>=$datebegin && $reservation->getDateBegin()<=$datebegin)
+					|| ($reservation->getDateEnd()<=$dateend && $reservation->getDateBegin()>=$datebegin))
 				{
-					$bool = false;
-					break;
+					foreach ($materials as $a)
+					{
+						foreach ($mat as $b)
+						{
+							if ($a->getId() == $b->getId()){
+								$bool = false;
+								break;
+							}
+						}
+					}	
+				}
 				}
 			}
-			*/
 			if ($bool)
 			{
 				$em = $this->getDoctrine()->getManager();

@@ -12,8 +12,10 @@
   {% for res in list_reservations %}
 	<p>
 	
-		<h4>Materials id : {% for material in res.getMaterials() %} {{ material.getId() }}, {% endfor %}</h4>
-                 
+		Material id: 
+		{% for material in res.getMaterials() %}
+			{{ material.getId()+" " }}
+		{% endfor %}       
                  
                  <a href="{{ path('atelier_reservation_disp_barcode', {'id': res.getId()}) }}">Afficher les codes barres asssociées</a>
 	 
@@ -28,6 +30,7 @@
   {% else %}
     <p>There aren't any reservation for the moment</p>
   {% endfor %}
+  <a href="{{ path('fos_user_security_logout') }}" class="btn">logout</a>
 </ul>
   <div class="pagination">
     <ul>

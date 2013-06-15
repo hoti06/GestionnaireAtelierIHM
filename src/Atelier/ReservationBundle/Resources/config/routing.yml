@@ -3,21 +3,32 @@ atelier_reservation_booking:
     defaults: { _controller: AtelierReservationBundle:Reservation:booking }
 
 atelier_reservation_list:
-    pattern:  /listAppointement/{page}
+    pattern:  /myBooking/{page}
     defaults: { _controller: AtelierReservationBundle:Reservation:list , page : 1}
-
+    requirements:
+        page:  \d*
+        
 atelier_reservation_alllist:
-    pattern:  /listAppointement
+    pattern:  /allBooking/{page}
     defaults: { _controller: AtelierReservationBundle:Reservation:alllist , page : 1}
-
+    requirements:
+        page:  \d*
+        
 atelier_reservation_change:
     pattern:  /{id}/change
     defaults: { _controller: AtelierReservationBundle:Reservation:change }
-
+    requirements:
+        id:  \d+
+        
 atelier_reservation_delete:
     pattern:  /{id}/delete
     defaults: { _controller: AtelierReservationBundle:Reservation:delete }
-
+    requirements:
+        id:  \d+
+        
 atelier_reservation_disp_barcode:
     pattern:  /{id}/dispBarcode
     defaults: { _controller: AtelierReservationBundle:Reservation:dispBarcode }
+    requirements:
+        id:  \d+
+        

@@ -50,7 +50,6 @@ class Reservation
 	/**
 	* @ORM\ManyToMany(targetEntity="Atelier\MaterialBundle\Entity\Material", inversedBy="bookings")
         * @ORM\JoinColumn(nullable=false)
-        * 
 	*/
     private $materials; 
     

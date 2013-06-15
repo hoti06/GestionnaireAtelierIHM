@@ -1,0 +1,7 @@
+parameters:
+#    atelier_appointement.example.class: Atelier\AppointementBundle\Example
+
+services:
+#    atelier_appointement.example:
+#        class: %atelier_appointement.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

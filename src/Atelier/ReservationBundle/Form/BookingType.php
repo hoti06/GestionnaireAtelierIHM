@@ -15,93 +15,33 @@ class BookingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		$today = new \DateTime('now');
+		
         $builder
         ->add('category', 'entity', array(
-	  'class'    => 'AtelierCategoryBundle:Category',
-	  'property' => 'name',
-	  'multiple' => false,
-	  'mapped' => false))
-	  
-	   ->add('product', 'choice', array(
-    'choices'   => array(),//AtelierProductBundle:Product
-    'required'  => false,
-    'mapped' => false, 
-    'multiple'  => false
-	))
-	->add('materials', 'entity', array(
-	  'class'    => 'AtelierMaterialBundle:Material',
-	  'property' => 'id',
-	  'multiple' => true,
-	  'mapped' => true))
-        
-       /*
-       ->add('category', 'entity', array(
-	  'class'    => 'AtelierCategoryBundle:Category',
-	  'property' => 'name',
-	  'multiple' => false,
-	  'mapped' => true))
-	  
-	   ->add('product', 'choice', array(
-    'choices'   => array(),//AtelierProductBundle:Product
-    'required'  => false,
-    'mapped' => false, 
-    'multiple'  => false
-	))
-	->add('material', 'choice', array(
-    'choices'   => array(),//AtelierMaterialBundle:Material
-    'required'  => false,
-    'mapped' => false, 
-    'multiple'  => true
-	))*/
-	  
-	  
-      /*->add('category', 'entity', array(
-	  'class'    => 'AtelierCategoryBundle:Category',
-	  'property' => 'name',
-	  'multiple' => false,
-	  'mapped' => false))
-	  
-      ->add('product', 'entity', array(
-	  'class'    => 'AtelierProductBundle:Product',
-	  'property' => 'name',
-	  'multiple' => false,
-	  'mapped' => false))
-	  */
-      /*->add('material', 'entity', array(
-	  'class'    => 'AtelierMaterialBundle:Material',
-	  'property' => 'id',
-	  'multiple' => true))*/
-	  ->add('dateBegin',      'date')
-          ->add('dateEnd',      'date')
-          ->add('description',       'textarea', array('required' => false))
-    ;
-    /*
-    
-     $factory = $builder->getFormFactory();
+			'class'    => 'AtelierCategoryBundle:Category',
+			'property' => 'name',
+			'multiple' => false,
+			'mapped' => false))
 
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function(FormEvent $event) use($factory){
-                 $data = $event->getData();
-				$form = $event->getForm();
-				if (null === $data) {
-					return;
-				}
-				
-				
-				$form->get('product')->setData($data->getCategory()->getProducts());
-				//array(
-				//'choices'   => array('a' => 'b'),//AtelierProductBundle:Product
-				//'required'  => false,
-				//'mapped' => false, 
-				//'multiple'  => false
-				//)
-				
-				//$data->getCity()->getRegion()
-
-            }
-        );
-    */
+		->add('product', 'choice', array(
+			'choices'   => array(),//AtelierProductBundle:Product
+			'required'  => false,
+			'mapped' => false, 
+			'multiple'  => false
+		))
+		->add('materials', 'entity', array(
+			'class'    => 'AtelierMaterialBundle:Material',
+			'property' => 'id',
+			'multiple' => true))
+		->add('dateBegin',      'date' , array(
+			'widget' => 'single_text',
+			'data' => $today))
+		->add('dateEnd',      'date', array(
+			'widget' => 'single_text',
+			'data' => $today))
+		->add('description',       'textarea', array('required' => false))
+		;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

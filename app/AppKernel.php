@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Atelier\MaterialBundle\AtelierMaterialBundle(),
             new Atelier\IndexBundle\AtelierIndexBundle(),
             new Atelier\ReservationBundle\AtelierReservationBundle(),
+            new Atelier\AppointementBundle\AtelierAppointementBundle(),
             new Shtumi\UsefulBundle\ShtumiUsefulBundle(),
             new Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle(),
         );

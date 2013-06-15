@@ -5,6 +5,8 @@ atelier_user_index:
 atelier_user_editAdmin:
     pattern:  /{id}/edit
     defaults: { _controller: AtelierUserBundle:User:editAdmin }
+    requirements:
+        id:  \d+
 
 atelier_user_list:
     pattern:  /list
@@ -13,15 +15,24 @@ atelier_user_list:
 atelier_user_delete:
     pattern:  /{id}/delete
     defaults: { _controller: AtelierUserBundle:User:delete }
-
+    requirements:
+        id:  \d+
+        
 atelier_user_show:
     pattern:  /{id}/show
     defaults: { _controller: AtelierUserBundle:User:show }
-
+    requirements:
+        id:  \d+
+        
 atelier_user_addAdmin:
     pattern:  /{id}/addAdmin
     defaults: { _controller: AtelierUserBundle:User:addAdmin }
-
+    requirements:
+        id:  \d+
+        
 atelier_user_removeAdmin:
     pattern:  /{id}/removeAdmin
     defaults: { _controller: AtelierUserBundle:User:removeAdmin }
+    requirements:
+        id:  \d+
+        

@@ -1,0 +1,9 @@
+{% extends "AtelierAppointementBundle::layout.html.twig" %}
+ 
+{% block title %}
+  booking - {{ parent() }}
+{% endblock %}
+
+{% block booking_body %}
+  {% include "AtelierAppointementBundle:Appointement:form.html.twig" %}
+{% endblock %}
