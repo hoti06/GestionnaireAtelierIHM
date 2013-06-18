@@ -45,3 +45,7 @@ atelier_category:
     resource: "@AtelierCategoryBundle/Resources/config/routing.yml"
     prefix:   /category
 
+shtumi_useful:
+    resource: '@ShtumiUsefulBundle/Resources/config/routing.xml'
+    
+    

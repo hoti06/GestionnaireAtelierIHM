@@ -54,5 +54,54 @@ $(document).ready(function() {
   });
   
   });
+  
+  
+  
+$(document).ready(function() {
+  var content = $('div#atelier_materialbundle_materialtype');
+  
+  var container = $('div#atelier_materialbundle_materialtype_productAdd');
+  var container2 = $('select#atelier_materialbundle_materialtype_product').parent();
+ 
+  var lienAjout = $('<a href="#" id="product" class="btn">Use an existing product</a><br/><br/>');
+  container.append(lienAjout);
+  
+   var lienAjout2 = $('<br/><a href="#" id="add_product" class="btn">Add a new product</a><br/><br/>');
+  container2.append(lienAjout2);
+ 
+ 
+ var p=container.detach();
+ var p2=container2.detach();
+ 
+  p2.prependTo(content);
+  p2 = null;
+ 
+  lienAjout2.click(function(e) {
+	if ( p ) {
+		 p.prependTo(content);
+		 p = null;
+	}
+	if(!p2) {
+		p2 = container2.detach();
+	}
+    
+    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+    return false;
+  });
+  
+    lienAjout.click(function(f) {
+    if ( p2 ) {
+		p2.prependTo(content);
+		p2 = null;
+	}
+	if(!p) {
+		p = container.detach();
+	}
+    
+    f.preventDefault(); // évite qu'un # apparaisse dans l'URL
+    return false;
+  });
+  
+  });
 
 </script>

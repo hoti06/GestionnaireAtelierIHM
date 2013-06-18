@@ -60,7 +60,8 @@ class MaterialController extends Controller
 	public function editAction(Material $material)
 	{
 		$form = $this->createForm(new MaterialType(), $material);
- 
+		$form->get('product')->setData($material->getProduct());
+		
 		$request = $this->getRequest();
 		
 		
@@ -68,7 +69,17 @@ class MaterialController extends Controller
 		  $form->bind($request);
 	 
 		  if ($form->isValid()) {
+			
+			
+			$material->setDescription($form->get('description')->getData());
+					
+			if($form->get('product')->getData() != null)
+				$material->setProduct($form->get('product')->getData());
+			else if($form->get('productAdd')->getData() != null)
+				$material->setProduct($form->get('productAdd')->getData());
+			
 			$em = $this->getDoctrine()->getManager();
+			
 			$em->persist($material);
 			$em->flush();
 	 

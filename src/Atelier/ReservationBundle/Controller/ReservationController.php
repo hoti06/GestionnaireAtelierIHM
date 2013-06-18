@@ -8,21 +8,20 @@ use Atelier\ReservationBundle\Form\BookingType;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class ReservationController extends Controller
 {
     public function bookingAction()
     {
         
         $reservation = new Reservation;
-        $form = $this->createForm(new BookingType, $reservation);
+        $form = $this->createForm($this->get('atelier.form.reservation'), $reservation);
         $request = $this->get('request');
 	$user = $this->get('security.context')->getToken()->getUser();
 	$date = new \DateTime('now'); 
         if ($request->getMethod() == 'POST') {
         	$reservation->setUser($user);
 		$form->bind($request);
-		if ($form->isValid()) {
+		//if ($form->isValid()) {
 			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
 			$listReservation = $repositoryReservation->getAllReservation(10, 1);
 			$bool = true;	
@@ -56,7 +55,7 @@ class ReservationController extends Controller
 				return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=> "Your booking is saved"));
 			}
 			return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=>"not possible"));
-		}
+		//}
 	}   
         return $this->render('AtelierReservationBundle:Reservation:booking.html.twig', array(
 			'form' => $form->createView(),
@@ -110,7 +109,7 @@ class ReservationController extends Controller
         $request = $this->get('request');
         if ($request->getMethod() == 'POST') {
 		$form->bind($request);
-		if ($form->isValid()) {
+		//if ($form->isValid()) {
 			$repositoryReservation = $this->getDoctrine()->getManager()->getRepository('AtelierReservationBundle:Reservation');
 			$listReservation = $repositoryReservation->getAllReservation(10, 1);
 			$bool = true;	
@@ -146,33 +145,111 @@ class ReservationController extends Controller
 				return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=> "Your booking is saved"));
 			}
 			return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=>"not possible"));
-		}
+		//}
 	}  
         return $this->render('AtelierReservationBundle:Reservation:booking.html.twig', array(
 			'form' => $form->createView(),
 			));
     }
     
-
+    
     public function dispBarcodeAction($id)
     {
 		$em = $this->getDoctrine()->getManager();
 		$repository = $em->getRepository('AtelierReservationBundle:Reservation');
         $reservation=$repository->find($id);
         
-		
-		 $html = $this->renderView('AtelierReservationBundle:Reservation:barcode.html.php', array(
+        $bb = new \Barcode_Barcode();
+        
+		 $html= $this->renderView('AtelierReservationBundle:Reservation:barcode.html.twig', array(
 			'reservation' => $reservation,
+			'bb' => $bb,
+			'height_' => 50,
+			'height' => 35
 			));
+		//return $html;	
 			
+	
+	
 		$pdfGenerator = $this->get('spraed.pdf.generator');
 
-		return new Response($pdfGenerator->generatePDF($html, 'UTF-8'),
+		$response = new Response($pdfGenerator->generatePDF($html, 'UTF-8'),
                     200,
                     array(
                         'Content-Type' => 'application/pdf',
                         'Content-Disposition' => 'inline; filename="out.pdf"'
                     ));
-        
+                    
+       foreach(glob('img/barcode/*.png') as $file) {
+			unlink($file);
+		}
+		
+		return $response;
+     
+	}
+	
+	
+	//locality=>product
+	//province=>category
+	
+	public function getByCategoryIdAction()
+	{
+		$this->em = $this->get('doctrine')->getEntityManager();
+		$this->repository = $this->em->getRepository('AtelierProductBundle:Product');
+		$categoryId = $this->get('request')->query->get('data');
+	 
+		$products = $this->repository->findByCategory($categoryId);
+	 
+		$html = '';
+		foreach($products as $product)
+		{
+			$html = $html . sprintf("<option value=\"%d\">%s</option>",$product->getId(), $product->getName());
+		}
+	 
+		return new Response($html);
+	}
+	
+	public function getMaterialByCategoryIdAction()
+	{
+		$this->em = $this->get('doctrine')->getEntityManager();
+		$this->repository = $this->em->getRepository('AtelierProductBundle:Product');
+		$categoryId = $this->get('request')->query->get('data');
+	 
+		$products = $this->repository->findByCategory($categoryId);
+	 
+	 
+	 
+		$this->repository = $this->em->getRepository('AtelierMaterialBundle:Material');
+	 
+		$materials = $this->repository->findByProduct($products[0]);
+	 
+		$html = '';
+		foreach($materials as $material)
+		{
+			$html = $html . sprintf("<option value=\"%d\">%s</option>",$material->getId(), $material->getId());
+		}
+	 
+		
+	 
+		return new Response($html);
+	}
+	
+	//category->product
+	//product->material
+	public function getByProductIdAction()
+	{
+		$this->em = $this->get('doctrine')->getEntityManager();
+		$this->repository = $this->em->getRepository('AtelierMaterialBundle:Material');
+		$productId = $this->get('request')->query->get('data');
+	 
+		$materials = $this->repository->findByProduct($productId);
+	 
+		$html = '';
+		foreach($materials as $material)
+		{
+			$html = $html . sprintf("<option value=\"%d\">%s</option>",$material->getId(), $material->getId());
+		}
+	 
+		return new Response($html);
 	}
 }

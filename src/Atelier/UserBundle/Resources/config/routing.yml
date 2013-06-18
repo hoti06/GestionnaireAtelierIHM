@@ -1,6 +1,10 @@
 atelier_user_index:
     pattern:  /
     defaults: { _controller: AtelierUserBundle:User:index }
+    
+atelier_user_forbidden:
+    pattern:  /forbidden
+    defaults: { _controller: AtelierUserBundle:User:forbidden }
 
 atelier_user_editAdmin:
     pattern:  /{id}/edit

@@ -16,6 +16,11 @@ class UserController extends Controller
     return $this->render('AtelierUserBundle:User:index.html.twig');
   }
 
+  public function forbiddenAction()
+  {
+    return $this->render('AtelierUserBundle:User:forbidden.html.twig');
+  }
+
 
   public function deleteAction($id)
   {

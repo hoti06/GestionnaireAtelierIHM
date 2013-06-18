@@ -24,8 +24,8 @@ security:
                 path:       fos_user_security_logout
                 target:     /user
 
-           
-                 
+    access_denied_url:
+        /user/forbidden
 
     access_control:
         - { path: ^/user/logout, role: IS_AUTHENTICATED_ANONYMOUSLY }

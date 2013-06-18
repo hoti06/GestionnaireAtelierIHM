@@ -19,6 +19,7 @@ class MaterialType extends AbstractType
 	  'class'    => 'AtelierProductBundle:Product',
 	  'property' => 'name',
 	  'multiple' => false,
+	  'mapped' => false,
 	  'required' => true))
 	  
 	  ->add('description',       'textarea', array('required' => false))

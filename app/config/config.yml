@@ -29,7 +29,21 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-
+    form:
+        resources:
+            - ShtumiUsefulBundle::fields.html.twig
+            
+shtumi_useful :
+    dependent_filtered_entities:
+        product_by_category:
+            class: ProductBundle:Product
+            parent_property: category
+            property: id
+            role: ROLE_ADMIN
+            no_result_msg: 'No products found for that category'
+            order_property: name
+            order_direction: ASC
+            
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
@@ -85,4 +99,14 @@ services:
     atelier_material.uuid:
         class: Atelier\MaterialBundle\UUID\Uuid
         
+        
+    atelier.form.reservation:
+        class: Atelier\ReservationBundle\Form\BookingType
+        arguments: [@atelier.form.reservation_listener]
+        tags:
+            - { name: form.type, alias: atelier_reservation }
+            
+    atelier.form.reservation_listener:
+        class: Atelier\ReservationBundle\EventListener\FormEvent
+        arguments: [@form.factory, @doctrine]
         

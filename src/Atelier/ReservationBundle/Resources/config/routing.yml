@@ -32,3 +32,16 @@ atelier_reservation_disp_barcode:
     requirements:
         id:  \d+
         
+atelier_reservation_products_by_category_id:
+    pattern:  /productsByCategoryId
+    defaults: { _controller: AtelierReservationBundle:Reservation:getByCategoryId }
+
+atelier_reservation_materials_by_product_id:
+    pattern:  /materialsByProductId
+    defaults: { _controller: AtelierReservationBundle:Reservation:getByProductId }
+
+atelier_reservation_materials_by_category_id:
+    pattern:  /materialsByCategoryId
+    defaults: { _controller: AtelierReservationBundle:Reservation:getMaterialByCategoryId }
+
+

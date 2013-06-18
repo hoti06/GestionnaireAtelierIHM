@@ -24,7 +24,8 @@
  	"doctrine/data-fixtures": "@dev",
         "friendsofsymfony/user-bundle": "dev-master",
         "shtumi/useful-bundle": "dev-master",
-         "spraed/pdf-generator-bundle": "dev-master"
+         "spraed/pdf-generator-bundle": "dev-master",
+         "symfony/class-loader": "2.3.*@dev"
     },
     "scripts": {
         "post-install-cmd": [
