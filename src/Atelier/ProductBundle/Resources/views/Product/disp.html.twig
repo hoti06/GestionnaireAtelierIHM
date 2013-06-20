@@ -6,7 +6,7 @@
  
 {% block product_body %}
 
-<h2>Display a Product</h2>
+<h3>Product {% include "AtelierProductBundle:Product:product.html.twig" %} </h3>
 
 <p>
       {% for message in app.session.flashbag.get('info') %}
@@ -14,7 +14,6 @@
       {% endfor %}
 </p>
 
-<h3>Product {% include "AtelierProductBundle:Product:product.html.twig" %} </h3>
 <p>
 	Id =  {{ product.id }} 
 </p>
@@ -30,6 +29,15 @@
 <p>
 	Maximum Loan Date Modification =  {{ product.maximumLoanDateModification }} 
 </p>
+
+<p>
+	Number of materials of this product =  <a href="{{ path('atelier_material_dispAllByProduct', {'product': product.id}) }}/1">{{ product.nbMaterials() }}</a> 
+</p>
+
+
+<p>
+	<a href="{{ path('atelier_product_disp_barcode', {'id': product.id}) }}" target="_blank">Display the barcodes of the product's materials</a>
+</p> 
 
 <p>
     <a href="{{ path('atelier_product_dispAll') }}" class="btn">

@@ -30,6 +30,46 @@ class MaterialRepository extends EntityRepository
  
     return new Paginator($query);
   }
+  public function getMaterialsByProduct($nbByPage, $page,$product)
+    {
+      if ($page < 1) {
+      throw new \InvalidArgumentException('The $page argument cannot be less than 1 (value : "'.$page.'").');
+    }
+ 
+    $query = $this->createQueryBuilder('a')
+				  ->where('a.product = '.$product->getId())
+                  ->orderBy('a.id', 'ASC')
+                  ->getQuery();
+                  
+                  
+    $query->setFirstResult(($page-1) * $nbByPage)
+          ->setMaxResults($nbByPage);
+ 
+    return new Paginator($query);
+  }
+  
+  
+  public function getMaterialsByCategory($nbByPage, $page,$category)
+    {
+      if ($page < 1) {
+      throw new \InvalidArgumentException('The $page argument cannot be less than 1 (value : "'.$page.'").');
+    }
+ 
+    $query = $this->createQueryBuilder('a')
+				->leftJoin('a.product', 'p')
+				->addSelect('p')
+				  ->where('p.category = '.$category->getId())
+                  ->orderBy('a.id', 'ASC')
+                  ->getQuery();
+                  
+                  
+    $query->setFirstResult(($page-1) * $nbByPage)
+          ->setMaxResults($nbByPage);
+ 
+    return new Paginator($query);
+  }
+  
+  
    public function getProductMateirals($product)
     {
 		 $query = $this->createQueryBuilder('a')

@@ -1,3 +1,8 @@
 atelier_index_index:
     pattern:  /
     defaults: { _controller: AtelierIndexBundle:Index:index }
+
+atelier_index_about:
+    pattern:  /about
+    defaults: { _controller: AtelierIndexBundle:Index:about }
+

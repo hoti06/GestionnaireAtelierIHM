@@ -1,12 +1,14 @@
 {% extends "::layout.html.twig" %}
 
 {% block title %}
-  User - {{ parent() }}
+  Account - {{ parent() }}
 {% endblock %}
+
+{% block menu_account %}active{% endblock %}
 
 {% block body %}
  
-  <h1>User</h1>
+  <h1>Account</h1>
   <hr>
 
   {% block user_body %}

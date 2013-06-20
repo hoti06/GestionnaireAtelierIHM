@@ -1,8 +1,22 @@
 {% extends "AtelierUserBundle::layout.html.twig" %}
 
+{% block title %}
+  Delete an user - {{ parent() }}
+{% endblock %}
+
 {% block user_body %}
-     
-    {{ info }}
-    <a href="{{ path('atelier_user_list') }}", class="btn">return</a>
-    <br/>
+       <h3>Delete an user</h3>
+ 
+  <p>
+    Are you sure you want to delete the user "{{ user.username }}" ?
+  </p>
+ 
+  <form action="{{ path('atelier_user_delete', {'id': user.id}) }}" method="post">
+    <a href="{{ path('atelier_user_show', {'id': user.id}) }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the {{user.getUsername()}} profile
+    </a>
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    {{ form_rest(form) }}
+  </form>
 {% endblock %}

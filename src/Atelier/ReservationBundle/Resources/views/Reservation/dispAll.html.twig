@@ -1,26 +1,35 @@
 {% extends "AtelierReservationBundle::layout.html.twig" %}
  
 {% block title %}
-  List of reservation - {{ parent() }}
+  List of Reservations - {{ parent() }}
 {% endblock %}
  
 {% block booking_body %}
 
-<h3>List of Reservation</h3>
+<h3>List of Reservations</h3>
+ 
+ <p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+  </p>
  
 <ul>
+
   {% for res in list_reservations %}
 	<p>
-	 Material id: 
+		Reservation ID : {{ res.getId() }} <br />
+		Materials ID :
 		{% for material in res.getMaterials() %}
-			{{ material.getId()+" " }}
+			<a href="{{ path('atelier_material_disp', {'id': material.id}) }}">{{ material.id+" " }}</a>
 		{% endfor %}
 		
-                <a href="{{ path('atelier_reservation_disp_barcode', {'id': res.getId()}) }}">Afficher les codes barres asssociées</a>
-	 
+                
                 <ul>
                 <li>Begin : {{ res.getDateBegin()|date('Y-m-d') }}</li>
                 <li>End : {{ res.getDateEnd()|date('Y-m-d') }}</li>
+        <a href="{{ path('atelier_reservation_delete', {'id': res.getId()}) }}">delete</a>
+		<a href="{{ path('atelier_reservation_change', {'id': res.getId()}) }}">change</a><br />
         <a href="{{ path('atelier_appointement_add', {'id': res.getId()}) }}">appointement</a>
                 </ul>
 	</p>
@@ -28,7 +37,6 @@
   {% else %}
     <p>There aren't any reservation for the moment</p>
   {% endfor %}
-   <a href="{{ path('fos_user_security_logout') }}" class="btn">logout</a>
 </ul>
   <div class="pagination">
     <ul>

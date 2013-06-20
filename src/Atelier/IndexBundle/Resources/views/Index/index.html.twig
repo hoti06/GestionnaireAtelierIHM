@@ -4,10 +4,20 @@
   Index - {{ parent() }}
 {% endblock %}
 
+{% block menu_home %}active{% endblock %}
+
 {% block index_body %}
- 
+   <h1>Index</h1>
+  
+  <hr>
   <p>
-	Welcome
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
   </p>
- 
+  <p>
+	Welcome to the Atelier IHM website. This website allows you to <a href="{{ path('atelier_reservation_booking') }}">book</a> some materials, which includes touchpad, tablets and mobile device for a certain period from the Atelier IHM room located in Polytech'Nice-Sophia. (more info on the school <a href="http://www.polytech.unice.fr/" target="_blank">here</a>) 
+  </p>
+  <p>First, you'll have to sign up <a href="{{ path('fos_user_registration_register') }}">here</a>. Afterwards, you'll be able to <a href="{{ path('fos_user_security_login') }}">login</a>. At this moment, you'll have access to all the functionalities of this website.  
+  </p>
 {% endblock %}

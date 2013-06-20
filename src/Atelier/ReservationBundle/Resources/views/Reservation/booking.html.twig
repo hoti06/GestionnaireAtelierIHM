@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block booking_body %}
+<h3>Add a Reservation</h3>
+ 
   {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
   {% include "AtelierReservationBundle:Reservation:form.html.twig" %}
   {% else %}

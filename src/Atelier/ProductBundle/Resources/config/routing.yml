@@ -25,3 +25,16 @@ atelier_product_dispAll:
     defaults: { _controller: AtelierProductBundle:Product:dispAll, page: 1 }
     requirements:
         page:  \d*
+
+atelier_product_dispAllByCategory:
+    pattern:  /{category}/{page}
+    defaults: { _controller: AtelierProductBundle:Product:dispAllByCategory, page: 1 }
+    requirements:
+        page:  \d*
+        category : \d+
+
+atelier_product_disp_barcode:
+    pattern:  /{id}/dispBarcode
+    defaults: { _controller: AtelierProductBundle:Product:dispBarcode }
+    requirements:
+        id:  \d+

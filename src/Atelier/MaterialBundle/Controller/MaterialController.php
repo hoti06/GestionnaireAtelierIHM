@@ -3,6 +3,8 @@ namespace Atelier\MaterialBundle\Controller;
  
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Atelier\MaterialBundle\Entity\Material;
+use Atelier\ProductBundle\Entity\Product;
+use Atelier\CategoryBundle\Entity\Category;
 use Atelier\MaterialBundle\Form\MaterialType;
 use Atelier\MaterialBundle\Form\MaterialAddType;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,7 +12,7 @@ use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Form as Form;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\HttpFoundation\Response;
 
 class MaterialController extends Controller
 { 
@@ -157,6 +159,79 @@ class MaterialController extends Controller
 		  'page'       => $page,
 		  'nbPage' => $nbPage
 		));
+	}
+	
+	public function dispAllByProductAction($page,Product $product)
+	{
+		$repository = $this->getDoctrine()
+                                   ->getManager()
+                                   ->getRepository('AtelierMaterialBundle:Material');
+                                   
+		
+		
+		$listMaterials = $repository->getMaterialsByProduct(10, $page,$product);
+		
+		$nbPage=ceil(count($listMaterials)/10);
+		if($nbPage<1)
+			$nbPage=1;
+		
+		return $this->render('AtelierMaterialBundle:Material:dispAllByProduct.html.twig', array(
+		  'list_materials' => $listMaterials,
+		  'page'       => $page,
+		  'nbPage' => $nbPage,
+		  'product' => $product
+		));
+	}
+	
+	public function dispAllByCategoryAction($page,Category $category)
+	{
+		$repository = $this->getDoctrine()
+                                   ->getManager()
+                                   ->getRepository('AtelierMaterialBundle:Material');
+                                   
+		
+		
+		$listMaterials = $repository->getMaterialsByCategory(10, $page,$category);
+		
+		$nbPage=ceil(count($listMaterials)/10);
+		if($nbPage<1)
+			$nbPage=1;
+		
+		return $this->render('AtelierMaterialBundle:Material:dispAllByCategory.html.twig', array(
+		  'list_materials' => $listMaterials,
+		  'page'       => $page,
+		  'nbPage' => $nbPage,
+		  'category' => $category
+		));
+	}
+	
+	public function dispBarcodeAction(Material $material)
+    {   
+        $bb = new \Barcode_Barcode();
+        
+		 $html= $this->renderView('AtelierMaterialBundle:Material:barcode.html.twig', array(
+			'material' => $material,
+			'bb' => $bb,
+			'height_' => 50,
+			'height' => 35
+			));
+	
+	
+		$pdfGenerator = $this->get('spraed.pdf.generator');
+
+		$response = new Response($pdfGenerator->generatePDF($html, 'UTF-8'),
+                    200,
+                    array(
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'inline; filename="out.pdf"'
+                    ));
+                    
+       foreach(glob('img/barcode/*.png') as $file) {
+			unlink($file);
+		}
+		
+		return $response;
+     
 	}
 	
 }

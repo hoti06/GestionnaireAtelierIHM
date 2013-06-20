@@ -1,0 +1,16 @@
+<div class="fos_user_user_show">
+    <ul>
+    <li>Username: {{ user.getUsername() }}</li>
+    <li>Email: {{ user.getEmail() }}</li>
+    <li>Role: 
+    {% if (user.hasRole('ROLE_SUPER_ADMIN')) %}
+       super admin
+    {% elseif (user.hasRole('ROLE_ADMIN')) %}
+       admin
+    {% else %}
+       user
+    {% endif %}
+    </li>
+    
+    </ul>
+</div>

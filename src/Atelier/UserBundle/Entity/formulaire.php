@@ -2,11 +2,19 @@
  
 namespace Atelier\UserBundle\Entity;
  
+use Symfony\Component\Validator\Constraints as Assert;
  
 class formulaire
 {
-  protected $password;
-
+  //protected $password;
+  
+  
+  /**
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     */
   protected $email; 
   
   protected $role;
@@ -20,7 +28,7 @@ class formulaire
   {
     return $this->email;
   }
- 
+ /*
   public function setPassword($password)
   {
     $this->password = $password;
@@ -29,7 +37,7 @@ class formulaire
   public function getPassword()
   {
     return $this->password;
-  }
+  }*/
 
   public function setRole($role)
   {

@@ -10,4 +10,9 @@ class indexController extends Controller
 	{
 		return $this->render('AtelierIndexBundle:Index:index.html.twig');
 	}
+	public function aboutAction()
+	{
+		return $this->render('AtelierIndexBundle:Index:about.html.twig');
+	}
+	
 }

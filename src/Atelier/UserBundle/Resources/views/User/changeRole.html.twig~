@@ -1,9 +1,0 @@
-{% extends "AtelierUserBundle::layout.html.twig" %}
-
-{% block user_body %}
-   <select name="role" id="role">
-	<option>role_user</option>
-        <option>role_admin</option>
-   </select>
-   
-{% endblock %}

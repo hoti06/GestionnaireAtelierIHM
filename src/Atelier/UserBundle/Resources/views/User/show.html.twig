@@ -1,19 +1,23 @@
 {% extends "AtelierUserBundle::layout.html.twig" %}
 
 {% block user_body %}
+<h3>User Profile</h3>
+<p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+</p>
+
     {% if (user != null) %}
-        {% include "FOSUserBundle:Profile:show_content.html.twig" %}
-        <a href="{{ path('atelier_user_editAdmin',{'id': user.getId()}) }}" class="btn">edit</a><br/>
-        <a href="{{ path('atelier_user_delete',{'id': user.getId()}) }}" class="btn">delete</a><br/>
+        {% include "AtelierUserBundle:User:show_content.html.twig" %}
+        <a href="{{ path('atelier_user_editAdmin',{'id': user.getId()}) }}" class="btn">Edit the user profile</a><br/>
+        <a href="{{ path('atelier_user_delete',{'id': user.getId()}) }}" class="btn">Remove the user</a><br/>
 	
         {% if (user.hasRole('ROLE_ADMIN')) %}
-           <a href="{{ path('atelier_user_removeAdmin',{'id': user.getId()}) }}", class="btn">removeadmin</a></p>
+           <a href="{{ path('atelier_user_removeAdmin',{'id': user.getId()}) }}", class="btn">Remove the administrator right</a></p>
     	{% else %}
-      	   <a href="{{ path('atelier_user_addAdmin',{'id': user.getId()}) }}", class="btn">addadmin</a></p>
+      	   <a href="{{ path('atelier_user_addAdmin',{'id': user.getId()}) }}", class="btn">Add the administrator right</a></p>
     	{% endif %} 
        
     {% endif %}
-	<a href="{{ path('atelier_user_list') }}" class="btn">return</a>
-    
-    <a href="{{ path('fos_user_security_logout') }}" class="btn">logout</a>
 {% endblock %}

@@ -1,0 +1,16 @@
+{% extends "AtelierUserBundle::layout.html.twig" %}
+
+{% block user_body %}
+<h3>My Profile</h3>
+<p>
+      {% for message in app.session.flashbag.get('info') %}
+        <i>{{ message }}</i>
+      {% endfor %}
+</p>
+
+
+{% include "AtelierUserBundle:User:show_content.html.twig" %}
+<a href="{{ path('fos_user_change_password') }}", class="btn">Change your password</a><br/>
+<a href="{{ path('atelier_user_unregister') }}", class="btn">Unregister</a>
+
+{% endblock %}

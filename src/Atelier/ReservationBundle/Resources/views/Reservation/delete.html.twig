@@ -1,0 +1,22 @@
+{% extends "AtelierReservationBundle::layout.html.twig" %}
+
+{% block title %}
+  Delete a reservation - {{ parent() }}
+{% endblock %}
+
+{% block booking_body %}
+       <h2>Delete a reservation</h2>
+ 
+  <p>
+    Are you sure you want to delete the reservation "{{ reservation.id }}" ?
+  </p>
+ 
+  <form action="{{ path('atelier_reservation_delete', {'id': reservation.id}) }}" method="post">
+    <a href="{{ path('atelier_reservation_list') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the list of your reservations
+    </a>
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    {{ form_rest(form) }}
+  </form>
+{% endblock %}

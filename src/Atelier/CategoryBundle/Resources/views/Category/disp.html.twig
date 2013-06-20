@@ -6,7 +6,7 @@
  
 {% block category_body %}
 
-<h2>Display a Category</h2>
+<h3>Category {% include "AtelierCategoryBundle:Category:category.html.twig" %}</h3>
 
 <p>
       {% for message in app.session.flashbag.get('info') %}
@@ -14,9 +14,18 @@
       {% endfor %}
 </p>
 
-<h3>Category {% include "AtelierCategoryBundle:Category:category.html.twig" %} </h3>
 <p>
+<i>
 	Id =  {{ category.id }} 
+</i>
+<p>
+	Number of products of this category =  <a href="{{ path('atelier_product_dispAllByCategory', {'category': category.id}) }}/1">{{ category.nbProducts() }}</a>
+</p>
+<p>
+	Number of materials of this category =  <a href="{{ path('atelier_material_dispAllByCategory', {'category': category.id}) }}/1">{{ category.nbMaterials() }}</a>
+</p>
+
+
 </p>
 <p>
     <a href="{{ path('atelier_category_dispAll') }}" class="btn">

@@ -30,3 +30,23 @@ atelier_material_dispAll:
     defaults: { _controller: AtelierMaterialBundle:Material:dispAll, page: 1 }
     requirements:
         page:  \d*
+
+atelier_material_dispAllByProduct:
+    pattern:  /{product}/{page}
+    defaults: { _controller: AtelierMaterialBundle:Material:dispAllByProduct, page: 1 }
+    requirements:
+        page:  \d*
+        product:  \d+
+
+atelier_material_dispAllByCategory:
+    pattern:  /category/{category}/{page}
+    defaults: { _controller: AtelierMaterialBundle:Material:dispAllByCategory, page: 1 }
+    requirements:
+        page:  \d*
+        category:  \d+
+
+atelier_material_disp_barcode:
+    pattern:  /{id}/dispBarcode
+    defaults: { _controller: AtelierMaterialBundle:Material:dispBarcode }
+    requirements:
+        id:  \d+

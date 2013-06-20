@@ -1,0 +1,22 @@
+{% extends "AtelierUserBundle::layout.html.twig" %}
+
+{% block title %}
+  Unregister - {{ parent() }}
+{% endblock %}
+
+{% block user_body %}
+       <h3>Unregister</h3>
+ 
+  <p>
+    Are you sure you want to unregister ?
+  </p>
+ 
+  <form action="{{ path('atelier_user_unregister') }}" method="post">
+    <a href="{{ path('atelier_user_show_my_profile') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to your profile
+    </a>
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    {{ form_rest(form) }}
+  </form>
+{% endblock %}

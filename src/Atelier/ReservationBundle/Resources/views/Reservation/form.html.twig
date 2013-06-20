@@ -1,6 +1,10 @@
 <div class="well">
   <form method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
+    <a href="{{ path('atelier_reservation_list') }}" class="btn">
+      <i class="icon-chevron-left"></i>
+      Go back to the list of reservations
+    </a>
     <input type="submit" class="btn btn-primary" />
   </form>
 </div>

@@ -1,12 +1,14 @@
 {% extends "::layout.html.twig" %}
 
 {% block title %}
-  Product - {{ parent() }}
+  Reservation - {{ parent() }}
 {% endblock %}
+
+{% block menu_booking %}active{% endblock %}
 
 {% block body %}
  
-  <h1>booking Management</h1>
+  <h1>Reservation</h1>
   <hr>
 
   {% block booking_body %}

@@ -52,9 +52,14 @@ class ReservationController extends Controller
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($reservation);
 				$em->flush();
-				return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=> "Your booking is saved"));
+				
+				$this->get('session')->getFlashBag()->add('info', 'Your booking has been correctly saved');
+				
+				return $this->redirect($this->generateUrl('atelier_reservation_list'));
 			}
-			return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=>"not possible"));
+			$this->get('session')->getFlashBag()->add('info', 'Your booking has not been correctly saved');
+			
+			return $this->redirect($this->generateUrl('atelier_reservation_list'));
 		//}
 	}   
         return $this->render('AtelierReservationBundle:Reservation:booking.html.twig', array(
@@ -90,14 +95,30 @@ class ReservationController extends Controller
 	));
     }
 
-    public function deleteAction($id)
+    public function deleteAction(Reservation $reservation)
     {
-        $em = $this->getDoctrine()->getManager();
-	$repository = $em->getRepository('AtelierReservationBundle:Reservation');
-        $reservation=$repository->find($id);
-	$em->remove($reservation);
-	$em->flush();
-	return $this->redirect($this->generateUrl('atelier_reservation_list', array('page' => 1)));
+	//return $this->redirect($this->generateUrl('atelier_reservation_list', array('page' => 1)));
+    $form = $this->createFormBuilder()->getForm();
+ 
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') {
+		  $form->bind($request);
+	 
+		  if ($form->isValid()) {
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($reservation);
+			$em->flush();
+	 
+			$this->get('session')->getFlashBag()->add('info', 'The reservation has been correctly deleted');
+	 
+			return $this->redirect($this->generateUrl('atelier_reservation_list'));
+		  }
+		}
+	 
+		return $this->render('AtelierReservationBundle:Reservation:delete.html.twig', array(
+		  'reservation' => $reservation,
+		  'form'    => $form->createView()
+		));
     }
 
     public function changeAction($id)
@@ -142,9 +163,15 @@ class ReservationController extends Controller
 			{
 				$em = $this->getDoctrine()->getManager();
 				$em->flush();
-				return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=> "Your booking is saved"));
+				
+				$this->get('session')->getFlashBag()->add('info', 'Your booking has been correctly changed');
+				
+				return $this->redirect($this->generateUrl('atelier_reservation_list'));
 			}
-			return $this->render('AtelierReservationBundle:Reservation:appointement.html.twig',array('info'=>"not possible"));
+			$this->get('session')->getFlashBag()->add('info', 'Your booking has not been correctly changed');
+			
+			return $this->redirect($this->generateUrl('atelier_reservation_list'));
+			
 		//}
 	}  
         return $this->render('AtelierReservationBundle:Reservation:booking.html.twig', array(

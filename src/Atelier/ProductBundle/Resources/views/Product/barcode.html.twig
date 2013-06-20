@@ -1,0 +1,15 @@
+<table width="100%" >
+{% for material in materials %}	
+	<tr>
+		
+{% set size=bb.generateBarcode(material.uuid) %}
+
+{% set w=size[0] %}
+{% set h=size[1] %}
+
+		<td width="40%" height="120px">Material ID = {{ material.id }}</td>
+		<td width="60%" height="120px"><img src="http://localhost/Symfony/web/img/barcode/{{ material.uuid }}.png" width="303" height="58" /></td>
+	</tr>		
+
+
+{% endfor %}

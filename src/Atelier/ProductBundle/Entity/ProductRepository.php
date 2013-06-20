@@ -30,4 +30,23 @@ class ProductRepository extends EntityRepository
  
     return new Paginator($query);
   }
+  
+  public function getProductsbyCategory($nbByPage, $page,$category)
+  {
+    if ($page < 1) {
+      throw new \InvalidArgumentException('The $page argument cannot be less than 1 (value : "'.$page.'").');
+    }
+ 
+    $query = $this->createQueryBuilder('a')
+				  ->where('a.category = '.$category->getId())
+                  ->orderBy('a.name', 'ASC')
+                  ->getQuery();
+                  
+                  
+    $query->setFirstResult(($page-1) * $nbByPage)
+          ->setMaxResults($nbByPage);
+ 
+    return new Paginator($query);
+  }
+  
 }

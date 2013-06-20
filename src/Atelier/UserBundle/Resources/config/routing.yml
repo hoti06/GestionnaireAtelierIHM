@@ -1,10 +1,6 @@
 atelier_user_index:
     pattern:  /
-    defaults: { _controller: AtelierUserBundle:User:index }
-    
-atelier_user_forbidden:
-    pattern:  /forbidden
-    defaults: { _controller: AtelierUserBundle:User:forbidden }
+    defaults: { _controller: FOSUserBundle:Profile:show }
 
 atelier_user_editAdmin:
     pattern:  /{id}/edit
@@ -21,7 +17,16 @@ atelier_user_delete:
     defaults: { _controller: AtelierUserBundle:User:delete }
     requirements:
         id:  \d+
+     
+atelier_user_unregister:
+    pattern:  /unregister
+    defaults: { _controller: AtelierUserBundle:User:unregister }
         
+        
+atelier_user_show_my_profile:
+    pattern:  /show
+    defaults: { _controller: AtelierUserBundle:User:showMyProfile }
+
 atelier_user_show:
     pattern:  /{id}/show
     defaults: { _controller: AtelierUserBundle:User:show }

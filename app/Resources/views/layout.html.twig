@@ -7,68 +7,137 @@
  
     {% block stylesheets %}
       <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" type="text/css" />
+      <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-responsive.css') }}" type="text/css" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
     {% endblock %}
   </head>
  
   <body>
-    <div class="container">
-      <div id="header" class="hero-unit">
-        <h1>Atelier IHM</h1>
-      </div>
- 
-      <div class="row">
-        <div id="menu" class="span3">
-          <h3>Account Admnistration</h3>
-          <ul class="nav nav-pills nav-stacked">
-            <li><a href="{{ path('atelier_user_index') }}">Index</a></li>
-            <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
-            <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
-            <li><a href="{{ path('fos_user_registration_register') }}">Sign up</a></li>
-            <li><a href="{{ path('fos_user_profile_show') }}">Show profile</a></li>
-            <li><a href="{{ path('atelier_user_list') }}">Users List (Admin)</a></li>
-          </ul>
-          
-          <h3>Booking Admnistration</h3>
-          <ul class="nav nav-pills nav-stacked">
-            <li><a href="{{ path('atelier_reservation_booking') }}">Add a booking</a></li>
-            <li><a href="{{ path('atelier_reservation_list') }}">List my bookings</a></li>
-            <li><a href="{{ path('atelier_reservation_alllist') }}">List all bookings (Admin)</a></li>
-          </ul>
-          
-          <h3>Appointment Admnistration</h3>
-          <ul class="nav nav-pills nav-stacked">
-            <li><a href="{{ path('atelier_appointement_list') }}">List all appointments (Admin)</a></li>
+    {% block menu %}
+		<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="{{ path('atelier_index_index') }}">IHM Atelier</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+			
+              <li class="{% block menu_home %}{% endblock %}"><a href="{{ path('atelier_index_index') }}">Home</a></li>
             
-          </ul>
-          
-          <h3>Categories Admnistration</h3>
-          <ul class="nav nav-pills nav-stacked">
-            <li><a href="{{ path('atelier_category_new') }}">Create a new category</a></li>
-            <li><a href="{{ path('atelier_category_index') }}">List all categories</a></li>
-          </ul>
+              <li class="dropdown {% block menu_account %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
+                  {% if is_granted('ROLE_USER') %}
+                  <li><a href="{{ path('fos_user_security_logout') }}">Logout</a></li>
+                  {% endif %}
+                  <li><a href="{{ path('fos_user_registration_register') }}">Sign up</a></li>
+                  {% if is_granted('ROLE_USER') %}
+                  <li><a href="{{ path('atelier_user_show_my_profile') }}">Show profile</a></li>   
+                  {% endif %}  
+                   {% if is_granted('ROLE_ADMIN') %}
+                  <li><a href="{{ path('atelier_user_list') }}">Users List</a></li>    
+                  {% endif %}          
+                </ul>
+              </li>
+              {% if is_granted('ROLE_USER') %}
+              <li class="dropdown {% block menu_booking %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Booking<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('atelier_reservation_booking') }}">Add a booking</a></li>
+                  <li><a href="{{ path('atelier_reservation_list') }}">List my bookings</a></li>
+                   {% if is_granted('ROLE_ADMIN') %}
+                  <li><a href="{{ path('atelier_reservation_alllist') }}">List all bookings</a></li>
+                  {% endif %}
+                </ul>
+              </li>
+              <li class="dropdown {% block menu_appointment %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Appointment<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+					 {% if is_granted('ROLE_ADMIN') %}
+					<li><a href="{{ path('atelier_appointement_list') }}">List all appointments</a></li>
+					{% endif %}
+                </ul>
+              </li>
+              {% endif %}
               
-          <h3>Products Admnistration</h3>
-          <ul class="nav nav-pills nav-stacked">
-            {#<li><a href="{{ path('atelier_product_new') }}">Create a new product</a></li>#}
-            <li><a href="{{ path('atelier_product_index') }}">List all products</a></li>
-          </ul>      
-                     
-          <h3>Materials Admnistration</h3>
-          <ul class="nav nav-pills nav-stacked">
-            <li><a href="{{ path('atelier_material_new') }}">Create a new material</a></li>
-            <li><a href="{{ path('atelier_material_index') }}">List all materials</a></li>
-          </ul>           
-        </div>
-        
-        <div id="content" class="span9">
-          {% block body %}
-          {% endblock %}
+              
+               {% if is_granted('ROLE_ADMIN') %}
+              <li class="dropdown {% block menu_category %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('atelier_category_new') }}">Create a new category</a></li>
+                  <li><a href="{{ path('atelier_category_index') }}">List all categories</a></li>
+                </ul>
+              </li>
+              <li class="dropdown {% block menu_product %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('atelier_product_index') }}">List all products</a></li>
+                </ul>
+              </li>
+              <li class="dropdown {% block menu_material %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Materials<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ path('atelier_material_new') }}">Create a new material</a></li>
+                  <li><a href="{{ path('atelier_material_index') }}">List all materials</a></li>
+                </ul>
+              </li>
+              
+              
+              
+              
+              
+             {% endif %}
+			<li class="{% block menu_about %}{% endblock %}"><a href="{{ path('atelier_index_about') }}">About</a></li>
+            </ul>
+             {{ render(controller("FOSUserBundle:Security:loginMenu")) }}
+          </div><!--/.nav-collapse -->
         </div>
       </div>
+    </div>
+        {% endblock %}
+    
+    
+    
+    
+    
+    <div class="container" style="min-height:500px;">    
+	 <div id="content" class="span9">
+        {% block body %}
+          {% endblock %}
+          </div>
+ </div>
+ 
+ <!--                 
+        <div id="content" class="span9">
+{#          {% block body %}
+          {% endblock %}#}
+        </div>
+      </div>
+ -->
+ 
+ 
+ 
  
       <hr>
  
-      <footer>
+      <footer style="padding-left:250px;">
         <p>By CESCHEL, YAO, GUO</p>
       </footer>
     </div>

@@ -6,7 +6,7 @@
  
 {% block material_body %}
 
-<h2>Display a Material</h2>
+<h2>Material {% include "AtelierMaterialBundle:Material:material.html.twig" %} </h2>
 
 <p>
       {% for message in app.session.flashbag.get('info') %}
@@ -14,7 +14,6 @@
       {% endfor %}
 </p>
 
-<h3>Material {% include "AtelierMaterialBundle:Material:material.html.twig" %} </h3>
 <p>
 	UUID =  {{ material.uuid }} 
 </p>
@@ -24,6 +23,9 @@
 <p>
 	Product =  <a href="{{ path('atelier_product_disp', {'id': material.product.id}) }}">{{ material.product.name }} </a>
 </p>
+<p>
+	<a href="{{ path('atelier_material_disp_barcode', {'id': material.id}) }}" target="_blank">Display the barcodes of the material</a>
+</p> 
 
 
 
